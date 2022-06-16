@@ -91,26 +91,23 @@ const MeetingInfoBox = ({ meeting }: Props) => {
         {formatMeetingTime(meeting.startDate, meeting.endDate)}
       </InfoLine>
       {meeting.location ? (
-        <InfoLine symbol="LOCATION">Besprechungszimmer A</InfoLine>
+        <InfoLine symbol="LOCATION">{meeting.location}</InfoLine>
       ) : (
         <div className="h-4" />
       )}
-      <div className="mt-3 flex justify-between space-x-2">
-        <MeetingInfoBoxButton symbol="EDIT" className="min-w-sm">
-          bearbeiten
-        </MeetingInfoBoxButton>
+      <div className="mt-3 flex justify-left space-x-2">
+        <MeetingInfoBoxButton symbol="EDIT">Edit</MeetingInfoBoxButton>
         {meeting.agenda && (
           <MeetingInfoBoxButton
             symbol="AGENDA"
             color={agendaIsAvailable ? "GREEN" : "RED"}
-            className="w-full"
           >
             {formatAgendaText(meeting.agenda)}
           </MeetingInfoBoxButton>
         )}
         {meeting.participants && (
           <MeetingInfoBoxButton symbol="PARTICIPANTS">
-            {meeting.participants.length}
+            {formatNumberOfParticipants(meeting.participants)}
           </MeetingInfoBoxButton>
         )}
       </div>

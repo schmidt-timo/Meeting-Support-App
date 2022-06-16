@@ -19,12 +19,12 @@ const Home: NextPage = () => {
     <>
       <h1 className="p-3 font-bold text-2xl">Meetings</h1>
       <div className="px-3 space-y-3">
-        <MeetingCategory title="Von Ihnen erstellt">
+        <MeetingCategory title="Created by you">
           {createdByMe.map((m) => (
             <MeetingInfoBox meeting={m} />
           ))}
         </MeetingCategory>
-        <MeetingCategory title="Eingeladen zu">
+        <MeetingCategory title="Invited">
           {invited.map((m) => (
             <MeetingInfoBox meeting={m} />
           ))}

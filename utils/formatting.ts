@@ -50,7 +50,7 @@ export function formatAgendaText(agendaItems: MeetingAgendaItem[]) {
   return agendaItems.length === 0 ? "Add agenda" : "Edit agenda";
 }
 
-export function formatNumberOfParticipants(participants: MeetingParticipant[]) {
+export function formatParticipantsText(participants: MeetingParticipant[]) {
   return participants.length === 1
     ? `${participants.length} Participant`
     : `${participants.length} Participants`;

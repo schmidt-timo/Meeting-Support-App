@@ -12,7 +12,7 @@ import {
   formatAgendaText,
   formatMeetingDate,
   formatMeetingTime,
-  formatNumberOfParticipants,
+  formatParticipantsText,
 } from "../../utils/formatting";
 import { Meeting } from "../../utils/types";
 
@@ -95,7 +95,7 @@ const MeetingInfoBox = ({ meeting }: Props) => {
       ) : (
         <div className="h-4" />
       )}
-      <div className="mt-3 flex justify-left space-x-2">
+      <div className="mt-3 flex justify-between mobileXL:justify-end space-x-2">
         <MeetingInfoBoxButton symbol="EDIT">Edit</MeetingInfoBoxButton>
         {meeting.agenda && (
           <MeetingInfoBoxButton
@@ -106,9 +106,20 @@ const MeetingInfoBox = ({ meeting }: Props) => {
           </MeetingInfoBoxButton>
         )}
         {meeting.participants && (
-          <MeetingInfoBoxButton symbol="PARTICIPANTS">
-            {formatNumberOfParticipants(meeting.participants)}
-          </MeetingInfoBoxButton>
+          <>
+            <MeetingInfoBoxButton
+              symbol="PARTICIPANTS"
+              className="mobile:hidden"
+            >
+              {meeting.participants.length}
+            </MeetingInfoBoxButton>
+            <MeetingInfoBoxButton
+              symbol="PARTICIPANTS"
+              className="hidden mobile:inline-flex"
+            >
+              {formatParticipantsText(meeting.participants)}
+            </MeetingInfoBoxButton>
+          </>
         )}
       </div>
     </div>

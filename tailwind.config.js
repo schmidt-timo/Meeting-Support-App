@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    screens: {
+      "mobile": "345px",
+      "mobileXL": "375px",
+    },
     minWidth: {
       xs: "4rem",
       sm: "6rem",

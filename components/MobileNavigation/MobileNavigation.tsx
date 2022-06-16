@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUserAlt } from "react-icons/fa";
+import { MdMeetingRoom, MdListAlt, MdPerson } from "react-icons/md";
 
 type NavItemProps = {
   id: string;
@@ -39,7 +39,7 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         id="nav_meetings"
         onSelect={(id) => setActiveItem(id)}
       >
-        <FaUserAlt text-gray-500 w-4 h-4 />
+        <MdMeetingRoom className="text-gray-500 w-5 h-5" />
         <p>Meetings</p>
       </NavItem>
       <NavItem
@@ -47,16 +47,14 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         id="nav_reports"
         onSelect={(id) => setActiveItem(id)}
       >
-        <FaUserAlt text-gray-500 w-4 h-4 />
-        <p>Meeting Reports</p>
+        <MdListAlt className="text-gray-500 w-5 h-5" /> <p>Meeting Reports</p>
       </NavItem>
       <NavItem
         active={activeItem === "nav_profile"}
         id="nav_profile"
         onSelect={(id) => setActiveItem(id)}
       >
-        <FaUserAlt text-gray-500 w-4 h-4 />
-        <p>Profil</p>
+        <MdPerson className="text-gray-500 w-5 h-5" /> <p>Profil</p>
       </NavItem>
     </div>
   );

@@ -1,14 +1,13 @@
 import React from "react";
 import {
-  FaCalendar,
-  FaClock,
-  FaUserAlt,
-  FaLocationArrow,
-  FaPlay,
-  FaUserFriends,
-  FaPen,
-  FaRegListAlt,
-} from "react-icons/fa";
+  MdCalendarToday,
+  MdAccessTime,
+  MdOutlineLocationOn,
+  MdPlayArrow,
+  MdMode,
+  MdPeople,
+  MdAssignment,
+} from "react-icons/md";
 import {
   formatAgendaText,
   formatMeetingDate,
@@ -39,9 +38,9 @@ const MeetingInfoBoxButton = ({
       ${className}
       `}
     >
-      {symbol === "EDIT" && <FaPen className="h-3 w-3" />}
-      {symbol === "AGENDA" && <FaRegListAlt className="h-3 w-3" />}
-      {symbol === "PARTICIPANTS" && <FaUserFriends className="h-3 w-3" />}
+      {symbol === "EDIT" && <MdMode className="w-3.5 h-3.5" />}
+      {symbol === "AGENDA" && <MdAssignment className="w-3.5 h-3.5" />}
+      {symbol === "PARTICIPANTS" && <MdPeople className="w-3.5 h-3.5" />}
       <p className="font-medium truncate" style={{ fontSize: "0.7em" }}>
         {children}
       </p>
@@ -50,7 +49,7 @@ const MeetingInfoBoxButton = ({
 };
 
 type InfoLineProps = {
-  symbol: "DATE" | "TIME" | "SOURCE" | "LOCATION";
+  symbol: "DATE" | "TIME" | "LOCATION";
   children: React.ReactNode;
 };
 
@@ -58,14 +57,11 @@ const InfoLine = ({ symbol, children }: InfoLineProps) => {
   return (
     <span className="flex items-center space-x-1">
       {symbol === "DATE" && (
-        <FaCalendar className="h-2.5 w-2.5 text-gray-500" />
+        <MdCalendarToday className="h-2.5 w-3 text-gray-500" />
       )}
-      {symbol === "TIME" && <FaClock className="h-2.5 w-2.5 text-gray-500" />}
-      {symbol === "SOURCE" && (
-        <FaUserAlt className="h-2.5 w-2.5 text-gray-500" />
-      )}
+      {symbol === "TIME" && <MdAccessTime className="h-3 w-3 text-gray-500" />}
       {symbol === "LOCATION" && (
-        <FaLocationArrow className="h-2.5 w-2.5 text-gray-500" />
+        <MdOutlineLocationOn className="h-3 w-3 text-gray-500" />
       )}
       <p className="text-xs">{children}</p>
     </span>
@@ -84,8 +80,8 @@ const MeetingInfoBox = ({ meeting }: Props) => {
       className="relative p-3 bg-gray-200 rounded-xl"
       style={{ backgroundColor: "#eee" }}
     >
-      <button className="absolute right-3 top-3 bg-white ml-0.5 p-2 pl-3 rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300">
-        <FaPlay className="h-5 w-5" />
+      <button className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300">
+        <MdPlayArrow className="w-7 h-7" />
       </button>
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
         {meeting.name}

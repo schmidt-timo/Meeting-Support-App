@@ -1,5 +1,5 @@
 import React from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { MdOutlineExpandLess, MdOutlineExpandMore } from "react-icons/md";
 
 type Props = {
   title: string;
@@ -17,7 +17,11 @@ const MeetingCategory = ({ title, children }: Props) => {
         role="button"
       >
         <p className="text-gray-400 uppercase text-sm">{title}</p>
-        <FaChevronDown className="text-gray-400" />
+        {collapsed ? (
+          <MdOutlineExpandMore className="text-gray-400 w-6 h-6" />
+        ) : (
+          <MdOutlineExpandLess className="text-gray-400 w-6 h-6" />
+        )}
       </div>
       <div className={`space-y-3 ${collapsed && "hidden"}`}>{children}</div>
     </div>

@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    maxWidth: {
+      lg: "8rem",
+    },
   },
   plugins: [],
 };

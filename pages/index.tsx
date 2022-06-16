@@ -12,10 +12,10 @@ const meetings = exampleMeetings;
 const Home: NextPage = () => {
   // filter meetings
   const createdByMe = meetings.filter(
-    (meeting) => meeting.createdBy === "timoschmidt"
+    (meeting) => meeting.createdBy === "timoschmidt" // TODO: Replace timoschmidt with current user id
   );
   const invited = meetings.filter(
-    (meetings) => meetings.createdBy !== "timoschmidt"
+    (meetings) => meetings.createdBy !== "timoschmidt" // TODO: Replace timoschmidt with current user id
   );
 
   return (

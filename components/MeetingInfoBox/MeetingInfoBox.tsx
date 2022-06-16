@@ -7,6 +7,7 @@ import {
   MdMode,
   MdPeople,
   MdAssignment,
+  MdRemoveRedEye,
 } from "react-icons/md";
 import {
   formatAgendaText,
@@ -17,7 +18,7 @@ import {
 import { Meeting } from "../../utils/types";
 
 type MeetingInfoBoxButtonProps = {
-  symbol?: "EDIT" | "AGENDA" | "PARTICIPANTS";
+  symbol?: "EDIT" | "WATCH" | "AGENDA" | "PARTICIPANTS";
   color?: "RED" | "GREEN";
   className?: string;
   children: React.ReactNode;
@@ -39,6 +40,7 @@ const MeetingInfoBoxButton = ({
       `}
     >
       {symbol === "EDIT" && <MdMode className="w-3.5 h-3.5" />}
+      {symbol === "WATCH" && <MdRemoveRedEye className="w-3.5 h-3.5" />}
       {symbol === "AGENDA" && <MdAssignment className="w-3.5 h-3.5" />}
       {symbol === "PARTICIPANTS" && <MdPeople className="w-3.5 h-3.5" />}
       <p className="font-medium truncate" style={{ fontSize: "0.7em" }}>
@@ -96,15 +98,23 @@ const MeetingInfoBox = ({ meeting }: Props) => {
         <div className="h-4" />
       )}
       <div className="mt-3 flex justify-start space-x-2">
-        <MeetingInfoBoxButton symbol="EDIT" className="min-w-xs">
-          Edit
-        </MeetingInfoBoxButton>
-        {meeting.agenda && (
+        {/* // TODO: Replace timoschmidt with current user id */}
+        {meeting.createdBy === "timoschmidt" && (
+          <MeetingInfoBoxButton symbol="EDIT" className="min-w-xs">
+            Edit
+          </MeetingInfoBoxButton>
+        )}
+        {meeting.agenda && meeting.createdBy === "timoschmidt" && (
           <MeetingInfoBoxButton
             symbol="AGENDA"
             color={agendaIsAvailable ? "GREEN" : "RED"}
           >
             {formatAgendaText(meeting.agenda)}
+          </MeetingInfoBoxButton>
+        )}
+        {meeting.createdBy !== "timoschmidt" && (
+          <MeetingInfoBoxButton symbol="WATCH">
+            Show details
           </MeetingInfoBoxButton>
         )}
         {meeting.participants && (

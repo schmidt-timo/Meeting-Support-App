@@ -60,4 +60,38 @@ export const exampleMeetings: Meeting[] = [
       },
     ],
   },
+  {
+    id: "example-meeting-4",
+    createdBy: "johndoe",
+    name: "Team Meeting",
+    startDate: new Date("June 4, 2022, 10:00:00"),
+    endDate: new Date("June 4, 2022, 11:30:00"),
+    agenda: [
+      {
+        title: "1. Tagespunkt",
+        description: "Beschreibung für den ersten Tagespunkt",
+        duration: 15,
+      },
+      {
+        title: "2. Tagespunkt",
+        description: "Beschreibung für den zweiten Tagespunkt",
+        duration: 30,
+      },
+    ],
+    participants: [
+      {
+        name: "John Doe",
+        email: "johndoe@email.com",
+      },
+      {
+        name: "Max Mustermann",
+        email: "maxmustermann@email.com",
+      },
+      {
+        name: "Erika Mustermann",
+        email: "erikamustermann@email.com",
+      },
+    ],
+    location: "Conference Room B",
+  },
 ];

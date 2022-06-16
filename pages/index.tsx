@@ -4,6 +4,7 @@ import Header from "../components/Header/Header";
 import MeetingCategory from "../components/MeetingCategory/MeetingCategory";
 import MeetingInfoBox from "../components/MeetingInfoBox/MeetingInfoBox";
 import { exampleMeetings } from "../utils/exampleData";
+import MobileNavigation from "../components/MobileNavigation/MobileNavigation";
 
 // get all meetings
 const meetings = exampleMeetings;
@@ -46,6 +47,12 @@ const Home: NextPage = () => {
             <MeetingInfoBox meeting={m} key={m.id} />
           ))}
         </MeetingCategory>
+      </div>
+      <div>
+        <MobileNavigation
+          activeItemId="nav_meetings"
+          onSelect={(id) => console.log(`Nav item ${id} was clicked`)}
+        />
       </div>
     </>
   );

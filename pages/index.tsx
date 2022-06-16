@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import { MdQrCodeScanner, MdOutlineAdd } from "react-icons/md";
-import Header from "../components/Header/Header";
 import MeetingCategory from "../components/MeetingCategory/MeetingCategory";
 import MeetingInfoBox from "../components/MeetingInfoBox/MeetingInfoBox";
 import { exampleMeetings } from "../utils/exampleData";
-import MobileNavigation from "../components/MobileNavigation/MobileNavigation";
+import ViewBuilder from "../components/ViewBuilder/ViewBuilder";
 
 // get all meetings
 const meetings = exampleMeetings;
@@ -19,9 +18,10 @@ const Home: NextPage = () => {
   );
 
   return (
-    <>
-      <Header
-        buttons={[
+    <ViewBuilder
+      header={{
+        title: "Meetings",
+        buttons: [
           {
             id: "HEADER_BTN_QR",
             icon: <MdQrCodeScanner className="w-6 h-6" />,
@@ -32,10 +32,13 @@ const Home: NextPage = () => {
             icon: <MdOutlineAdd className="w-8 h-8" />,
             href: "",
           },
-        ]}
-      >
-        Meetings
-      </Header>
+        ],
+      }}
+      nav={{
+        activeItemId: "nav_meetings",
+        onSelect: (id) => console.log(`Nav item ${id} was clicked`),
+      }}
+    >
       <div className="px-3 space-y-3">
         <MeetingCategory title="Created by you">
           {createdByMe.map((m) => (
@@ -48,13 +51,7 @@ const Home: NextPage = () => {
           ))}
         </MeetingCategory>
       </div>
-      <div>
-        <MobileNavigation
-          activeItemId="nav_meetings"
-          onSelect={(id) => console.log(`Nav item ${id} was clicked`)}
-        />
-      </div>
-    </>
+    </ViewBuilder>
   );
 };
 

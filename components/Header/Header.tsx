@@ -13,7 +13,11 @@ const Header = ({ children, buttons, showBackArrow: backArrow }: Props) => {
   const router = useRouter();
 
   return (
-    <div className={`flex items-center ${backArrow ? "px-3" : "pl-1 pr-3"}`}>
+    <div
+      className={`w-full flex items-center z-10 bg-white ${
+        backArrow ? "px-3" : "pl-1 pr-3"
+      }`}
+    >
       {backArrow && (
         <button onClick={() => router.back()}>
           <MdKeyboardBackspace className="w-8 h-8" />

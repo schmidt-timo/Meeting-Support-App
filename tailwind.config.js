@@ -11,6 +11,17 @@ module.exports = {
         "gray-btn": "#DDD",
         "gray-btn-hover": "#CCC",
       },
+      minWidth: {
+        xs: "4rem",
+        sm: "6rem",
+      },
+      maxWidth: {
+        lg: "8rem",
+        xl: "12rem",
+      },
+      minHeight: {
+        300: "300px",
+      },
       screens: {
         mobileXS: "345px",
         mobileSM: "375px",
@@ -19,14 +30,6 @@ module.exports = {
       fontSize: {
         extrasmall: "0.7rem",
       },
-    },
-    minWidth: {
-      xs: "4rem",
-      sm: "6rem",
-    },
-    maxWidth: {
-      lg: "8rem",
-      xl: "12rem",
     },
   },
   plugins: [],

@@ -7,8 +7,9 @@ module.exports = {
   theme: {
     extend: {},
     screens: {
-      "mobile": "345px",
-      "mobileXL": "375px",
+      mobileXS: "345px",
+      mobileSM: "375px",
+      mobileXL: "400px",
     },
     minWidth: {
       xs: "4rem",

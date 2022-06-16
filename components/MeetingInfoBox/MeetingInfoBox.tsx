@@ -95,8 +95,10 @@ const MeetingInfoBox = ({ meeting }: Props) => {
       ) : (
         <div className="h-4" />
       )}
-      <div className="mt-3 flex justify-between mobileXL:justify-end space-x-2">
-        <MeetingInfoBoxButton symbol="EDIT">Edit</MeetingInfoBoxButton>
+      <div className="mt-3 flex justify-start space-x-2">
+        <MeetingInfoBoxButton symbol="EDIT" className="min-w-xs">
+          Edit
+        </MeetingInfoBoxButton>
         {meeting.agenda && (
           <MeetingInfoBoxButton
             symbol="AGENDA"
@@ -109,13 +111,13 @@ const MeetingInfoBox = ({ meeting }: Props) => {
           <>
             <MeetingInfoBoxButton
               symbol="PARTICIPANTS"
-              className="mobile:hidden"
+              className="mobileSM:hidden"
             >
               {meeting.participants.length}
             </MeetingInfoBoxButton>
             <MeetingInfoBoxButton
               symbol="PARTICIPANTS"
-              className="hidden mobile:inline-flex"
+              className="hidden mobileSM:inline-flex"
             >
               {formatParticipantsText(meeting.participants)}
             </MeetingInfoBoxButton>

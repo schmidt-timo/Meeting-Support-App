@@ -7,6 +7,7 @@ import {
   MdPersonOutline,
   MdPerson,
 } from "react-icons/md";
+import { NAVIGATION_IDS } from "../../utils/constants";
 
 type NavItemProps = {
   id: string;
@@ -28,8 +29,6 @@ const NavItem = ({ id, active, children, onSelect }: NavItemProps) => {
   );
 };
 
-const navIds = ["NAV_MEETINGS", "NAV_REPORTS", "NAV_PROFILE"];
-
 type Props = {
   activeItemId: string;
   onSelect: (id: string) => void;
@@ -44,11 +43,11 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
       onClick={() => onSelect(activeItem)}
     >
       <NavItem
-        active={activeItem === navIds[0]}
-        id={navIds[0]}
+        active={activeItem === NAVIGATION_IDS.meetings}
+        id={NAVIGATION_IDS.meetings}
         onSelect={(id) => setActiveItem(id)}
       >
-        {activeItem === navIds[0] ? (
+        {activeItem === NAVIGATION_IDS.meetings ? (
           <MdMeetingRoom className="w-5 h-5 text-black" />
         ) : (
           <MdOutlineMeetingRoom className="w-5 h-5 text-gray-500" />
@@ -56,11 +55,11 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         <p>Meetings</p>
       </NavItem>
       <NavItem
-        active={activeItem === navIds[1]}
-        id={navIds[1]}
+        active={activeItem === NAVIGATION_IDS.reports}
+        id={NAVIGATION_IDS.reports}
         onSelect={(id) => setActiveItem(id)}
       >
-        {activeItem === navIds[1] ? (
+        {activeItem === NAVIGATION_IDS.reports ? (
           <MdInsertChart className="w-5 h-5 text-black" />
         ) : (
           <MdInsertChartOutlined className="w-5 h-5 text-gray-500" />
@@ -68,11 +67,11 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         <p>Meeting Reports</p>
       </NavItem>
       <NavItem
-        active={activeItem === navIds[2]}
-        id={navIds[2]}
+        active={activeItem === NAVIGATION_IDS.profile}
+        id={NAVIGATION_IDS.profile}
         onSelect={(id) => setActiveItem(id)}
       >
-        {activeItem === navIds[2] ? (
+        {activeItem === NAVIGATION_IDS.profile ? (
           <MdPerson className="w-5 h-5 text-black" />
         ) : (
           <MdPersonOutline className="w-5 h-5 text-gray-500" />

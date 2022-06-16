@@ -4,6 +4,7 @@ import MeetingCategory from "../components/MeetingCategory/MeetingCategory";
 import MeetingInfoBox from "../components/MeetingInfoBox/MeetingInfoBox";
 import { exampleMeetings } from "../utils/exampleData";
 import ViewBuilder from "../components/ViewBuilder/ViewBuilder";
+import { NAVIGATION_IDS } from "../utils/constants";
 
 // get all meetings
 const meetings = exampleMeetings;
@@ -35,7 +36,7 @@ const Home: NextPage = () => {
         ],
       }}
       nav={{
-        activeItemId: "nav_meetings",
+        activeItemId: NAVIGATION_IDS.meetings,
         onSelect: (id) => console.log(`Nav item ${id} was clicked`),
       }}
     >

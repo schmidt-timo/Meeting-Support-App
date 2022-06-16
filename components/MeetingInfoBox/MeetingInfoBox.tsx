@@ -43,9 +43,7 @@ const MeetingInfoBoxButton = ({
       {symbol === "WATCH" && <MdRemoveRedEye className="w-3.5 h-3.5" />}
       {symbol === "AGENDA" && <MdAssignment className="w-3.5 h-3.5" />}
       {symbol === "PARTICIPANTS" && <MdPeople className="w-3.5 h-3.5" />}
-      <p className="font-medium truncate" style={{ fontSize: "0.7em" }}>
-        {children}
-      </p>
+      <p className="font-medium truncate text-xs">{children}</p>
     </button>
   );
 };

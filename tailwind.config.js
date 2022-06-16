@@ -11,11 +11,14 @@ module.exports = {
         "gray-btn": "#DDD",
         "gray-btn-hover": "#CCC",
       },
-    },
-    screens: {
-      mobileXS: "345px",
-      mobileSM: "375px",
-      mobileXL: "400px",
+      screens: {
+        mobileXS: "345px",
+        mobileSM: "375px",
+        mobileXL: "400px",
+      },
+      fontSize: {
+        extrasmall: "0.7rem",
+      },
     },
     minWidth: {
       xs: "4rem",

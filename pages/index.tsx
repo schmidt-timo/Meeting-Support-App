@@ -1,4 +1,6 @@
 import type { NextPage } from "next";
+import { MdQrCodeScanner, MdOutlineAdd } from "react-icons/md";
+import Header from "../components/Header/Header";
 import MeetingCategory from "../components/MeetingCategory/MeetingCategory";
 import MeetingInfoBox from "../components/MeetingInfoBox/MeetingInfoBox";
 import { exampleMeetings } from "../utils/exampleData";
@@ -17,7 +19,22 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <h1 className="p-3 font-bold text-2xl">Meetings</h1>
+      <Header
+        buttons={[
+          {
+            id: "HEADER_BTN_QR",
+            icon: <MdQrCodeScanner className="w-6 h-6" />,
+            href: "",
+          },
+          {
+            id: "HEADER_BTN_NEWMEETING",
+            icon: <MdOutlineAdd className="w-8 h-8" />,
+            href: "",
+          },
+        ]}
+      >
+        Meetings
+      </Header>
       <div className="px-3 space-y-3">
         <MeetingCategory title="Created by you">
           {createdByMe.map((m) => (

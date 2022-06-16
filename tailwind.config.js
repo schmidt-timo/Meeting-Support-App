@@ -5,7 +5,13 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "gray-bg": "#EEE",
+        "gray-btn": "#DDD",
+        "gray-btn-hover": "#CCC",
+      },
+    },
     screens: {
       mobileXS: "345px",
       mobileSM: "375px",

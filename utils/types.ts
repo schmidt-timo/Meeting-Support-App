@@ -1,3 +1,5 @@
+import React from "react";
+
 export type MeetingAgendaItem = {
   title: string;
   description?: string;
@@ -19,4 +21,10 @@ export type Meeting = {
   location?: string;
   agenda?: MeetingAgendaItem[];
   participants?: MeetingParticipant[];
+};
+
+export type HeaderButton = {
+  id: string;
+  icon: React.ReactNode;
+  href: string;
 };

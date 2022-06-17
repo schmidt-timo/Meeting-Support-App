@@ -87,7 +87,7 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         ) : (
           <MdPersonOutline className="w-5 h-5 text-gray-500" />
         )}
-        <p>Profil</p>
+        <p>Profile</p>
       </NavItem>
     </div>
   );

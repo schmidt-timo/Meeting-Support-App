@@ -6,13 +6,14 @@ import { exampleMeetings } from "../utils/exampleData";
 import ViewBuilder from "../components/ViewBuilder/ViewBuilder";
 import { NAVIGATION_IDS } from "../utils/constants";
 import { useRouter } from "next/router";
+import InfoTextBox from "../components/InfoTextBox/InfoTextBox";
 
 // get all meetings
 const meetings = exampleMeetings;
 
 const Home: NextPage = () => {
   // filter meetings
-  const filteredMeetings = meetings.filter((m) => !m.completed);
+  let filteredMeetings = meetings.filter((m) => !m.completed);
   const createdByMe = filteredMeetings.filter(
     (meeting) => meeting.createdBy === "timoschmidt" // TODO: Replace timoschmidt with current user id
   );
@@ -45,6 +46,13 @@ const Home: NextPage = () => {
       }}
     >
       <div className="px-3 space-y-3">
+        {filteredMeetings.length === 0 && (
+          <InfoTextBox title="New here?">
+            Add new meetings by using the QR code scanner with the button on the
+            top or add them manually by entering the meeting ID. You can also
+            create your own meetings by using the plus button.
+          </InfoTextBox>
+        )}
         {!!createdByMe.length && (
           <MeetingCategory title="Created by you">
             {createdByMe.map((m) => (

@@ -76,10 +76,7 @@ const MeetingInfoBox = ({ meeting }: Props) => {
   const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 1;
 
   return (
-    <div
-      className="relative p-3 bg-gray-200 rounded-xl"
-      style={{ backgroundColor: "#eee" }}
-    >
+    <div className="relative p-3 bg-gray-200 rounded-xl">
       <button className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300">
         <MdPlayArrow className="w-7 h-7" />
       </button>

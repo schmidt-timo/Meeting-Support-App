@@ -6,11 +6,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        "gray-bg": "#EEE",
-        "gray-btn": "#DDD",
-        "gray-btn-hover": "#CCC",
-      },
       minWidth: {
         xs: "4rem",
         sm: "6rem",

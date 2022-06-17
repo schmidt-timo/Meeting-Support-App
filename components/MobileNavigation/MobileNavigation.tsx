@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import {
   MdOutlineMeetingRoom,
@@ -35,6 +36,7 @@ type Props = {
 };
 
 const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
+  const router = useRouter();
   const [activeItem, setActiveItem] = React.useState<string>(activeItemId);
 
   return (
@@ -45,7 +47,10 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
       <NavItem
         active={activeItem === NAVIGATION_IDS.meetings}
         id={NAVIGATION_IDS.meetings}
-        onSelect={(id) => setActiveItem(id)}
+        onSelect={(id) => {
+          router.push("/");
+          setActiveItem(id);
+        }}
       >
         {activeItem === NAVIGATION_IDS.meetings ? (
           <MdMeetingRoom className="w-5 h-5 text-black" />
@@ -57,7 +62,10 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
       <NavItem
         active={activeItem === NAVIGATION_IDS.reports}
         id={NAVIGATION_IDS.reports}
-        onSelect={(id) => setActiveItem(id)}
+        onSelect={(id) => {
+          router.push("/reports");
+          setActiveItem(id);
+        }}
       >
         {activeItem === NAVIGATION_IDS.reports ? (
           <MdInsertChart className="w-5 h-5 text-black" />
@@ -69,7 +77,10 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
       <NavItem
         active={activeItem === NAVIGATION_IDS.profile}
         id={NAVIGATION_IDS.profile}
-        onSelect={(id) => setActiveItem(id)}
+        onSelect={(id) => {
+          router.push("/profile");
+          setActiveItem(id);
+        }}
       >
         {activeItem === NAVIGATION_IDS.profile ? (
           <MdPerson className="w-5 h-5 text-black" />

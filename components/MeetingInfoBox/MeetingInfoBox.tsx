@@ -77,9 +77,11 @@ const MeetingInfoBox = ({ meeting }: Props) => {
 
   return (
     <div className="relative p-3 bg-gray-200 rounded-xl">
-      <button className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300">
-        <MdPlayArrow className="w-7 h-7" />
-      </button>
+      {!meeting.completed && (
+        <button className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300">
+          <MdPlayArrow className="w-7 h-7" />
+        </button>
+      )}
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
         {meeting.name}
       </p>
@@ -92,27 +94,35 @@ const MeetingInfoBox = ({ meeting }: Props) => {
       ) : (
         <div className="h-4" />
       )}
-      <div className="mt-3 flex justify-start space-x-2">
+      <div className="mt-3 flex justify-end space-x-2">
         {/* // TODO: Replace timoschmidt with current user id */}
-        {meeting.createdBy === "timoschmidt" && (
+        {!meeting.completed && meeting.createdBy === "timoschmidt" && (
           <MeetingInfoBoxButton symbol="EDIT" className="min-w-xs">
             Edit
           </MeetingInfoBoxButton>
         )}
-        {meeting.agenda && meeting.createdBy === "timoschmidt" && (
-          <MeetingInfoBoxButton
-            symbol="AGENDA"
-            color={agendaIsAvailable ? "GREEN" : "RED"}
-          >
-            {formatAgendaText(meeting.agenda)}
-          </MeetingInfoBoxButton>
-        )}
-        {meeting.createdBy !== "timoschmidt" && (
+        {!meeting.completed &&
+          meeting.agenda &&
+          meeting.createdBy === "timoschmidt" && (
+            <MeetingInfoBoxButton
+              symbol="AGENDA"
+              color={agendaIsAvailable ? "GREEN" : "RED"}
+            >
+              {formatAgendaText(meeting.agenda)}
+            </MeetingInfoBoxButton>
+          )}
+        {/* // TODO: Replace timoschmidt with current user id */}
+        {!meeting.completed && meeting.createdBy !== "timoschmidt" && (
           <MeetingInfoBoxButton symbol="WATCH">
             Show details
           </MeetingInfoBoxButton>
         )}
-        {meeting.participants && (
+        {meeting.completed && (
+          <MeetingInfoBoxButton symbol="WATCH">
+            Show report
+          </MeetingInfoBoxButton>
+        )}
+        {!meeting.completed && meeting.participants && (
           <>
             <MeetingInfoBoxButton
               symbol="PARTICIPANTS"

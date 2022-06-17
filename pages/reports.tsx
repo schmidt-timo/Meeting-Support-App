@@ -5,14 +5,13 @@ import MeetingInfoBox from "../components/MeetingInfoBox/MeetingInfoBox";
 import { exampleMeetings } from "../utils/exampleData";
 import ViewBuilder from "../components/ViewBuilder/ViewBuilder";
 import { NAVIGATION_IDS } from "../utils/constants";
-import { useRouter } from "next/router";
 
 // get all meetings
 const meetings = exampleMeetings;
 
-const Home: NextPage = () => {
+const Reports: NextPage = () => {
   // filter meetings
-  const filteredMeetings = meetings.filter((m) => !m.completed);
+  const filteredMeetings = meetings.filter((m) => m.completed);
   const createdByMe = filteredMeetings.filter(
     (meeting) => meeting.createdBy === "timoschmidt" // TODO: Replace timoschmidt with current user id
   );
@@ -20,27 +19,13 @@ const Home: NextPage = () => {
     (meetings) => meetings.createdBy !== "timoschmidt" // TODO: Replace timoschmidt with current user id
   );
 
-  const router = useRouter();
-
   return (
     <ViewBuilder
       header={{
-        title: "Meetings",
-        buttons: [
-          {
-            id: "HEADER_BTN_QR",
-            icon: <MdQrCodeScanner className="w-6 h-6" />,
-            href: "",
-          },
-          {
-            id: "HEADER_BTN_NEWMEETING",
-            icon: <MdOutlineAdd className="w-8 h-8" />,
-            href: "",
-          },
-        ],
+        title: "Meeting Reports",
       }}
       nav={{
-        activeItemId: NAVIGATION_IDS.meetings,
+        activeItemId: NAVIGATION_IDS.reports,
         onSelect: (id) => console.log(`Nav item ${id} was clicked`),
       }}
     >
@@ -64,4 +49,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Reports;

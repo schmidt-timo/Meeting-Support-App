@@ -1,5 +1,3 @@
-import React from "react";
-
 export type MeetingAgendaItem = {
   title: string;
   description?: string;
@@ -13,9 +11,9 @@ export type MeetingParticipant = {
 
 export type Meeting = {
   id: string; // meeting ID
-  createdBy: string; // user ID
-  // passcode: string
   name: string;
+  createdBy: string; // user ID
+  completed: boolean;
   startDate: Date;
   endDate: Date;
   location?: string;

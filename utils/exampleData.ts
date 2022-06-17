@@ -3,6 +3,7 @@ import { Meeting } from "./types";
 export const exampleMeetings: Meeting[] = [
   {
     id: "example-meeting-1",
+    completed: true,
     createdBy: "timoschmidt",
     name: "Team Meeting",
     startDate: new Date("June 1, 2022, 09:00:00"),
@@ -33,6 +34,7 @@ export const exampleMeetings: Meeting[] = [
   },
   {
     id: "example-meeting-2",
+    completed: false,
     createdBy: "timoschmidt",
     name: "Creative Meeting (Project XYZ)",
     startDate: new Date("June 2, 2022, 12:00:00"),
@@ -48,6 +50,7 @@ export const exampleMeetings: Meeting[] = [
   },
   {
     id: "example-meeting-3",
+    completed: true,
     createdBy: "maxmustermann",
     name: "Weekly",
     startDate: new Date("June 3, 2022, 09:00:00"),
@@ -62,10 +65,11 @@ export const exampleMeetings: Meeting[] = [
   },
   {
     id: "example-meeting-4",
+    completed: false,
     createdBy: "johndoe",
     name: "Team Meeting",
-    startDate: new Date("June 4, 2022, 10:00:00"),
-    endDate: new Date("June 4, 2022, 11:30:00"),
+    startDate: new Date("June 20, 2022, 10:00:00"),
+    endDate: new Date("June 20, 2022, 11:30:00"),
     agenda: [
       {
         title: "1. Tagespunkt",

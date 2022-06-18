@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../../components/formElements/Button";
 import Input from "../../components/formElements/Input";
@@ -20,6 +21,7 @@ type Inputs = {
 };
 
 const CreateMeeting: NextPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -67,8 +69,12 @@ const CreateMeeting: NextPage = () => {
             <Label>Short description</Label>
             <Textarea text="Meeting description" />
           </LabelInputWrapper>
-          <Button>Manage agenda</Button>
-          <Button>Manage participants</Button>
+          <Button onClick={() => router.push("/meeting/manageAgenda")}>
+            Manage agenda
+          </Button>
+          <Button onClick={() => router.push("/meeting/manageParticipants")}>
+            Manage participants
+          </Button>
         </div>
         <div>
           <button

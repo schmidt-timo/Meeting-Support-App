@@ -1,4 +1,4 @@
-import { Meeting } from "./types";
+import { Meeting, MeetingAgendaItem } from "./types";
 
 export const exampleMeetings: Meeting[] = [
   {
@@ -11,11 +11,13 @@ export const exampleMeetings: Meeting[] = [
     location: "Conference Room A",
     agenda: [
       {
+        id: "MEETING1_AGENDA_ITEM_01",
         title: "1. Tagespunkt",
         description: "Beschreibung für den ersten Tagespunkt",
         duration: 15,
       },
       {
+        id: "MEETING1_AGENDA_ITEM_02",
         title: "2. Tagespunkt",
         description: "Beschreibung für den zweiten Tagespunkt",
         duration: 30,
@@ -72,11 +74,13 @@ export const exampleMeetings: Meeting[] = [
     endDate: new Date("June 20, 2022, 11:30:00"),
     agenda: [
       {
+        id: "MEETING2_AGENDA_ITEM_01",
         title: "1. Tagespunkt",
         description: "Beschreibung für den ersten Tagespunkt",
         duration: 15,
       },
       {
+        id: "MEETING2_AGENDA_ITEM_02",
         title: "2. Tagespunkt",
         description: "Beschreibung für den zweiten Tagespunkt",
         duration: 30,
@@ -97,5 +101,29 @@ export const exampleMeetings: Meeting[] = [
       },
     ],
     location: "Conference Room B",
+  },
+];
+
+export const exampleAgendaItems: MeetingAgendaItem[] = [
+  {
+    id: "AGENDA_ITEM_01",
+    title: "First agenda item",
+    description:
+      "Here is a description for the first item. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam.",
+    duration: 15,
+  },
+  {
+    id: "AGENDA_ITEM_02",
+    title: "Second agenda item",
+    description:
+      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.",
+    duration: 30,
+  },
+  {
+    id: "AGENDA_ITEM_03",
+    title: "Third agenda item",
+    description:
+      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam.",
+    duration: 25,
   },
 ];

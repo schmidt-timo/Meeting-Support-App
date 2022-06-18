@@ -1,4 +1,5 @@
 export type MeetingAgendaItem = {
+  id: string;
   title: string;
   description?: string;
   duration?: number;

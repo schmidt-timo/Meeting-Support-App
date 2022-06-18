@@ -30,7 +30,7 @@ const Header = ({ children, buttons, showBackArrow: backArrow }: Props) => {
             <button
               className="rounded-full w-11 h-11 bg-gray-300 hover:bg-gray-400 flex items-center justify-center"
               key={button.id}
-              //   onClick={() => button.href}
+              onClick={() => router.push(button.href)}
             >
               {button.icon}
             </button>

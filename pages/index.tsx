@@ -36,7 +36,7 @@ const Home: NextPage = () => {
           {
             id: "HEADER_BTN_NEWMEETING",
             icon: <MdOutlineAdd className="w-8 h-8" />,
-            href: "",
+            href: "/meeting/createMeeting",
           },
         ],
       }}

@@ -41,7 +41,7 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
 
   return (
     <div
-      className="w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10"
+      className="fixed bottom-0 w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10"
       onClick={() => onSelect(activeItem)}
     >
       <NavItem

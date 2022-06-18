@@ -20,16 +20,25 @@ const ViewBuilder = ({ header, children, nav }: Props) => {
   const [activeNavItem, setActiveNavItem] = React.useState(nav.activeItemId);
 
   return (
-    <div className="flex flex-col" style={{ height: "100vh" }}>
+    <>
       <Header buttons={header.buttons} showBackArrow={header.showArrows}>
         {header.title}
       </Header>
-      <div className="flex-1 overflow-y-scroll pb-3 min-h-300">{children}</div>
+
+      <div
+        className="overflow-y-scroll min-h-300"
+        style={{
+          paddingBottom: "calc(64px + 0.8rem)",
+          paddingTop: "64px",
+        }}
+      >
+        {children}
+      </div>
       <MobileNavigation
         activeItemId={activeNavItem}
         onSelect={(selectedItemId) => setActiveNavItem(selectedItemId)}
       />
-    </div>
+    </>
   );
 };
 

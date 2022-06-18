@@ -9,10 +9,10 @@ type Props = {
     showArrows?: boolean;
     buttons?: HeaderButton[];
   };
-  children: React.ReactNode;
+  children?: React.ReactNode;
   nav: {
     activeItemId: string;
-    onSelect: (id: string) => void;
+    onSelect?: (id: string) => void;
   };
 };
 

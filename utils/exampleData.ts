@@ -1,4 +1,4 @@
-import { Meeting, MeetingAgendaItem } from "./types";
+import { Meeting, MeetingAgendaItem, MeetingParticipant } from "./types";
 
 export const exampleMeetings: Meeting[] = [
   {
@@ -25,11 +25,15 @@ export const exampleMeetings: Meeting[] = [
     ],
     participants: [
       {
-        name: "Max Mustermann",
+        id: "PARTICIPANT_1",
+        firstName: "Max",
+        lastName: "Mustermann",
         email: "maxmustermann@email.com",
       },
       {
-        name: "Erika Mustermann",
+        id: "PARTICIPANT_2",
+        firstName: "Erika",
+        lastName: "Mustermann",
         email: "erikamustermann@email.com",
       },
     ],
@@ -44,7 +48,9 @@ export const exampleMeetings: Meeting[] = [
     agenda: [],
     participants: [
       {
-        name: "Max Mustermann",
+        id: "PARTICIPANT_1",
+        firstName: "Max",
+        lastName: "Mustermann",
         email: "maxmustermann@email.com",
       },
     ],
@@ -60,7 +66,9 @@ export const exampleMeetings: Meeting[] = [
     agenda: [],
     participants: [
       {
-        name: "Max Mustermann",
+        id: "PARTICIPANT_1",
+        firstName: "Max",
+        lastName: "Mustermann",
         email: "maxmustermann@email.com",
       },
     ],
@@ -88,16 +96,22 @@ export const exampleMeetings: Meeting[] = [
     ],
     participants: [
       {
-        name: "John Doe",
-        email: "johndoe@email.com",
-      },
-      {
-        name: "Max Mustermann",
+        id: "PARTICIPANT_1",
+        firstName: "Max",
+        lastName: "Mustermann",
         email: "maxmustermann@email.com",
       },
       {
-        name: "Erika Mustermann",
+        id: "PARTICIPANT_2",
+        firstName: "Erika",
+        lastName: "Mustermann",
         email: "erikamustermann@email.com",
+      },
+      {
+        id: "PARTICIPANT_3",
+        firstName: "John",
+        lastName: "Doe",
+        email: "johndoe@email.com",
       },
     ],
     location: "Conference Room B",
@@ -107,23 +121,44 @@ export const exampleMeetings: Meeting[] = [
 export const exampleAgendaItems: MeetingAgendaItem[] = [
   {
     id: "AGENDA_ITEM_01",
-    title: "First agenda item",
+    title: "1. First agenda item",
     description:
       "Here is a description for the first item. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam.",
     duration: 15,
   },
   {
     id: "AGENDA_ITEM_02",
-    title: "Second agenda item",
+    title: "2. Second agenda item",
     description:
       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.",
     duration: 30,
   },
   {
     id: "AGENDA_ITEM_03",
-    title: "Third agenda item",
+    title: "3. Third agenda item",
     description:
       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam.",
     duration: 25,
+  },
+];
+
+export const exampleParticipants: MeetingParticipant[] = [
+  {
+    id: "PARTICIPANT_1",
+    firstName: "Max",
+    lastName: "Mustermann",
+    email: "maxmustermann@email.com",
+  },
+  {
+    id: "PARTICIPANT_2",
+    firstName: "Erika",
+    lastName: "Mustermann",
+    email: "erikamustermann@email.com",
+  },
+  {
+    id: "PARTICIPANT_3",
+    firstName: "John",
+    lastName: "Doe",
+    email: "johndoe@email.com",
   },
 ];

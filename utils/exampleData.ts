@@ -26,14 +26,12 @@ export const exampleMeetings: Meeting[] = [
     participants: [
       {
         id: "PARTICIPANT_1",
-        firstName: "Max",
-        lastName: "Mustermann",
+        name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
       {
         id: "PARTICIPANT_2",
-        firstName: "Erika",
-        lastName: "Mustermann",
+        name: "Erika Mustermann",
         email: "erikamustermann@email.com",
       },
     ],
@@ -49,8 +47,7 @@ export const exampleMeetings: Meeting[] = [
     participants: [
       {
         id: "PARTICIPANT_1",
-        firstName: "Max",
-        lastName: "Mustermann",
+        name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
     ],
@@ -67,8 +64,7 @@ export const exampleMeetings: Meeting[] = [
     participants: [
       {
         id: "PARTICIPANT_1",
-        firstName: "Max",
-        lastName: "Mustermann",
+        name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
     ],
@@ -97,20 +93,17 @@ export const exampleMeetings: Meeting[] = [
     participants: [
       {
         id: "PARTICIPANT_1",
-        firstName: "Max",
-        lastName: "Mustermann",
+        name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
       {
         id: "PARTICIPANT_2",
-        firstName: "Erika",
-        lastName: "Mustermann",
+        name: "Erika Mustermann",
         email: "erikamustermann@email.com",
       },
       {
         id: "PARTICIPANT_3",
-        firstName: "John",
-        lastName: "Doe",
+        name: "John Doe",
         email: "johndoe@email.com",
       },
     ],
@@ -145,20 +138,17 @@ export const exampleAgendaItems: MeetingAgendaItem[] = [
 export const exampleParticipants: MeetingParticipant[] = [
   {
     id: "PARTICIPANT_1",
-    firstName: "Max",
-    lastName: "Mustermann",
+    name: "Max Mustermann",
     email: "maxmustermann@email.com",
   },
   {
     id: "PARTICIPANT_2",
-    firstName: "Erika",
-    lastName: "Mustermann",
+    name: "Erika Mustermann",
     email: "erikamustermann@email.com",
   },
   {
     id: "PARTICIPANT_3",
-    firstName: "John",
-    lastName: "Doe",
+    name: "John Doe",
     email: "johndoe@email.com",
   },
 ];

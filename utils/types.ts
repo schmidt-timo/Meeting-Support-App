@@ -1,5 +1,3 @@
-import { StringifyOptions } from "querystring";
-
 export type MeetingAgendaItem = {
   id: string;
   title: string;
@@ -9,8 +7,7 @@ export type MeetingAgendaItem = {
 
 export type MeetingParticipant = {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
 };
 

@@ -55,7 +55,3 @@ export function formatParticipantsText(participants: MeetingParticipant[]) {
     ? `${participants.length} Participant`
     : `${participants.length} Participants`;
 }
-
-export function formatParticipantName(firstName: string, lastName: string) {
-  return `${firstName} ${lastName}`;
-}

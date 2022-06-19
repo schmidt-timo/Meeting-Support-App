@@ -1,16 +1,13 @@
 import React from "react";
 
-type Props = {
-  placeholder?: string;
-  type?: string;
-};
+type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = React.forwardRef(({ placeholder, type }: Props, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   return (
     <input
-      type={type}
-      placeholder={placeholder}
       className="w-full rounded-xl bg-white px-3 py-2 border border-gray-300 outline-0 h-input safari-fix"
+      ref={ref}
+      {...props}
     />
   );
 });

@@ -84,7 +84,7 @@ const CreateMeeting: NextPage = () => {
           </LabelInputWrapper>
           <LabelInputWrapper>
             <Label>Short description</Label>
-            <Textarea text="Meeting description" />
+            <Textarea placeholder="Meeting description" />
           </LabelInputWrapper>
           <Button onClick={() => router.push("/meeting/manageAgenda")}>
             Manage agenda

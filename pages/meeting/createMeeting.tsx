@@ -10,10 +10,10 @@ import SubviewBuilder from "../../components/SubviewBuilder/SubviewBuilder";
 
 type Inputs = {
   meetingTitle: string;
-  meetingStartDate: Date;
-  meetingEndDate: Date;
-  meetingStartTime: Date;
-  meetingEndTime: Date;
+  meetingStartDate: string;
+  meetingEndDate: string;
+  meetingStartTime: string;
+  meetingEndTime: string;
   meetingLocation: string;
   meetingDescription: string;
   meetingAgenda: [];
@@ -29,6 +29,7 @@ const CreateMeeting: NextPage = () => {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { meetingStartDate } = watch();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -36,26 +37,42 @@ const CreateMeeting: NextPage = () => {
         <div className="space-y-3 pb-3">
           <LabelInputWrapper>
             <Label mandatory>Meeting title</Label>
-            <Input placeholder="Meeting title" {...register("meetingTitle")} />
+            <Input
+              placeholder="Meeting title"
+              {...(register("meetingTitle"), { required: true })}
+            />
           </LabelInputWrapper>
           <LabelInputWrapper sideBySide>
             <span className="w-full space-y-1">
               <Label mandatory>Start Date</Label>
-              <Input type="date" {...register("meetingStartDate")} />
+              <Input
+                type="date"
+                {...(register("meetingStartDate"), { required: true })}
+              />
             </span>
             <span className="w-full space-y-1">
               <Label mandatory>Start time</Label>
-              <Input type="time" {...register("meetingStartTime")} />
+              <Input
+                type="time"
+                {...(register("meetingStartTime"), { required: true })}
+              />
             </span>
           </LabelInputWrapper>
           <LabelInputWrapper sideBySide>
             <span className="w-full space-y-1">
               <Label mandatory>End Date</Label>
-              <Input type="date" {...register("meetingEndDate")} />
+              <Input
+                type="date"
+                defaultValue={meetingStartDate}
+                {...(register("meetingEndDate"), { required: true })}
+              />
             </span>
             <span className="w-full space-y-1">
               <Label mandatory>End time</Label>
-              <Input type="time" {...register("meetingEndTime")} />
+              <Input
+                type="time"
+                {...(register("meetingEndTime"), { required: true })}
+              />
             </span>
           </LabelInputWrapper>
           <LabelInputWrapper>

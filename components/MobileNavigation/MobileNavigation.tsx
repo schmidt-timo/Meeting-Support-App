@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
 import {
-  MdOutlineMeetingRoom,
-  MdMeetingRoom,
+  MdAccessTime,
+  MdAccessTimeFilled,
   MdInsertChartOutlined,
   MdInsertChart,
   MdPersonOutline,
@@ -53,9 +53,9 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         }}
       >
         {activeItem === NAVIGATION_IDS.meetings ? (
-          <MdMeetingRoom className="w-5 h-5 text-black" />
+          <MdAccessTimeFilled className="w-5 h-5 text-black" />
         ) : (
-          <MdOutlineMeetingRoom className="w-5 h-5 text-gray-500" />
+          <MdAccessTime className="w-5 h-5 text-gray-500" />
         )}
         <p>Meetings</p>
       </NavItem>

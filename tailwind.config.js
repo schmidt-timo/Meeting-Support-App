@@ -25,6 +25,15 @@ module.exports = {
       fontSize: {
         extrasmall: "0.7rem",
       },
+      colors: {
+        ocean: {
+          DEFAULT: "#014ecb",
+          100: "#dbe7f6",
+          200: "#a8c5ee",
+          300: "#79a7e4",
+          400: "#1262d1",
+        },
+      },
     },
   },
   plugins: [],

@@ -21,7 +21,7 @@ const NavItem = ({ id, active, children, onSelect }: NavItemProps) => {
   return (
     <button
       className={`w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg text-xs ${
-        active ? "font-medium text-black" : "text-gray-500"
+        active ? "font-medium text-ocean" : "text-ocean-300"
       }`}
       onClick={() => onSelect(id)}
     >
@@ -41,7 +41,7 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
 
   return (
     <div
-      className="fixed bottom-0 w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10"
+      className="fixed bottom-0 w-full bg-ocean-100 flex justify-between drop-shadow sm:justify-center z-10"
       onClick={() => onSelect(activeItem)}
     >
       <NavItem
@@ -53,9 +53,9 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         }}
       >
         {activeItem === NAVIGATION_IDS.meetings ? (
-          <MdAccessTimeFilled className="w-5 h-5 text-black" />
+          <MdAccessTimeFilled className="w-5 h-5 text-ocean" />
         ) : (
-          <MdAccessTime className="w-5 h-5 text-gray-500" />
+          <MdAccessTime className="w-5 h-5 text-ocean-300" />
         )}
         <p>Meetings</p>
       </NavItem>
@@ -68,9 +68,9 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         }}
       >
         {activeItem === NAVIGATION_IDS.reports ? (
-          <MdInsertChart className="w-5 h-5 text-black" />
+          <MdInsertChart className="w-5 h-5 text-ocean" />
         ) : (
-          <MdInsertChartOutlined className="w-5 h-5 text-gray-500" />
+          <MdInsertChartOutlined className="w-5 h-5 text-ocean-300" />
         )}
         <p>Meeting Reports</p>
       </NavItem>
@@ -83,9 +83,9 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
         }}
       >
         {activeItem === NAVIGATION_IDS.profile ? (
-          <MdPerson className="w-5 h-5 text-black" />
+          <MdPerson className="w-5 h-5 text-ocean" />
         ) : (
-          <MdPersonOutline className="w-5 h-5 text-gray-500" />
+          <MdPersonOutline className="w-5 h-5 text-ocean-300" />
         )}
         <p>Profile</p>
       </NavItem>

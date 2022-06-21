@@ -83,7 +83,7 @@ const MeetingInfoBox = ({ meeting }: Props) => {
         </button>
       )}
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
-        {meeting.name}
+        {meeting.title}
       </p>
       <InfoLine symbol="DATE">{formatMeetingDate(meeting.startDate)}</InfoLine>
       <InfoLine symbol="TIME">

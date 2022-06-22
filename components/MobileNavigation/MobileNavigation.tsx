@@ -32,25 +32,19 @@ const NavItem = ({ id, active, children, onSelect }: NavItemProps) => {
 
 type Props = {
   activeItemId: string;
-  onSelect: (id: string) => void;
+  onClick: (id: string) => void;
 };
 
-const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
+const MobileNavigation = ({ activeItemId, onClick }: Props) => {
   const router = useRouter();
   const [activeItem, setActiveItem] = React.useState<string>(activeItemId);
 
   return (
-    <div
-      className="fixed bottom-0 w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10"
-      onClick={() => onSelect(activeItem)}
-    >
+    <div className="fixed bottom-0 w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10">
       <NavItem
         active={activeItem === NAVIGATION_IDS.meetings}
         id={NAVIGATION_IDS.meetings}
-        onSelect={(id) => {
-          router.push("/");
-          setActiveItem(id);
-        }}
+        onSelect={(id) => onClick(id)}
       >
         {activeItem === NAVIGATION_IDS.meetings ? (
           <MdAccessTimeFilled className="w-5 h-5 text-black" />
@@ -62,10 +56,7 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
       <NavItem
         active={activeItem === NAVIGATION_IDS.reports}
         id={NAVIGATION_IDS.reports}
-        onSelect={(id) => {
-          router.push("/reports");
-          setActiveItem(id);
-        }}
+        onSelect={(id) => onClick(id)}
       >
         {activeItem === NAVIGATION_IDS.reports ? (
           <MdInsertChart className="w-5 h-5 text-black" />
@@ -77,10 +68,7 @@ const MobileNavigation = ({ activeItemId, onSelect }: Props) => {
       <NavItem
         active={activeItem === NAVIGATION_IDS.profile}
         id={NAVIGATION_IDS.profile}
-        onSelect={(id) => {
-          router.push("/profile");
-          setActiveItem(id);
-        }}
+        onSelect={(id) => onClick(id)}
       >
         {activeItem === NAVIGATION_IDS.profile ? (
           <MdPerson className="w-5 h-5 text-black" />

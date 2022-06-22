@@ -1,11 +1,11 @@
-import { Meeting } from "./types";
+import { Meeting, User } from "./types";
 
 export const exampleMeetings: Meeting[] = [
   {
     id: "example-meeting-1",
     completed: true,
     createdBy: "timoschmidt",
-    name: "Team Meeting",
+    title: "Team Meeting",
     startDate: new Date("June 1, 2022, 09:00:00"),
     endDate: new Date("June 1, 2022, 10:30:00"),
     location: "Conference Room A",
@@ -36,7 +36,7 @@ export const exampleMeetings: Meeting[] = [
     id: "example-meeting-2",
     completed: false,
     createdBy: "timoschmidt",
-    name: "Creative Meeting (Project XYZ)",
+    title: "Creative Meeting (Project XYZ)",
     startDate: new Date("June 2, 2022, 12:00:00"),
     endDate: new Date("June 2, 2022, 14:00:00"),
     agenda: [],
@@ -52,7 +52,7 @@ export const exampleMeetings: Meeting[] = [
     id: "example-meeting-3",
     completed: true,
     createdBy: "maxmustermann",
-    name: "Weekly",
+    title: "Weekly",
     startDate: new Date("June 3, 2022, 09:00:00"),
     endDate: new Date("June 3, 2022, 09:30:00"),
     agenda: [],
@@ -67,7 +67,7 @@ export const exampleMeetings: Meeting[] = [
     id: "example-meeting-4",
     completed: false,
     createdBy: "johndoe",
-    name: "Team Meeting",
+    title: "Team Meeting",
     startDate: new Date("June 20, 2022, 10:00:00"),
     endDate: new Date("June 20, 2022, 11:30:00"),
     agenda: [
@@ -99,3 +99,10 @@ export const exampleMeetings: Meeting[] = [
     location: "Conference Room B",
   },
 ];
+
+export const exampleUser: User = {
+  id: "timoschmidt",
+  name: "Timo Schmidt",
+  email: "email@address.com",
+  knownParticipants: [],
+};

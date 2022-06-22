@@ -1,3 +1,5 @@
+import React from "react";
+
 export type MeetingAgendaItem = {
   title: string;
   description?: string;
@@ -5,24 +7,31 @@ export type MeetingAgendaItem = {
 };
 
 export type MeetingParticipant = {
-  name: string;
+  name?: string;
   email: string;
 };
 
 export type Meeting = {
-  id: string; // meeting ID
-  name: string;
-  createdBy: string; // user ID
-  completed: boolean;
+  id: string;
+  title: string;
   startDate: Date;
   endDate: Date;
   location?: string;
   agenda?: MeetingAgendaItem[];
   participants?: MeetingParticipant[];
+  createdBy: string;
+  completed: boolean;
 };
 
 export type HeaderButton = {
   id: string;
   icon: React.ReactNode;
-  href: string;
+  onClick: () => void;
+};
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  knownParticipants: MeetingParticipant[];
 };

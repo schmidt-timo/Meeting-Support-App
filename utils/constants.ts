@@ -3,3 +3,8 @@ export const NAVIGATION_IDS = {
   reports: "NAV_REPORTS",
   profile: "NAV_PROFILE",
 };
+
+export const MEETING_CATEGORY_LABELS = {
+  yourMeetings: "Created by you",
+  otherMeetings: "Other meetings",
+};

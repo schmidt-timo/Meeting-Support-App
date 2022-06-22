@@ -3,6 +3,22 @@ import React from "react";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { HeaderButton } from "../../utils/types";
 
+type HeaderButtonProps = {
+  children: React.ReactNode;
+  onClick: () => void;
+};
+
+const HeaderButton = ({ children, onClick }: HeaderButtonProps) => {
+  return (
+    <button
+      className="rounded-full w-11 h-11 bg-gray-300 hover:bg-gray-400 flex items-center justify-center"
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
+
 type Props = {
   children: React.ReactNode;
   showBackArrow?: boolean;
@@ -27,13 +43,9 @@ const Header = ({ children, buttons, showBackArrow: backArrow }: Props) => {
         <h1 className="p-3 font-bold text-2xl">{children}</h1>
         <span className="flex space-x-2">
           {buttons?.map((button) => (
-            <button
-              className="rounded-full w-11 h-11 bg-gray-300 hover:bg-gray-400 flex items-center justify-center"
-              key={button.id}
-              //   onClick={() => button.href}
-            >
+            <HeaderButton key={button.id} onClick={() => button.onClick()}>
               {button.icon}
-            </button>
+            </HeaderButton>
           ))}
         </span>
       </span>

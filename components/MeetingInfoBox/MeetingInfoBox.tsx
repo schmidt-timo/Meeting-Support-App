@@ -83,7 +83,7 @@ const MeetingInfoBox = ({ meeting }: Props) => {
         </button>
       )}
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
-        {meeting.name}
+        {meeting.title}
       </p>
       <InfoLine symbol="DATE">{formatMeetingDate(meeting.startDate)}</InfoLine>
       <InfoLine symbol="TIME">
@@ -114,12 +114,12 @@ const MeetingInfoBox = ({ meeting }: Props) => {
         {/* // TODO: Replace timoschmidt with current user id */}
         {!meeting.completed && meeting.createdBy !== "timoschmidt" && (
           <MeetingInfoBoxButton symbol="WATCH">
-            Show details
+            View details
           </MeetingInfoBoxButton>
         )}
         {meeting.completed && (
           <MeetingInfoBoxButton symbol="WATCH">
-            Show report
+            View report
           </MeetingInfoBoxButton>
         )}
         {!meeting.completed && meeting.participants && (

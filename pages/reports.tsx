@@ -1,14 +1,14 @@
 import type { NextPage } from "next";
 import { exampleMeetings } from "../utils/exampleData";
 import MeetingReportsPage from "../components/views/MeetingReportsPage";
-import { filterPendingMeetings } from "../utils/filtering";
+import { filterCompletedMeetings } from "../utils/filtering";
 
 // TODO: REPLACE: Get userId and load meetings
 const meetings = exampleMeetings;
 const userId = "timoschmidt";
 
 const Reports: NextPage = () => {
-  const filteredMeetings = filterPendingMeetings(meetings);
+  const filteredMeetings = filterCompletedMeetings(meetings);
 
   return <MeetingReportsPage userId={userId} meetings={filteredMeetings} />;
 };

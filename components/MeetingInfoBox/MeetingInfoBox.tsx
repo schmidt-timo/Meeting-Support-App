@@ -114,12 +114,12 @@ const MeetingInfoBox = ({ meeting }: Props) => {
         {/* // TODO: Replace timoschmidt with current user id */}
         {!meeting.completed && meeting.createdBy !== "timoschmidt" && (
           <MeetingInfoBoxButton symbol="WATCH">
-            Show details
+            View details
           </MeetingInfoBoxButton>
         )}
         {meeting.completed && (
           <MeetingInfoBoxButton symbol="WATCH">
-            Show report
+            View report
           </MeetingInfoBoxButton>
         )}
         {!meeting.completed && meeting.participants && (

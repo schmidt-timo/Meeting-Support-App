@@ -1,13 +1,15 @@
 import type { NextPage } from "next";
 import { exampleMeetings } from "../utils/exampleData";
-import MeetingOverviewPage from "../components/views/MeetingOverviewPage";
 import { filterPendingMeetings } from "../utils/filtering";
+import { useRouter } from "next/router";
+import MeetingOverviewPage from "../components/views/MeetingOverviewPage";
 
 // TODO: REPLACE: Get userId and load meetings
 const meetings = exampleMeetings;
 const userId = "timoschmidt";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const filteredMeetings = filterPendingMeetings(meetings);
 
   return (
@@ -17,9 +19,7 @@ const Home: NextPage = () => {
       onAddMeeting={
         () => {} // TODO: Add onClick
       }
-      onCreateMeeting={
-        () => {} // TODO: Add onClick
-      }
+      onCreateMeeting={() => router.push("/newMeeting")}
     />
   );
 };

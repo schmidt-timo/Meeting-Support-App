@@ -29,6 +29,7 @@ const NewMeeting: NextPage = () => {
       {currentView === "CREATE_MEETING" && (
         <NewMeetingPage
           meetingData={meetingData}
+          buttonText="Next"
           onNext={(data) => {
             setMeetingData(data);
             setCurrentView("MANAGE_AGENDA");
@@ -73,6 +74,7 @@ const NewMeeting: NextPage = () => {
                 }`
               ),
               location: meetingData?.meetingLocation,
+              description: meetingData?.meetingDescription,
               createdBy: currentUserId,
               completed: false,
               agenda: agendaItems,

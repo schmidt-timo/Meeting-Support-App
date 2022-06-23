@@ -1,12 +1,14 @@
 import React from "react";
 
 export type MeetingAgendaItem = {
+  id: string;
   title: string;
   description?: string;
   duration?: number;
 };
 
 export type MeetingParticipant = {
+  id: string;
   name?: string;
   email: string;
 };

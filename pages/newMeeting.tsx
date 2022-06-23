@@ -8,20 +8,20 @@ import ManageAgenda from "../components/views/ManageAgenda";
 import { Meeting, MeetingAgendaItem, MeetingParticipant } from "../utils/types";
 import ManageParticipants from "../components/views/ManageParticipants";
 import { exampleParticipant } from "../utils/exampleData";
-import { v4 as uuid } from "uuid";
+import { generateMeetingId } from "../utils/functions";
 
 type Views = "CREATE_MEETING" | "MANAGE_AGENDA" | "MANAGE_PARTICIPANTS";
 
 const NewMeeting: NextPage = () => {
+  const currentUserId = "timoschmidt"; //TODO: Get current user id
   const router = useRouter();
   const [currentView, setCurrentView] = useState<Views>("CREATE_MEETING");
   const [meetingData, setMeetingData] = useState<NewMeetingInputs>();
   const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>([]);
   const [participants, setParticipants] = useState<MeetingParticipant[]>([]);
 
-  // TODO: Delete
   useEffect(() => {
-    setParticipants([...participants, exampleParticipant]);
+    setParticipants([...participants, exampleParticipant]); // TODO: add current registered user automatically to participants list
   }, []);
 
   return (
@@ -60,7 +60,7 @@ const NewMeeting: NextPage = () => {
           onCreate={(participants) => {
             setParticipants(participants);
             const meeting: Meeting = {
-              id: uuid(),
+              id: generateMeetingId(),
               title: meetingData!!.meetingTitle,
               startDate: new Date(
                 `${meetingData!!.meetingStartDate}T${
@@ -73,11 +73,13 @@ const NewMeeting: NextPage = () => {
                 }`
               ),
               location: meetingData?.meetingLocation,
-              createdBy: "timoschmidt", // TODO: User ID
+              createdBy: currentUserId,
               completed: false,
+              agenda: agendaItems,
+              participants: participants,
             };
             console.log(meeting);
-            // TODO: Add meeting
+            // TODO: Add meeting and go back to overview page
           }}
           onClose={() => router.push("/")}
         />

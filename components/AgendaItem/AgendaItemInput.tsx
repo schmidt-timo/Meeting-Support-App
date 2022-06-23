@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { MdCheck, MdClose } from "react-icons/md";
-import { v4 as uuid } from "uuid";
+import { generateAgendaItemId } from "../../utils/functions";
 import { MeetingAgendaItem } from "../../utils/types";
 
 type AgendaInputs = {
@@ -24,7 +24,7 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
   } = useForm<AgendaInputs>();
   const onSubmit = (data: AgendaInputs) => {
     const item: MeetingAgendaItem = {
-      id: agendaItem?.id ?? uuid(),
+      id: agendaItem?.id ?? generateAgendaItemId(),
       title: data.agendaItemTitle,
       duration: data.agendaItemDuration,
       description: data.agendaItemDescription,

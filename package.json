@@ -14,7 +14,7 @@
     "react-dom": "18.1.0",
     "react-hook-form": "^7.32.2",
     "react-icons": "^4.4.0",
-    "uuidv4": "^6.2.13"
+    "uniqid": "^5.4.0"
   },
   "devDependencies": {
     "@types/node": "17.0.42",

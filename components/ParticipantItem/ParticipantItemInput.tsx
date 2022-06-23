@@ -4,8 +4,8 @@ import Button from "../formElements/Button";
 import Input from "../formElements/Input";
 import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import { v4 as uuid } from "uuid";
 import { validateEmailRegex } from "../../utils/regex";
+import { generateParticipantId } from "../../utils/functions";
 
 type ParticipantInputs = {
   participantEmail: string;
@@ -24,7 +24,7 @@ const ParticipantItemInput = ({ onAdd }: Props) => {
   } = useForm<ParticipantInputs>();
   const onSubmit = (data: ParticipantInputs) => {
     const participant: MeetingParticipant = {
-      id: uuid(),
+      id: generateParticipantId(),
       email: data.participantEmail,
     };
     onAdd(participant);

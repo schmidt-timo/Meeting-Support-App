@@ -19,11 +19,17 @@ export type NewMeetingInputs = {
 
 type Props = {
   meetingData?: NewMeetingInputs;
+  buttonText: string;
   onNext: (meetingData: NewMeetingInputs) => void;
   onClose: () => void;
 };
 
-const NewMeetingPage = ({ meetingData, onNext, onClose }: Props) => {
+const NewMeetingPage = ({
+  meetingData,
+  buttonText,
+  onNext,
+  onClose,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -107,7 +113,7 @@ const NewMeetingPage = ({ meetingData, onNext, onClose }: Props) => {
         </div>
         <div>
           <Button highlighted type="submit">
-            Next
+            {buttonText}
           </Button>
         </div>
       </SubviewBuilder>

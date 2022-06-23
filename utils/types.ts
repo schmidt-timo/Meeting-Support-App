@@ -15,13 +15,13 @@ export type MeetingParticipant = {
 
 export type Meeting = {
   id: string;
+  createdBy: string;
   title: string;
   startDate: Date;
   endDate: Date;
   location?: string;
   agenda?: MeetingAgendaItem[];
   participants?: MeetingParticipant[];
-  createdBy: string;
   completed: boolean;
 };
 

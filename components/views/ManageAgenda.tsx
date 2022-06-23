@@ -5,29 +5,23 @@ import AgendaItemInput from "../AgendaItem/AgendaItemInput";
 import Button from "../formElements/Button";
 import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
 
-type Props = {
+type ManageAgendaContentProps = {
+  buttonText: string;
   agendaItems: MeetingAgendaItem[];
-  onBack: (items: MeetingAgendaItem[]) => void;
   onNext: (items: MeetingAgendaItem[]) => void;
-  onClose: () => void;
 };
 
-const ManageAgenda = ({
+const ManageAgendaContent = ({
   agendaItems: initialItems,
-  onBack,
+  buttonText,
   onNext,
-  onClose,
-}: Props) => {
+}: ManageAgendaContentProps) => {
   const [agendaItems, setAgendaItems] =
     useState<MeetingAgendaItem[]>(initialItems);
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
 
   return (
-    <SubviewBuilder
-      title="Manage agenda"
-      onBack={() => onBack(agendaItems)}
-      onClose={onClose}
-    >
+    <>
       <div className="space-y-3 pb-3">
         {agendaItems?.map((a) => (
           <AgendaItem
@@ -57,9 +51,51 @@ const ManageAgenda = ({
         )}
       </div>
       <Button highlighted onClick={() => onNext(agendaItems)}>
-        Next
+        {buttonText}
       </Button>
-    </SubviewBuilder>
+    </>
+  );
+};
+
+type Props = {
+  agendaItems: MeetingAgendaItem[];
+  onBack?: (items: MeetingAgendaItem[]) => void;
+  buttonText: string;
+  onNext: (items: MeetingAgendaItem[]) => void;
+  onClose: () => void;
+};
+
+const ManageAgenda = ({
+  agendaItems,
+  onBack,
+  buttonText,
+  onNext,
+  onClose,
+}: Props) => {
+  return (
+    <>
+      {onBack ? (
+        <SubviewBuilder
+          title="Manage agenda"
+          onBack={() => onBack(agendaItems)}
+          onClose={onClose}
+        >
+          <ManageAgendaContent
+            agendaItems={agendaItems}
+            buttonText={buttonText}
+            onNext={onNext}
+          />
+        </SubviewBuilder>
+      ) : (
+        <SubviewBuilder title="Manage agenda" onClose={onClose}>
+          <ManageAgendaContent
+            agendaItems={agendaItems}
+            buttonText={buttonText}
+            onNext={onNext}
+          />
+        </SubviewBuilder>
+      )}
+    </>
   );
 };
 

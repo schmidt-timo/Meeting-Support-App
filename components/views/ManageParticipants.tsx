@@ -6,28 +6,22 @@ import ParticipantItemInput from "../ParticipantItem/ParticipantItemInput";
 import ParticipantItem from "../ParticipantItem/ParticipantItem";
 import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
 
-type Props = {
+type ManageParticipantsContentProps = {
   participants: MeetingParticipant[];
-  onBack: (items: MeetingParticipant[]) => void;
+  buttonText: string;
   onCreate: (items: MeetingParticipant[]) => void;
-  onClose: () => void;
 };
 
-const ManageParticipants = ({
+const ManageParticipantsContent = ({
   participants: initialParticipants,
-  onBack,
+  buttonText,
   onCreate,
-  onClose,
-}: Props) => {
+}: ManageParticipantsContentProps) => {
   const [participants, setParticipants] =
     useState<MeetingParticipant[]>(initialParticipants);
 
   return (
-    <SubviewBuilder
-      title="Manage participants"
-      onClose={onClose}
-      onBack={() => onBack(participants)}
-    >
+    <>
       <div className="space-y-5">
         <ParticipantItemInput
           onAdd={(p) => {
@@ -54,9 +48,51 @@ const ManageParticipants = ({
         </div>
       </div>
       <Button highlighted onClick={() => onCreate(participants)}>
-        Create Meeting
+        {buttonText}
       </Button>
-    </SubviewBuilder>
+    </>
+  );
+};
+
+type Props = {
+  participants: MeetingParticipant[];
+  buttonText: string;
+  onBack?: (items: MeetingParticipant[]) => void;
+  onCreate: (items: MeetingParticipant[]) => void;
+  onClose: () => void;
+};
+
+const ManageParticipants = ({
+  participants,
+  onBack,
+  buttonText,
+  onCreate,
+  onClose,
+}: Props) => {
+  return (
+    <>
+      {onBack ? (
+        <SubviewBuilder
+          title="Manage participants"
+          onClose={onClose}
+          onBack={() => onBack(participants)}
+        >
+          <ManageParticipantsContent
+            participants={participants}
+            buttonText={buttonText}
+            onCreate={onCreate}
+          />
+        </SubviewBuilder>
+      ) : (
+        <SubviewBuilder title="Manage participants" onClose={onClose}>
+          <ManageParticipantsContent
+            participants={participants}
+            buttonText={buttonText}
+            onCreate={onCreate}
+          />
+        </SubviewBuilder>
+      )}
+    </>
   );
 };
 

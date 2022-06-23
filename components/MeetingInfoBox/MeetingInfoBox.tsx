@@ -22,6 +22,7 @@ type MeetingInfoBoxButtonProps = {
   color?: "RED" | "GREEN";
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 };
 
 const MeetingInfoBoxButton = ({
@@ -29,6 +30,7 @@ const MeetingInfoBoxButton = ({
   symbol,
   color,
   className,
+  onClick,
 }: MeetingInfoBoxButtonProps) => {
   return (
     <button
@@ -38,6 +40,7 @@ const MeetingInfoBoxButton = ({
       ${symbol && "flex items-center justify-center space-x-1"}
       ${className}
       `}
+      onClick={onClick}
     >
       {symbol === "EDIT" && <MdMode className="w-3.5 h-3.5" />}
       {symbol === "WATCH" && <MdRemoveRedEye className="w-3.5 h-3.5" />}
@@ -70,10 +73,23 @@ const InfoLine = ({ symbol, children }: InfoLineProps) => {
 
 type Props = {
   meeting: Meeting;
+  onEdit?: () => void;
+  onManageAgenda?: () => void;
+  onManageParticipants?: () => void;
+  onViewDetails?: () => void;
+  onViewReport?: () => void;
 };
 
-const MeetingInfoBox = ({ meeting }: Props) => {
+const MeetingInfoBox = ({
+  meeting,
+  onEdit,
+  onManageAgenda,
+  onManageParticipants,
+  onViewDetails,
+  onViewReport,
+}: Props) => {
   const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 1;
+  console.log(meeting);
 
   return (
     <div className="relative p-3 bg-gray-200 rounded-xl">
@@ -97,7 +113,11 @@ const MeetingInfoBox = ({ meeting }: Props) => {
       <div className="mt-3 flex justify-end space-x-2">
         {/* // TODO: Replace timoschmidt with current user id */}
         {!meeting.completed && meeting.createdBy === "timoschmidt" && (
-          <MeetingInfoBoxButton symbol="EDIT" className="min-w-xs">
+          <MeetingInfoBoxButton
+            symbol="EDIT"
+            className="min-w-xs"
+            onClick={onEdit}
+          >
             Edit
           </MeetingInfoBoxButton>
         )}
@@ -107,18 +127,19 @@ const MeetingInfoBox = ({ meeting }: Props) => {
             <MeetingInfoBoxButton
               symbol="AGENDA"
               color={agendaIsAvailable ? "GREEN" : "RED"}
+              onClick={onManageAgenda}
             >
               {formatAgendaText(meeting.agenda)}
             </MeetingInfoBoxButton>
           )}
         {/* // TODO: Replace timoschmidt with current user id */}
         {!meeting.completed && meeting.createdBy !== "timoschmidt" && (
-          <MeetingInfoBoxButton symbol="WATCH">
+          <MeetingInfoBoxButton symbol="WATCH" onClick={onViewDetails}>
             View details
           </MeetingInfoBoxButton>
         )}
         {meeting.completed && (
-          <MeetingInfoBoxButton symbol="WATCH">
+          <MeetingInfoBoxButton symbol="WATCH" onClick={onViewReport}>
             View report
           </MeetingInfoBoxButton>
         )}
@@ -133,6 +154,7 @@ const MeetingInfoBox = ({ meeting }: Props) => {
             <MeetingInfoBoxButton
               symbol="PARTICIPANTS"
               className="hidden mobileSM:inline-flex"
+              onClick={onManageParticipants}
             >
               {formatParticipantsText(meeting.participants)}
             </MeetingInfoBoxButton>

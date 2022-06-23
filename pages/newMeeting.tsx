@@ -44,6 +44,7 @@ const NewMeeting: NextPage = () => {
             setAgendaItems(items);
             setCurrentView("CREATE_MEETING");
           }}
+          buttonText="Next"
           onNext={(items) => {
             setAgendaItems(items);
             setCurrentView("MANAGE_PARTICIPANTS");
@@ -54,6 +55,7 @@ const NewMeeting: NextPage = () => {
       {currentView === "MANAGE_PARTICIPANTS" && (
         <ManageParticipants
           participants={participants}
+          buttonText="Create Meeting"
           onBack={(participants) => {
             setParticipants(participants);
             setCurrentView("MANAGE_AGENDA");

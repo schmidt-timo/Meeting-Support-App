@@ -7,7 +7,7 @@ import LabelInputWrapper from "../formElements/LabelInputWrapper";
 import Textarea from "../formElements/Textarea";
 import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
 
-type NewMeetingInputs = {
+export type NewMeetingInputs = {
   meetingTitle: string;
   meetingStartDate: string;
   meetingEndDate: string;
@@ -18,11 +18,12 @@ type NewMeetingInputs = {
 };
 
 type Props = {
-  onNext: (meeting: Meeting) => void;
+  meetingData?: NewMeetingInputs;
+  onNext: (meetingData: NewMeetingInputs) => void;
   onClose: () => void;
 };
 
-const NewMeetingPage = ({ onNext, onClose }: Props) => {
+const NewMeetingPage = ({ meetingData, onNext, onClose }: Props) => {
   const {
     register,
     handleSubmit,
@@ -30,17 +31,7 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
     formState: { errors },
   } = useForm<NewMeetingInputs>();
   const onSubmit = (data: NewMeetingInputs) => {
-    console.log(data); // TODO: Delete
-    const meeting: Meeting = {
-      id: "string",
-      title: "",
-      startDate: new Date(),
-      endDate: new Date(),
-      location: "string",
-      createdBy: "timoschmidt",
-      completed: false,
-    };
-    onNext(meeting);
+    onNext(data);
   };
   const { meetingStartDate, meetingStartTime } = watch();
 
@@ -50,7 +41,11 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
         <div className="space-y-3 pb-3">
           <LabelInputWrapper>
             <Label mandatory>Meeting title</Label>
-            <Input placeholder="Meeting title" {...register("meetingTitle")} />
+            <Input
+              defaultValue={meetingData?.meetingTitle}
+              placeholder="Meeting title"
+              {...register("meetingTitle")}
+            />
             {errors.meetingTitle && (
               <span className="uppercase text-extrasmall font-medium text-red-500">
                 This field is required!
@@ -60,11 +55,19 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
           <LabelInputWrapper sideBySide>
             <span className="w-full space-y-1">
               <Label mandatory>Start Date</Label>
-              <Input type="date" {...register("meetingStartDate")} />
+              <Input
+                defaultValue={meetingData?.meetingStartDate}
+                type="date"
+                {...register("meetingStartDate")}
+              />
             </span>
             <span className="w-full space-y-1">
               <Label mandatory>Start time</Label>
-              <Input type="time" {...register("meetingStartTime")} />
+              <Input
+                defaultValue={meetingData?.meetingStartTime}
+                type="time"
+                {...register("meetingStartTime")}
+              />
             </span>
           </LabelInputWrapper>
           <LabelInputWrapper sideBySide>
@@ -72,7 +75,7 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
               <Label mandatory>End Date</Label>
               <Input
                 type="date"
-                defaultValue={meetingStartDate}
+                defaultValue={meetingData?.meetingEndTime ?? meetingStartDate}
                 {...register("meetingEndDate")}
               />
             </span>
@@ -80,7 +83,7 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
               <Label mandatory>End time</Label>
               <Input
                 type="time"
-                defaultValue={meetingStartTime}
+                defaultValue={meetingData?.meetingEndTime ?? meetingStartTime}
                 {...register("meetingEndTime")}
               />
             </span>
@@ -88,6 +91,7 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
           <LabelInputWrapper>
             <Label>Meeting location</Label>
             <Input
+              defaultValue={meetingData?.meetingLocation}
               placeholder="e.g. meeting room"
               {...register("meetingLocation")}
             />
@@ -95,6 +99,7 @@ const NewMeetingPage = ({ onNext, onClose }: Props) => {
           <LabelInputWrapper>
             <Label>Short description</Label>
             <Textarea
+              defaultValue={meetingData?.meetingDescription}
               placeholder="Meeting description"
               {...register("meetingDescription")}
             />

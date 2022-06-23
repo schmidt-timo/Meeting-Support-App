@@ -8,12 +8,14 @@ import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
 type Props = {
   agendaItems: MeetingAgendaItem[];
   onBack: (items: MeetingAgendaItem[]) => void;
+  onNext: (items: MeetingAgendaItem[]) => void;
   onClose: () => void;
 };
 
 const ManageAgenda = ({
   agendaItems: initialItems,
   onBack,
+  onNext,
   onClose,
 }: Props) => {
   const [agendaItems, setAgendaItems] =
@@ -54,6 +56,9 @@ const ManageAgenda = ({
           <Button onClick={() => setShowNewItemButton(false)}>Add item</Button>
         )}
       </div>
+      <Button highlighted onClick={() => onNext(agendaItems)}>
+        Next
+      </Button>
     </SubviewBuilder>
   );
 };

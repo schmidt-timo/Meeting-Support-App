@@ -25,3 +25,9 @@ a {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
+  }
+}

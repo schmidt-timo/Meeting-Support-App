@@ -10,7 +10,7 @@ type Props = {
 
 const SubviewBuilder = ({ title, children, onClose, onBack }: Props) => {
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-200 px-6 pb-6">
+    <div className="w-full h-screen flex flex-col bg-gray-200 px-6">
       <div className="flex py-5 justify-between items-center space-x-3">
         {onBack && (
           <button
@@ -28,7 +28,7 @@ const SubviewBuilder = ({ title, children, onClose, onBack }: Props) => {
           <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
         </button>
       </div>
-      <div className="w-full flex flex-col flex-1 justify-between">
+      <div className="w-full flex flex-col flex-1 justify-between pb-6">
         {children}
       </div>
     </div>

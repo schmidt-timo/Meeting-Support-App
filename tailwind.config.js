@@ -17,6 +17,9 @@ module.exports = {
       minHeight: {
         300: "300px",
       },
+      height: {
+        input: "2.5rem",
+      },
       screens: {
         mobileXS: "345px",
         mobileSM: "375px",

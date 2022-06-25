@@ -1,5 +1,6 @@
 import { NAVIGATION_IDS } from "../../utils/constants";
 import { exampleUser } from "../../utils/exampleData";
+import { getNameInitials } from "../../utils/functions";
 import ViewBuilder from "../ViewBuilder/ViewBuilder";
 
 type Props = {
@@ -19,7 +20,7 @@ const ProfilePage = ({ userId }: Props) => {
     >
       <div className="flex flex-col items-center space-y-3 p-5">
         <div className="bg-gray-500 rounded-full w-24 h-24 flex items-center justify-center text-white text-4xl">
-          TS
+          {getNameInitials(user.name ?? user.email)}
         </div>
         <div className="text-center pb-8">
           <h1 className="font-bold text-xl">{user.name}</h1>

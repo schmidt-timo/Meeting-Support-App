@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { MdQrCodeScanner, MdOutlineAdd } from "react-icons/md";
 import { MEETING_CATEGORY_LABELS, NAVIGATION_IDS } from "../../utils/constants";
 import {
@@ -23,6 +24,7 @@ const MeetingOverviewPage = ({
   onAddMeeting,
   onCreateMeeting,
 }: Props) => {
+  const router = useRouter();
   const ownMeetings = filterMeetingsCreatedByUserId(meetings, userId);
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
@@ -56,7 +58,13 @@ const MeetingOverviewPage = ({
         {!!ownMeetings.length && (
           <MeetingCategory title={MEETING_CATEGORY_LABELS.yourMeetings}>
             {ownMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} />
+              <MeetingInfoBox
+                meeting={m}
+                key={m.id}
+                onEdit={() => router.push(`${m.id}/edit`)}
+                onManageAgenda={() => router.push(`${m.id}/agenda`)}
+                onManageParticipants={() => router.push(`${m.id}/participants`)}
+              />
             ))}
           </MeetingCategory>
         )}

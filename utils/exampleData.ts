@@ -1,4 +1,4 @@
-import { Meeting, User } from "./types";
+import { Meeting, MeetingParticipant, User } from "./types";
 
 export const exampleMeetings: Meeting[] = [
   {
@@ -11,11 +11,13 @@ export const exampleMeetings: Meeting[] = [
     location: "Conference Room A",
     agenda: [
       {
+        id: "agendaItem1",
         title: "1. Tagespunkt",
         description: "Beschreibung für den ersten Tagespunkt",
         duration: 15,
       },
       {
+        id: "agendaItem2",
         title: "2. Tagespunkt",
         description: "Beschreibung für den zweiten Tagespunkt",
         duration: 30,
@@ -23,10 +25,12 @@ export const exampleMeetings: Meeting[] = [
     ],
     participants: [
       {
+        id: "participant1",
         name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
       {
+        id: "participant2",
         name: "Erika Mustermann",
         email: "erikamustermann@email.com",
       },
@@ -42,6 +46,7 @@ export const exampleMeetings: Meeting[] = [
     agenda: [],
     participants: [
       {
+        id: "participant1",
         name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
@@ -58,6 +63,7 @@ export const exampleMeetings: Meeting[] = [
     agenda: [],
     participants: [
       {
+        id: "participant1",
         name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
@@ -72,26 +78,27 @@ export const exampleMeetings: Meeting[] = [
     endDate: new Date("June 20, 2022, 11:30:00"),
     agenda: [
       {
+        id: "agendaItem1",
         title: "1. Tagespunkt",
         description: "Beschreibung für den ersten Tagespunkt",
         duration: 15,
       },
       {
+        id: "agendaItem2",
         title: "2. Tagespunkt",
         description: "Beschreibung für den zweiten Tagespunkt",
         duration: 30,
       },
     ],
     participants: [
+      { id: "participant1", name: "John Doe", email: "johndoe@email.com" },
       {
-        name: "John Doe",
-        email: "johndoe@email.com",
-      },
-      {
+        id: "participant2",
         name: "Max Mustermann",
         email: "maxmustermann@email.com",
       },
       {
+        id: "participant3",
         name: "Erika Mustermann",
         email: "erikamustermann@email.com",
       },
@@ -105,4 +112,10 @@ export const exampleUser: User = {
   name: "Timo Schmidt",
   email: "email@address.com",
   knownParticipants: [],
+};
+
+export const exampleParticipant: MeetingParticipant = {
+  id: "exampleParticipant",
+  name: "Max Mustermann",
+  email: "maxmustermann@email.com",
 };

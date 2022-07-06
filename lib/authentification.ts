@@ -15,3 +15,7 @@ export const login = async (
 export const logout = async () => {
   await signOut(auth);
 };
+
+export const registerAccount = async () => {};
+
+export const loginAsGuest = async () => {};

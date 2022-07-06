@@ -1,13 +1,23 @@
 import type { NextPage } from "next";
-import ViewBuilder from "../components/ViewBuilder/ViewBuilder";
+import { useRouter } from "next/router";
 import ProfilePage from "../components/views/ProfilePage";
-import { NAVIGATION_IDS } from "../utils/constants";
+import { logout } from "../lib/authentification";
 
 // TODO: REPLACE: Get userId and load meetings
 const userId = "timoschmidt";
 
 const Profile: NextPage = () => {
-  return <ProfilePage userId={userId} />;
+  const router = useRouter();
+  return (
+    <ProfilePage
+      userId={userId}
+      onLogout={() =>
+        logout().then(() =>
+          router.push("/login").catch((error) => console.log(error))
+        )
+      }
+    />
+  );
 };
 
 export default Profile;

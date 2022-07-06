@@ -9,7 +9,7 @@ import ErrorLabel from "../components/formElements/ErrorLabel";
 import Input from "../components/formElements/Input";
 import Label from "../components/formElements/Label";
 import LabelInputWrapper from "../components/formElements/LabelInputWrapper";
-import { login } from "../lib/firebase";
+import { login } from "../lib/authentification";
 import { auth } from "../lib/firebase-config";
 import { FIELD_IS_REQUIRED_MESSAGE } from "../utils/constants";
 import { validateEmailRegex } from "../utils/regex";
@@ -51,16 +51,12 @@ const LoginPage: NextPage = () => {
       });
   };
 
-  if (loading) {
-    return <p>Loading ...</p>; // TODO: Add proper loading screen
-  }
-
   if (user) {
     router.push("/");
   }
 
   return (
-    <div className="p-8 flex flex-col items-center justify-center h-screen space-y-8">
+    <div className="p-8 flex flex-col items-center justify-center min-h-screen space-y-8">
       <div className="text-center space-y-3">
         <h1 className="text-2xl font-medium">Welcome!</h1>
         <p>Please select one option.</p>
@@ -100,6 +96,7 @@ const LoginPage: NextPage = () => {
                 <Label required>Password</Label>
                 <Input
                   placeholder="Password"
+                  type="password"
                   {...register("loginPassword", {
                     required: FIELD_IS_REQUIRED_MESSAGE,
                   })}
@@ -121,7 +118,7 @@ const LoginPage: NextPage = () => {
             </div>
           </form>
         </div>
-        <div className="bg-gray-500 border border-gray-700 rounded-xl w-full p-5 space-y-5">
+        <div className="bg-gray-700 border border-gray-700 rounded-xl w-full p-5 space-y-5">
           <h1 className="font-medium text-lg text-gray-100 text-center">
             New here?
           </h1>

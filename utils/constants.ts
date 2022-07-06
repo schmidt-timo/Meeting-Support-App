@@ -8,3 +8,5 @@ export const MEETING_CATEGORY_LABELS = {
   yourMeetings: "Created by you",
   otherMeetings: "Other meetings",
 };
+
+export const FIELD_IS_REQUIRED_MESSAGE = "This field is required.";

@@ -46,7 +46,7 @@ const NewMeetingPage = ({
       <SubviewBuilder title="Create Meeting" onClose={onClose}>
         <div className="space-y-3 pb-3">
           <LabelInputWrapper>
-            <Label mandatory>Meeting title</Label>
+            <Label required>Meeting title</Label>
             <Input
               defaultValue={meetingData?.meetingTitle}
               placeholder="Meeting title"
@@ -60,7 +60,7 @@ const NewMeetingPage = ({
           </LabelInputWrapper>
           <LabelInputWrapper sideBySide>
             <span className="w-full space-y-1">
-              <Label mandatory>Start Date</Label>
+              <Label required>Start Date</Label>
               <Input
                 defaultValue={meetingData?.meetingStartDate}
                 type="date"
@@ -68,7 +68,7 @@ const NewMeetingPage = ({
               />
             </span>
             <span className="w-full space-y-1">
-              <Label mandatory>Start time</Label>
+              <Label required>Start time</Label>
               <Input
                 defaultValue={meetingData?.meetingStartTime}
                 type="time"
@@ -78,7 +78,7 @@ const NewMeetingPage = ({
           </LabelInputWrapper>
           <LabelInputWrapper sideBySide>
             <span className="w-full space-y-1">
-              <Label mandatory>End Date</Label>
+              <Label required>End Date</Label>
               <Input
                 type="date"
                 defaultValue={meetingData?.meetingEndTime ?? meetingStartDate}
@@ -86,7 +86,7 @@ const NewMeetingPage = ({
               />
             </span>
             <span className="w-full space-y-1">
-              <Label mandatory>End time</Label>
+              <Label required>End time</Label>
               <Input
                 type="time"
                 defaultValue={meetingData?.meetingEndTime ?? meetingStartTime}

@@ -9,7 +9,7 @@ import { Meeting } from "../../utils/types";
 import InfoTextBox from "../InfoTextBox/InfoTextBox";
 import MeetingCategory from "../MeetingCategory/MeetingCategory";
 import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
-import ViewBuilder from "../ViewBuilder/ViewBuilder";
+import PageTemplate from "../templates/PageTemplate";
 
 type Props = {
   userId: string;
@@ -29,7 +29,7 @@ const MeetingOverviewPage = ({
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
   return (
-    <ViewBuilder
+    <PageTemplate
       header={{
         title: "Meetings",
         buttons: [
@@ -76,7 +76,7 @@ const MeetingOverviewPage = ({
           </MeetingCategory>
         )}
       </div>
-    </ViewBuilder>
+    </PageTemplate>
   );
 };
 

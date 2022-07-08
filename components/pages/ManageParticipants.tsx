@@ -4,7 +4,7 @@ import Button from "../formElements/Button";
 import Label from "../formElements/Label";
 import ParticipantItemInput from "../ParticipantItem/ParticipantItemInput";
 import ParticipantItem from "../ParticipantItem/ParticipantItem";
-import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
+import SubPageTemplate from "../templates/SubPageTemplate";
 
 type ManageParticipantsContentProps = {
   participants: MeetingParticipant[];
@@ -72,7 +72,7 @@ const ManageParticipants = ({
   return (
     <>
       {onBack ? (
-        <SubviewBuilder
+        <SubPageTemplate
           title="Manage participants"
           onClose={onClose}
           onBack={() => onBack(participants)}
@@ -82,15 +82,15 @@ const ManageParticipants = ({
             buttonText={buttonText}
             onCreate={onCreate}
           />
-        </SubviewBuilder>
+        </SubPageTemplate>
       ) : (
-        <SubviewBuilder title="Manage participants" onClose={onClose}>
+        <SubPageTemplate title="Manage participants" onClose={onClose}>
           <ManageParticipantsContent
             participants={participants}
             buttonText={buttonText}
             onCreate={onCreate}
           />
-        </SubviewBuilder>
+        </SubPageTemplate>
       )}
     </>
   );

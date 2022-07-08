@@ -8,7 +8,7 @@ type Props = {
   onBack?: () => void;
 };
 
-const SubviewBuilder = ({ title, children, onClose, onBack }: Props) => {
+const SubPageTemplate = ({ title, children, onClose, onBack }: Props) => {
   return (
     <div className="w-full h-screen flex flex-col bg-gray-200 px-6">
       <div className="flex py-5 justify-between items-center space-x-3">
@@ -35,4 +35,4 @@ const SubviewBuilder = ({ title, children, onClose, onBack }: Props) => {
   );
 };
 
-export default SubviewBuilder;
+export default SubPageTemplate;

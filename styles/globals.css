@@ -30,4 +30,21 @@ a {
   .h-screen {
     height: -webkit-fill-available;
   }
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+.spin-animation {
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

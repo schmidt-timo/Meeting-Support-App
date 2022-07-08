@@ -1,18 +1,19 @@
 import { NAVIGATION_IDS } from "../../utils/constants";
 import { exampleUser } from "../../utils/exampleData";
 import { getNameInitials } from "../../utils/functions";
-import ViewBuilder from "../ViewBuilder/ViewBuilder";
+import PageTemplate from "../templates/PageTemplate";
 
 type Props = {
   userId: string;
+  onLogout: () => void;
 };
 
-const ProfilePage = ({ userId }: Props) => {
+const ProfilePage = ({ userId, onLogout }: Props) => {
   // TODO: Get User by id
   const user = exampleUser;
 
   return (
-    <ViewBuilder
+    <PageTemplate
       header={{
         title: "Profile",
       }}
@@ -41,12 +42,15 @@ const ProfilePage = ({ userId }: Props) => {
           <button className="w-full bg-gray-200 hover:bg-gray-300 rounded-xl p-2">
             Settings
           </button>
-          <button className="w-full bg-gray-200 hover:bg-gray-300 rounded-xl p-2">
+          <button
+            onClick={onLogout}
+            className="w-full bg-gray-200 hover:bg-gray-300 rounded-xl p-2"
+          >
             Logout
           </button>
         </div>
       </div>
-    </ViewBuilder>
+    </PageTemplate>
   );
 };
 

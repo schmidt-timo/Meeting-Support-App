@@ -6,7 +6,7 @@ import {
 import { Meeting } from "../../utils/types";
 import MeetingCategory from "../MeetingCategory/MeetingCategory";
 import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
-import ViewBuilder from "../ViewBuilder/ViewBuilder";
+import PageTemplate from "../templates/PageTemplate";
 
 type Props = {
   userId: string;
@@ -18,7 +18,7 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
   return (
-    <ViewBuilder
+    <PageTemplate
       header={{
         title: "Meeting Reports",
       }}
@@ -40,7 +40,7 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
           </MeetingCategory>
         )}
       </div>
-    </ViewBuilder>
+    </PageTemplate>
   );
 };
 

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { exampleMeetings } from "../utils/exampleData";
-import MeetingReportsPage from "../components/views/MeetingReportsPage";
+import MeetingReportsPage from "../components/pages/MeetingReportsPage";
 import { filterCompletedMeetings } from "../utils/filtering";
 
 // TODO: REPLACE: Get userId and load meetings

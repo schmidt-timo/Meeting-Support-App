@@ -3,7 +3,7 @@ import { MeetingAgendaItem } from "../../utils/types";
 import AgendaItem from "../AgendaItem/AgendaItem";
 import AgendaItemInput from "../AgendaItem/AgendaItemInput";
 import Button from "../formElements/Button";
-import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
+import SubPageTemplate from "../templates/SubPageTemplate";
 
 type ManageAgendaContentProps = {
   buttonText: string;
@@ -75,7 +75,7 @@ const ManageAgenda = ({
   return (
     <>
       {onBack ? (
-        <SubviewBuilder
+        <SubPageTemplate
           title="Manage agenda"
           onBack={() => onBack(agendaItems)}
           onClose={onClose}
@@ -85,15 +85,15 @@ const ManageAgenda = ({
             buttonText={buttonText}
             onNext={onNext}
           />
-        </SubviewBuilder>
+        </SubPageTemplate>
       ) : (
-        <SubviewBuilder title="Manage agenda" onClose={onClose}>
+        <SubPageTemplate title="Manage agenda" onClose={onClose}>
           <ManageAgendaContent
             agendaItems={agendaItems}
             buttonText={buttonText}
             onNext={onNext}
           />
-        </SubviewBuilder>
+        </SubPageTemplate>
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import ManageParticipants from "../../components/views/ManageParticipants";
+import ManageParticipants from "../../components/pages/ManageParticipants";
 import { exampleMeetings } from "../../utils/exampleData";
 import { Meeting } from "../../utils/types";
 

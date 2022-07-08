@@ -8,7 +8,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 const Button = ({ children, highlighted, className, onClick }: Props) => {
   return (
     <button
-      className={`w-full rounded-xl text-white font-medium px-3 py-2 outline-0 ${
+      className={`w-full rounded-xl text-white text-sm font-medium px-3 py-2.5 outline-0 ${
         highlighted
           ? "bg-gray-700 hover:bg-black"
           : "bg-gray-400 hover:bg-gray-500"

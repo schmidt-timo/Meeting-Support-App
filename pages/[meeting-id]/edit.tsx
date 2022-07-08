@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import NewMeetingPage, {
   NewMeetingInputs,
-} from "../../components/views/NewMeetingPage";
+} from "../../components/pages/NewMeetingPage";
 import { exampleMeetings } from "../../utils/exampleData";
 import { Meeting } from "../../utils/types";
 

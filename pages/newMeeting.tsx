@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NewMeetingPage, {
   NewMeetingInputs,
-} from "../components/views/NewMeetingPage";
-import ManageAgenda from "../components/views/ManageAgenda";
+} from "../components/pages/NewMeetingPage";
+import ManageAgenda from "../components/pages/ManageAgenda";
 import { Meeting, MeetingAgendaItem, MeetingParticipant } from "../utils/types";
-import ManageParticipants from "../components/views/ManageParticipants";
+import ManageParticipants from "../components/pages/ManageParticipants";
 import { exampleParticipant } from "../utils/exampleData";
 import { generateMeetingId } from "../utils/functions";
 

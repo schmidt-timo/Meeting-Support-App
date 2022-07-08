@@ -5,7 +5,7 @@ import Input from "../formElements/Input";
 import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
 import Textarea from "../formElements/Textarea";
-import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
+import SubPageTemplate from "../templates/SubPageTemplate";
 
 export type NewMeetingInputs = {
   meetingTitle: string;
@@ -43,7 +43,7 @@ const NewMeetingPage = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SubviewBuilder title="Create Meeting" onClose={onClose}>
+      <SubPageTemplate title="Create Meeting" onClose={onClose}>
         <div className="space-y-3 pb-3">
           <LabelInputWrapper>
             <Label required>Meeting title</Label>
@@ -116,7 +116,7 @@ const NewMeetingPage = ({
             {buttonText}
           </Button>
         </div>
-      </SubviewBuilder>
+      </SubPageTemplate>
     </form>
   );
 };

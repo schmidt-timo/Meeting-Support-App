@@ -7,13 +7,14 @@ import NewMeetingPage, {
 import ManageAgenda from "../components/pages/ManageAgenda";
 import { Meeting, MeetingAgendaItem, MeetingParticipant } from "../utils/types";
 import ManageParticipants from "../components/pages/ManageParticipants";
-import { exampleParticipant } from "../utils/exampleData";
-import { generateMeetingId } from "../utils/functions";
+import { convertStringsToDate, generateRandomID } from "../utils/functions";
+import { createMeeting } from "../lib/supabase/meetings";
+import { useAuth } from "../lib/auth";
 
 type Views = "CREATE_MEETING" | "MANAGE_AGENDA" | "MANAGE_PARTICIPANTS";
 
 const NewMeeting: NextPage = () => {
-  const currentUserId = "timoschmidt"; //TODO: Get current user id
+  const { user } = useAuth();
   const router = useRouter();
   const [currentView, setCurrentView] = useState<Views>("CREATE_MEETING");
   const [meetingData, setMeetingData] = useState<NewMeetingInputs>();
@@ -21,7 +22,13 @@ const NewMeeting: NextPage = () => {
   const [participants, setParticipants] = useState<MeetingParticipant[]>([]);
 
   useEffect(() => {
-    setParticipants([...participants, exampleParticipant]); // TODO: add current registered user automatically to participants list
+    setParticipants([
+      ...participants,
+      {
+        id: user!.id,
+        email: user!.email!,
+      },
+    ]); // TODO: add current registered user automatically to participants list
   }, []);
 
   return (
@@ -54,6 +61,7 @@ const NewMeeting: NextPage = () => {
       )}
       {currentView === "MANAGE_PARTICIPANTS" && (
         <ManageParticipants
+          userId={user!.id}
           participants={participants}
           buttonText="Create Meeting"
           onBack={(participants) => {
@@ -63,27 +71,36 @@ const NewMeeting: NextPage = () => {
           onCreate={(participants) => {
             setParticipants(participants);
             const meeting: Meeting = {
-              id: generateMeetingId(),
-              title: meetingData!!.meetingTitle,
-              startDate: new Date(
-                `${meetingData!!.meetingStartDate}T${
-                  meetingData!!.meetingStartTime
-                }`
+              id: generateRandomID(),
+              title: meetingData!!.title,
+              startDate: convertStringsToDate(
+                meetingData!!.startDate,
+                meetingData!!.startTime
               ),
-              endDate: new Date(
-                `${meetingData!!.meetingEndDate}T${
-                  meetingData!!.meetingEndTime
-                }`
+              endDate: convertStringsToDate(
+                meetingData!!.endDate,
+                meetingData!!.endTime
               ),
-              location: meetingData?.meetingLocation,
-              description: meetingData?.meetingDescription,
-              createdBy: currentUserId,
+              location: meetingData?.location,
+              description: meetingData?.description,
+              createdBy: user!.id,
               completed: false,
               agenda: agendaItems,
               participants: participants,
             };
-            console.log(meeting);
-            // TODO: Add meeting and go back to overview page
+
+            const meetingCreation = async () => {
+              const { data, error } = await createMeeting(meeting);
+
+              if (error) {
+                throw error;
+              }
+
+              if (data) {
+                router.push("/");
+              }
+            };
+            meetingCreation();
           }}
           onClose={() => router.push("/")}
         />

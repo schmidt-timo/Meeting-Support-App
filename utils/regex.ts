@@ -1,3 +1,3 @@
 export const validateEmailRegex = new RegExp(
-  "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"
+  "[\u00C0-\u017Fa-z0-9._%+-]+@[\u00C0-\u017Fa-z0-9.-]+.[a-z]{2,4}$"
 );

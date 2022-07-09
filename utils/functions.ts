@@ -1,4 +1,4 @@
-var uniqid = require("uniqid");
+import { v4 as uuidv4 } from "uuid";
 
 export function getNameInitials(name: string) {
   const nameParts = name.split(" ");
@@ -9,18 +9,10 @@ export function getNameInitials(name: string) {
   return result;
 }
 
-export function generateUserId() {
-  return uniqid("user-");
+export function generateRandomID() {
+  return uuidv4();
 }
 
-export function generateParticipantId() {
-  return uniqid("participant-");
-}
-
-export function generateMeetingId() {
-  return uniqid("meeting-");
-}
-
-export function generateAgendaItemId() {
-  return uniqid("ai-");
+export function convertStringsToDate(date: string, time: string) {
+  return new Date(`${date}T${time}`);
 }

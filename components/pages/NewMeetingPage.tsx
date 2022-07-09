@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
-import { Meeting } from "../../utils/types";
+import { ERROR_MESSAGES } from "../../utils/constants";
+import { convertStringsToDate } from "../../utils/functions";
 import Button from "../formElements/Button";
+import ErrorMessage from "../formElements/ErrorMessage";
 import Input from "../formElements/Input";
 import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
@@ -8,13 +10,13 @@ import Textarea from "../formElements/Textarea";
 import SubPageTemplate from "../templates/SubPageTemplate";
 
 export type NewMeetingInputs = {
-  meetingTitle: string;
-  meetingStartDate: string;
-  meetingEndDate: string;
-  meetingStartTime: string;
-  meetingEndTime: string;
-  meetingLocation: string;
-  meetingDescription: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  location: string;
+  description: string;
 };
 
 type Props = {
@@ -35,11 +37,14 @@ const NewMeetingPage = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<NewMeetingInputs>();
+  } = useForm<NewMeetingInputs>({
+    criteriaMode: "all",
+  });
+
   const onSubmit = (data: NewMeetingInputs) => {
     onNext(data);
   };
-  const { meetingStartDate, meetingStartTime } = watch();
+  const { startDate, startTime, endDate } = watch();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -48,66 +53,124 @@ const NewMeetingPage = ({
           <LabelInputWrapper>
             <Label required>Meeting title</Label>
             <Input
-              defaultValue={meetingData?.meetingTitle}
+              defaultValue={meetingData?.title}
               placeholder="Meeting title"
-              {...register("meetingTitle")}
+              {...register("title", {
+                required: ERROR_MESSAGES.IS_REQUIRED,
+              })}
             />
-            {errors.meetingTitle && (
-              <span className="uppercase text-extrasmall font-medium text-red-500">
-                This field is required!
+            <ErrorMessage errors={errors} fieldName="title" />
+          </LabelInputWrapper>
+          <LabelInputWrapper>
+            <div className="w-full flex space-y-0 space-x-3 justify-between">
+              <span className="w-full space-y-1">
+                <Label required icon="DATE">
+                  Start Date
+                </Label>
+                <Input
+                  defaultValue={meetingData?.startDate}
+                  type="date"
+                  {...register("startDate", {
+                    required: ERROR_MESSAGES.START_DATE.IS_REQUIRED,
+                    validate: {
+                      notInPast: (v) =>
+                        new Date(v).getDate() >= new Date().getDate() ||
+                        ERROR_MESSAGES.START_DATE.NOT_IN_PAST,
+                    },
+                  })}
+                />
               </span>
-            )}
+              <span className="w-full space-y-1">
+                <Label required icon="TIME">
+                  Start time
+                </Label>
+                <Input
+                  defaultValue={meetingData?.startTime}
+                  type="time"
+                  {...register("startTime", {
+                    required: ERROR_MESSAGES.START_TIME.IS_REQUIRED,
+                    validate: {
+                      notInThePast: (v) =>
+                        convertStringsToDate(
+                          meetingData?.startDate ?? startDate,
+                          v
+                        ) > new Date() || ERROR_MESSAGES.START_TIME.NOT_IN_PAST,
+                    },
+                  })}
+                />
+              </span>
+            </div>
+            <ErrorMessage
+              errors={errors}
+              fieldName="startDate"
+              multipleErrors
+            />
+            <ErrorMessage
+              errors={errors}
+              fieldName="startTime"
+              multipleErrors
+            />
           </LabelInputWrapper>
-          <LabelInputWrapper sideBySide>
-            <span className="w-full space-y-1">
-              <Label required>Start Date</Label>
-              <Input
-                defaultValue={meetingData?.meetingStartDate}
-                type="date"
-                {...register("meetingStartDate")}
-              />
-            </span>
-            <span className="w-full space-y-1">
-              <Label required>Start time</Label>
-              <Input
-                defaultValue={meetingData?.meetingStartTime}
-                type="time"
-                {...register("meetingStartTime")}
-              />
-            </span>
-          </LabelInputWrapper>
-          <LabelInputWrapper sideBySide>
-            <span className="w-full space-y-1">
-              <Label required>End Date</Label>
-              <Input
-                type="date"
-                defaultValue={meetingData?.meetingEndTime ?? meetingStartDate}
-                {...register("meetingEndDate")}
-              />
-            </span>
-            <span className="w-full space-y-1">
-              <Label required>End time</Label>
-              <Input
-                type="time"
-                defaultValue={meetingData?.meetingEndTime ?? meetingStartTime}
-                {...register("meetingEndTime")}
-              />
-            </span>
+          <LabelInputWrapper>
+            <div className="w-full flex space-y-0 space-x-3 justify-between">
+              <span className="w-full space-y-1">
+                <Label required icon="DATE">
+                  End Date
+                </Label>
+                <Input
+                  type="date"
+                  defaultValue={meetingData?.endDate}
+                  {...register("endDate", {
+                    required: ERROR_MESSAGES.END_TIME.IS_REQUIRED,
+                    validate: {
+                      notInPast: (v) =>
+                        new Date(v).getDate() >= new Date().getDate() ||
+                        ERROR_MESSAGES.END_DATE.NOT_IN_PAST,
+                    },
+                  })}
+                />
+              </span>
+              <span className="w-full space-y-1">
+                <Label required icon="TIME">
+                  End time
+                </Label>
+                <Input
+                  type="time"
+                  defaultValue={meetingData?.endTime}
+                  {...register("endTime", {
+                    required: ERROR_MESSAGES.END_TIME.IS_REQUIRED,
+                    validate: {
+                      notInThePast: (endTime) =>
+                        convertStringsToDate(
+                          meetingData?.endDate ?? endDate,
+                          endTime
+                        ) >
+                          convertStringsToDate(
+                            meetingData?.startDate ?? startDate,
+                            meetingData?.startTime ?? startTime
+                          ) || ERROR_MESSAGES.END_TIME.NOT_IN_PAST,
+                    },
+                  })}
+                />
+              </span>
+            </div>
+            <ErrorMessage errors={errors} fieldName="endDate" multipleErrors />
+            <ErrorMessage errors={errors} fieldName="endTime" multipleErrors />
           </LabelInputWrapper>
           <LabelInputWrapper>
             <Label>Meeting location</Label>
             <Input
-              defaultValue={meetingData?.meetingLocation}
+              defaultValue={meetingData?.location}
               placeholder="e.g. meeting room"
-              {...register("meetingLocation")}
+              {...register("location")}
             />
           </LabelInputWrapper>
           <LabelInputWrapper>
             <Label>Short description</Label>
             <Textarea
-              defaultValue={meetingData?.meetingDescription}
+              defaultValue={meetingData?.description}
               placeholder="Meeting description"
-              {...register("meetingDescription")}
+              {...register("description")}
             />
           </LabelInputWrapper>
         </div>

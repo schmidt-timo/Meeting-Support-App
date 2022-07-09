@@ -81,15 +81,24 @@ type Props = {
 };
 
 const MeetingInfoBox = ({
-  meeting,
+  meeting: initialMeeting,
   onEdit,
   onManageAgenda,
   onManageParticipants,
   onViewDetails,
   onViewReport,
 }: Props) => {
+  // Dates fix
+  const meeting = {
+    ...initialMeeting,
+    startDate: new Date(initialMeeting.startDate),
+    endDate: new Date(initialMeeting.endDate),
+  };
+
   const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 1;
-  console.log(meeting);
+  const isTheSameDay =
+    meeting.startDate.toLocaleDateString("de-DE") ===
+    meeting.endDate.toLocaleDateString("de-DE");
 
   return (
     <div className="relative p-3 bg-gray-200 rounded-xl">
@@ -101,10 +110,41 @@ const MeetingInfoBox = ({
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
         {meeting.title}
       </p>
-      <InfoLine symbol="DATE">{formatMeetingDate(meeting.startDate)}</InfoLine>
-      <InfoLine symbol="TIME">
-        {formatMeetingTime(meeting.startDate, meeting.endDate)}
-      </InfoLine>
+      {isTheSameDay ? (
+        <>
+          <InfoLine symbol="DATE">
+            {formatMeetingDate(meeting.startDate)}
+          </InfoLine>
+          <InfoLine symbol="TIME">
+            {formatMeetingTime(meeting.startDate, meeting.endDate)}
+          </InfoLine>
+        </>
+      ) : (
+        <>
+          <div className="flex space-x-2">
+            <InfoLine symbol="DATE">
+              {`from ${formatMeetingDate(meeting.startDate)}`}
+            </InfoLine>
+            <InfoLine symbol="TIME">
+              {meeting.startDate.toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </InfoLine>
+          </div>
+          <div className="flex space-x-2">
+            <InfoLine symbol="DATE">
+              {`to ${formatMeetingDate(meeting.endDate)}`}
+            </InfoLine>
+            <InfoLine symbol="TIME">
+              {meeting.endDate.toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </InfoLine>
+          </div>
+        </>
+      )}
       {meeting.location ? (
         <InfoLine symbol="LOCATION">{meeting.location}</InfoLine>
       ) : (

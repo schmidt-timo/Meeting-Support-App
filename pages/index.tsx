@@ -1,21 +1,50 @@
-import type { NextPage } from "next";
-import { exampleMeetings } from "../utils/exampleData";
-import { filterPendingMeetings } from "../utils/filtering";
+import type { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import MeetingOverviewPage from "../components/pages/MeetingOverviewPage";
+import { Meeting } from "../utils/types";
+import { useAuth } from "../lib/auth";
+import { fetchAllMeetings } from "../lib/supabase/meetings";
 
-// TODO: REPLACE: Get userId and load meetings
-const meetings = exampleMeetings;
-const userId = "timoschmidt";
+export const getStaticProps: GetStaticProps = async () => {
+  const { data: meetingData, error } = await fetchAllMeetings();
 
-const Home: NextPage = () => {
+  let meetings: Meeting[] = [];
+
+  if (meetingData) {
+    meetingData.map((meeting) =>
+      meetings.push({
+        ...meeting,
+        agenda: meeting.agenda.map((agendaItem: any) => JSON.parse(agendaItem)),
+        participants: meeting.participants.map((participant: any) =>
+          JSON.parse(participant)
+        ),
+      })
+    );
+  }
+
+  if (error) {
+    throw error;
+  }
+
+  return {
+    props: {
+      meetings,
+    },
+  };
+};
+
+type Props = {
+  meetings: Meeting[];
+};
+
+const Home: NextPage<Props> = ({ meetings }) => {
   const router = useRouter();
-  const filteredMeetings = filterPendingMeetings(meetings);
+  const { user } = useAuth();
 
   return (
     <MeetingOverviewPage
-      userId={userId}
-      meetings={filteredMeetings}
+      meetings={meetings}
+      userId={user!.id}
       onAddMeeting={
         () => {} // TODO: Add onClick
       }

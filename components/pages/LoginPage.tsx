@@ -16,7 +16,7 @@ export type LoginInputs = {
 
 type Props = {
   onLogin: (credentials: LoginInputs) => void;
-  onRegister: () => void;
+  onSignUpNewAccount: () => void;
   onForgotPassword: () => void;
   errorMessage?: string;
 };
@@ -25,7 +25,7 @@ const LoginPage = ({
   errorMessage,
   onLogin,
   onForgotPassword,
-  onRegister,
+  onSignUpNewAccount,
 }: Props) => {
   const {
     register,
@@ -43,7 +43,7 @@ const LoginPage = ({
     <AuthPageTemplate
       title="Login"
       secondaryChildren={
-        <Button onClick={onRegister}>Register new account</Button>
+        <Button onClick={onSignUpNewAccount}>Sign up for new account</Button>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -78,7 +78,7 @@ const LoginPage = ({
             <ErrorMessage fieldName="password" errors={errors} />
           </LabelInputWrapper>
           <Button highlighted type="submit">
-            Sign in
+            Log in
           </Button>
           <button
             onClick={onForgotPassword}

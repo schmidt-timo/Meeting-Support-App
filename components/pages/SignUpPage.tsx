@@ -9,33 +9,39 @@ import LabelInputWrapper from "../formElements/LabelInputWrapper";
 import NotificationLabel from "../formElements/NotificationLabel";
 import AuthPageTemplate from "../templates/AuthPageTemplate";
 
-export type RegisterInputs = {
+export type SignUpInputs = {
   email: string;
   password: string;
 };
 
 type Props = {
-  onRegister: (credentials: RegisterInputs) => void;
+  onSignUpNewAccount: (credentials: SignUpInputs) => void;
   onLogin: () => void;
   errorMessage?: string;
+  successMessage?: string;
 };
 
-const RegisterPage = ({ onRegister, errorMessage, onLogin }: Props) => {
+const SignUpPage = ({
+  onSignUpNewAccount,
+  errorMessage,
+  successMessage,
+  onLogin,
+}: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterInputs>({
+  } = useForm<SignUpInputs>({
     criteriaMode: "all",
   });
 
-  const onSubmit = (data: RegisterInputs) => {
-    onRegister(data);
+  const onSubmit = (data: SignUpInputs) => {
+    onSignUpNewAccount(data);
   };
 
   return (
     <AuthPageTemplate
-      title="Register new account"
+      title="Sign up for new account"
       secondaryChildren={<Button onClick={onLogin}>Back To Login</Button>}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,11 +76,14 @@ const RegisterPage = ({ onRegister, errorMessage, onLogin }: Props) => {
             <ErrorMessage fieldName="password" errors={errors} />
           </LabelInputWrapper>
           <Button type="submit" highlighted>
-            Register
+            Sign up
           </Button>
           {!!errorMessage?.length && (
-            <NotificationLabel variant="YELLOW">
-              {errorMessage}
+            <NotificationLabel variant="RED">{errorMessage}</NotificationLabel>
+          )}
+          {!!successMessage?.length && (
+            <NotificationLabel variant="GREEN">
+              {successMessage}
             </NotificationLabel>
           )}
         </div>
@@ -83,4 +92,4 @@ const RegisterPage = ({ onRegister, errorMessage, onLogin }: Props) => {
   );
 };
 
-export default RegisterPage;
+export default SignUpPage;

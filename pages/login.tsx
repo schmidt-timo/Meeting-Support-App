@@ -2,14 +2,14 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoginPage, { LoginInputs } from "../components/pages/LoginPage";
-import RegisterPage, { RegisterInputs } from "../components/pages/RegisterPage";
+import SignUpPage, { SignUpInputs } from "../components/pages/SignUpPage";
 import ResetPasswordPage from "../components/pages/ResetPasswordPage";
 import SetNewPasswordPage from "../components/pages/SetNewPasswordPage";
 import { supabase } from "../lib/supabase";
 
 const queryString = require("query-string");
 
-type Views = "LOGIN" | "REGISTER" | "RESET_PASSWORD";
+type Views = "LOGIN" | "SIGNUP" | "RESET_PASSWORD";
 
 const LoginScreen: NextPage = () => {
   const router = useRouter();
@@ -17,7 +17,8 @@ const LoginScreen: NextPage = () => {
   const [accessToken, setAccessToken] = useState("");
 
   const [loginErrorMessage, setLoginErrorMessage] = useState("");
-  const [registerErrorMessage, setRegisterErrorMessage] = useState("");
+  const [signUpErrorMessage, setSignUpErrorMessage] = useState("");
+  const [signUpSuccessMessage, setSignUpSuccessMessage] = useState("");
   const [resetPasswordErrorMessage, setResetPasswordErrorMessage] =
     useState("");
   const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState("");
@@ -46,7 +47,7 @@ const LoginScreen: NextPage = () => {
     }
   };
 
-  const onRegister = async (data: RegisterInputs) => {
+  const onSignUp = async (data: SignUpInputs) => {
     const { email, password } = data;
     const { user, error } = await supabase.auth.signUp({
       email,
@@ -54,19 +55,25 @@ const LoginScreen: NextPage = () => {
     });
 
     if (error) {
-      setRegisterErrorMessage(error.message);
+      setSignUpErrorMessage(error.message);
       setTimeout(() => {
-        setRegisterErrorMessage("");
+        setSignUpErrorMessage("");
       }, 3000);
       throw error;
     }
 
     if (user) {
-      if (router.pathname === "/") {
-        router.reload();
-      } else {
-        router.push("/");
-      }
+      setSignUpSuccessMessage(
+        "The account has been created successfully. You will be redirected shortly."
+      );
+      setTimeout(() => {
+        setSignUpSuccessMessage("");
+        if (router.pathname === "/") {
+          router.reload();
+        } else {
+          router.push("/");
+        }
+      }, 4000);
     }
   };
 
@@ -135,12 +142,13 @@ const LoginScreen: NextPage = () => {
     );
   }
 
-  if (view === "REGISTER") {
+  if (view === "SIGNUP") {
     return (
-      <RegisterPage
-        onRegister={onRegister}
+      <SignUpPage
+        onSignUpNewAccount={onSignUp}
         onLogin={() => setView("LOGIN")}
-        errorMessage={registerErrorMessage}
+        errorMessage={signUpErrorMessage}
+        successMessage={signUpSuccessMessage}
       />
     );
   }
@@ -160,7 +168,7 @@ const LoginScreen: NextPage = () => {
       errorMessage={loginErrorMessage}
       onLogin={onLogin}
       onForgotPassword={() => setView("RESET_PASSWORD")}
-      onRegister={() => setView("REGISTER")}
+      onSignUpNewAccount={() => setView("SIGNUP")}
     />
   );
 };

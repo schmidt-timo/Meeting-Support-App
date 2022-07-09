@@ -1,7 +1,8 @@
-import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
+import { ERROR_MESSAGES } from "../../utils/constants";
 import { validateEmailRegex } from "../../utils/regex";
 import Button from "../formElements/Button";
+import ErrorMessage from "../formElements/ErrorMessage";
 import Input from "../formElements/Input";
 import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
@@ -48,30 +49,21 @@ const ResetPasswordPage = ({
             <Input
               placeholder="example@domain.com"
               {...register("email", {
-                required: "This field is required.",
+                required: ERROR_MESSAGES.IS_REQUIRED,
                 pattern: {
                   value: validateEmailRegex,
                   message: "Email address is not in correct format",
                 },
               })}
             />
-            <ErrorMessage
-              errors={errors}
-              name="email"
-              render={({ messages }) =>
-                messages &&
-                Object.entries(messages).map(([type, message]) => (
-                  <NotificationLabel key={type}>{message}</NotificationLabel>
-                ))
-              }
-            />
+            <ErrorMessage fieldName="email" errors={errors} multipleErrors />
           </LabelInputWrapper>
           <Button highlighted type="submit">
             Send reset password link
           </Button>
 
           {!!errorMessage?.length && (
-            <NotificationLabel variant="yellow">
+            <NotificationLabel variant="YELLOW">
               {errorMessage}
             </NotificationLabel>
           )}

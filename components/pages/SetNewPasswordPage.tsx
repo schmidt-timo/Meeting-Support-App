@@ -1,7 +1,8 @@
-import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../lib/auth";
+import { ERROR_MESSAGES } from "../../utils/constants";
 import Button from "../formElements/Button";
+import ErrorMessage from "../formElements/ErrorMessage";
 import Input from "../formElements/Input";
 import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
@@ -52,16 +53,10 @@ const SetNewPasswordPage = ({
               type="password"
               placeholder="Password"
               {...register("password", {
-                required: "This field is required.",
+                required: ERROR_MESSAGES.IS_REQUIRED,
               })}
             />
-            <ErrorMessage
-              errors={errors}
-              name="password"
-              render={({ message }) => (
-                <NotificationLabel>{message}</NotificationLabel>
-              )}
-            />
+            <ErrorMessage fieldName="password" errors={errors} />
           </LabelInputWrapper>
 
           <Button highlighted type="submit">

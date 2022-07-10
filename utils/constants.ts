@@ -15,7 +15,7 @@ export const ERROR_MESSAGES = {
   PARTICIPANT_ALREADY_EXISTS: "This participant already exists",
   START_DATE: {
     IS_REQUIRED: "Start date is required",
-    NOT_IN_PAST: "Start date cannot be in the past",
+    NOT_IN_PAST: "Start date cannot be before today",
   },
   START_TIME: {
     IS_REQUIRED: "Start time is required",
@@ -23,10 +23,23 @@ export const ERROR_MESSAGES = {
   },
   END_DATE: {
     IS_REQUIRED: "End date is required",
-    NOT_IN_PAST: "Select end date after start date",
+    NOT_IN_PAST: "End date cannot be before the start date",
   },
   END_TIME: {
     IS_REQUIRED: "End time is required",
-    NOT_IN_PAST: "Select end time after start time",
+    NOT_IN_PAST: "End time cannot be before the start time",
   },
 };
+
+export const COLORS = [
+  "#F94144",
+  "#F3722C",
+  "#F8961E",
+  "#F9844A",
+  "#F9C74F",
+  "#90BE6D",
+  "#43AA8B",
+  "#4D908E",
+  "#577590",
+  "#277DA1",
+];

@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ERROR_MESSAGES } from "../../utils/constants";
-import { convertStringsToDate } from "../../utils/functions";
+import {
+  convertStringsToDate,
+  dateAsStringIsTodayOrLater,
+} from "../../utils/functions";
 import Button from "../formElements/Button";
 import ErrorMessage from "../formElements/ErrorMessage";
 import Input from "../formElements/Input";
@@ -74,7 +78,7 @@ const NewMeetingPage = ({
                     required: ERROR_MESSAGES.START_DATE.IS_REQUIRED,
                     validate: {
                       notInPast: (v) =>
-                        new Date(v).getDate() >= new Date().getDate() ||
+                        dateAsStringIsTodayOrLater(v) ||
                         ERROR_MESSAGES.START_DATE.NOT_IN_PAST,
                     },
                   })}
@@ -124,7 +128,7 @@ const NewMeetingPage = ({
                     required: ERROR_MESSAGES.END_TIME.IS_REQUIRED,
                     validate: {
                       notInPast: (v) =>
-                        new Date(v).getDate() >= new Date().getDate() ||
+                        dateAsStringIsTodayOrLater(v) ||
                         ERROR_MESSAGES.END_DATE.NOT_IN_PAST,
                     },
                   })}

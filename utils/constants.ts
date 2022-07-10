@@ -12,6 +12,10 @@ export const MEETING_CATEGORY_LABELS = {
 export const ERROR_MESSAGES = {
   IS_REQUIRED: "This field is required",
   NOT_EMAIL_REGEX: "This is not an email address",
+  PASSWORD: {
+    MIN_LENGTH: "Passwords must to have at least 6 characters",
+    NO_MATCH: "Passwords do not match",
+  },
   PARTICIPANT_ALREADY_EXISTS: "This participant already exists",
   START_DATE: {
     IS_REQUIRED: "Start date is required",

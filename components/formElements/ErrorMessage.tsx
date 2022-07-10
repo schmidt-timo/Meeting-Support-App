@@ -5,14 +5,14 @@ import NotificationLabel from "./NotificationLabel";
 type Props = {
   fieldName: string;
   errors: any;
-  variant?: "RED" | "YELLOW";
+  variant?: "red" | "yellow";
   multipleErrors?: boolean;
 };
 
 const ErrorMessage = ({
   fieldName,
   errors,
-  variant = "RED",
+  variant = "red",
   multipleErrors,
 }: Props) => {
   const requiredIsBeingShown = (messages: MultipleFieldErrors) => {

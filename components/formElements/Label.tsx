@@ -7,12 +7,12 @@ import {
 } from "react-icons/md";
 
 type Props = {
-  icon?: "ARROW" | "EMAIL" | "PASSWORD" | "DATE" | "TIME";
+  icon?: "arrow" | "email" | "password" | "date" | "time";
   children: React.ReactNode;
   required?: boolean;
 };
 
-const Label = ({ icon = "ARROW", children, required }: Props) => {
+const Label = ({ icon = "arrow", children, required }: Props) => {
   return (
     <div
       className={`px-0.5 flex items-center justify-between space-x-1 text-xs text-gray-500 uppercase ${
@@ -20,11 +20,11 @@ const Label = ({ icon = "ARROW", children, required }: Props) => {
       }`}
     >
       <span className="flex items-center space-x-1">
-        {icon === "ARROW" && <MdOutlineEast />}
-        {icon === "EMAIL" && <MdEmail />}
-        {icon === "PASSWORD" && <MdPassword />}
-        {icon === "DATE" && <MdCalendarToday />}
-        {icon === "TIME" && <MdAccessTime />}
+        {icon === "arrow" && <MdOutlineEast />}
+        {icon === "email" && <MdEmail />}
+        {icon === "password" && <MdPassword />}
+        {icon === "date" && <MdCalendarToday />}
+        {icon === "time" && <MdAccessTime />}
         <p>{children}</p>
       </span>
       {required && <p className="text-lg pt-1.5 text-gray-500">*</p>}

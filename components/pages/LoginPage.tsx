@@ -49,7 +49,7 @@ const LoginPage = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-3 p-5">
           <LabelInputWrapper>
-            <Label required icon="EMAIL">
+            <Label required icon="email">
               Email address
             </Label>
             <Input
@@ -58,14 +58,14 @@ const LoginPage = ({
                 required: ERROR_MESSAGES.IS_REQUIRED,
                 pattern: {
                   value: validateEmailRegex,
-                  message: "Email address is not in correct format",
+                  message: ERROR_MESSAGES.NOT_EMAIL_REGEX,
                 },
               })}
             />
             <ErrorMessage fieldName="email" errors={errors} multipleErrors />
           </LabelInputWrapper>
           <LabelInputWrapper>
-            <Label required icon="PASSWORD">
+            <Label required icon="password">
               Password
             </Label>
             <Input
@@ -77,7 +77,7 @@ const LoginPage = ({
             />
             <ErrorMessage fieldName="password" errors={errors} />
           </LabelInputWrapper>
-          <Button highlighted type="submit">
+          <Button variant="highlighted" type="submit">
             Log in
           </Button>
           <button

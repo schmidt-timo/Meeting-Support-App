@@ -9,8 +9,9 @@ export type MeetingAgendaItem = {
 
 export type MeetingParticipant = {
   id: string;
-  name?: string;
   email: string;
+  name?: string;
+  color?: string;
 };
 
 export type Meeting = {
@@ -35,6 +36,5 @@ export type HeaderButton = {
 export type User = {
   id: string;
   name: string;
-  email: string;
-  knownParticipants: MeetingParticipant[];
+  color: string;
 };

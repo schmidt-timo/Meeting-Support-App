@@ -46,7 +46,7 @@ const SetNewPasswordPage = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-3 p-5">
           <LabelInputWrapper>
-            <Label required icon="PASSWORD">
+            <Label required icon="password">
               Password
             </Label>
             <Input
@@ -54,12 +54,16 @@ const SetNewPasswordPage = ({
               placeholder="Password"
               {...register("password", {
                 required: ERROR_MESSAGES.IS_REQUIRED,
+                validate: {
+                  minLength: (v) =>
+                    v.length >= 6 || ERROR_MESSAGES.PASSWORD.MIN_LENGTH,
+                },
               })}
             />
-            <ErrorMessage fieldName="password" errors={errors} />
+            <ErrorMessage fieldName="password" errors={errors} multipleErrors />
           </LabelInputWrapper>
 
-          <Button highlighted type="submit">
+          <Button variant="highlighted" type="submit">
             Set password
           </Button>
 

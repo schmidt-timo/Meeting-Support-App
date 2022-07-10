@@ -5,13 +5,16 @@ import LoginPage, { LoginInputs } from "../components/pages/LoginPage";
 import SignUpPage, { SignUpInputs } from "../components/pages/SignUpPage";
 import ResetPasswordPage from "../components/pages/ResetPasswordPage";
 import SetNewPasswordPage from "../components/pages/SetNewPasswordPage";
-import { supabase } from "../lib/supabase";
-
+import { supabase } from "../lib/supabase/config";
+import { createUser } from "../lib/supabase/users";
+import { COLORS } from "../utils/constants";
+import { useAuth } from "../lib/auth";
 const queryString = require("query-string");
 
 type Views = "LOGIN" | "SIGNUP" | "RESET_PASSWORD";
 
 const LoginScreen: NextPage = () => {
+  const { logout } = useAuth();
   const router = useRouter();
   const [view, setView] = useState<Views>("LOGIN");
   const [accessToken, setAccessToken] = useState("");
@@ -23,7 +26,7 @@ const LoginScreen: NextPage = () => {
     useState("");
   const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState("");
 
-  const onLogin = async (credentials: LoginInputs) => {
+  const login = async (credentials: LoginInputs) => {
     const { email, password } = credentials;
     const { user, error } = await supabase.auth.signIn({
       email,
@@ -47,7 +50,7 @@ const LoginScreen: NextPage = () => {
     }
   };
 
-  const onSignUp = async (data: SignUpInputs) => {
+  const signUp = async (data: SignUpInputs) => {
     const { email, password } = data;
     const { user, error } = await supabase.auth.signUp({
       email,
@@ -63,21 +66,37 @@ const LoginScreen: NextPage = () => {
     }
 
     if (user) {
-      setSignUpSuccessMessage(
-        "The account has been created successfully. You will be redirected shortly."
-      );
-      setTimeout(() => {
-        setSignUpSuccessMessage("");
-        if (router.pathname === "/") {
-          router.reload();
-        } else {
-          router.push("/");
+      const { data: createUserData, error: createUserError } = await createUser(
+        {
+          id: user.id,
+          name: data.name ?? "",
+          color: COLORS[Math.floor(Math.random() * 10)],
         }
-      }, 4000);
+      );
+
+      if (createUserError) {
+        throw createUserError;
+      }
+
+      if (createUserData) {
+        setSignUpSuccessMessage(
+          "The account has been created successfully. You will be redirected shortly."
+        );
+        setTimeout(() => {
+          setSignUpSuccessMessage("");
+          logout();
+          login({
+            email,
+            password,
+          }).then(() => {
+            router.reload();
+          });
+        }, 4000);
+      }
     }
   };
 
-  const onResetPassword = async (email: string) => {
+  const resetPassword = async (email: string) => {
     const { data, error } = await supabase.auth.api.resetPasswordForEmail(
       email
     );
@@ -101,7 +120,7 @@ const LoginScreen: NextPage = () => {
     }
   };
 
-  const onUpdatePassword = async (newPassword: string, accessToken: string) => {
+  const setNewPassword = async (newPassword: string, accessToken: string) => {
     await supabase.auth.api
       .updateUser(accessToken, {
         password: newPassword,
@@ -135,7 +154,7 @@ const LoginScreen: NextPage = () => {
           router.push("/login");
         }}
         onSetNewPassword={(newPassword) =>
-          onUpdatePassword(newPassword, accessToken)
+          setNewPassword(newPassword, accessToken)
         }
         errorMessage={newPasswordErrorMessage}
       />
@@ -145,7 +164,7 @@ const LoginScreen: NextPage = () => {
   if (view === "SIGNUP") {
     return (
       <SignUpPage
-        onSignUpNewAccount={onSignUp}
+        onSignUpNewAccount={signUp}
         onLogin={() => setView("LOGIN")}
         errorMessage={signUpErrorMessage}
         successMessage={signUpSuccessMessage}
@@ -158,7 +177,7 @@ const LoginScreen: NextPage = () => {
       <ResetPasswordPage
         onLogin={() => setView("LOGIN")}
         errorMessage={resetPasswordErrorMessage}
-        onResetPassword={onResetPassword}
+        onResetPassword={resetPassword}
       />
     );
   }
@@ -166,7 +185,7 @@ const LoginScreen: NextPage = () => {
   return (
     <LoginPage
       errorMessage={loginErrorMessage}
-      onLogin={onLogin}
+      onLogin={login}
       onForgotPassword={() => setView("RESET_PASSWORD")}
       onSignUpNewAccount={() => setView("SIGNUP")}
     />

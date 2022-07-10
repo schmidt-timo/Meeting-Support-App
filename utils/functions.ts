@@ -16,3 +16,11 @@ export function generateRandomID() {
 export function convertStringsToDate(date: string, time: string) {
   return new Date(`${date}T${time}`);
 }
+
+export function dateAsStringIsTodayOrLater(dateString: string) {
+  return Date.parse(dateString) >= Date.parse(new Date().toDateString());
+}
+
+export function objectsAreEqual(obj1: any, obj2: any) {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+}

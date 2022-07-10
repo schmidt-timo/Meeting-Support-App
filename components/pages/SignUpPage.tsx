@@ -12,6 +12,7 @@ import AuthPageTemplate from "../templates/AuthPageTemplate";
 export type SignUpInputs = {
   email: string;
   password: string;
+  name: string;
 };
 
 type Props = {
@@ -47,7 +48,7 @@ const SignUpPage = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-3 p-5">
           <LabelInputWrapper>
-            <Label required icon="EMAIL">
+            <Label required icon="email">
               Email address
             </Label>
             <Input
@@ -56,14 +57,14 @@ const SignUpPage = ({
                 required: ERROR_MESSAGES.IS_REQUIRED,
                 pattern: {
                   value: validateEmailRegex,
-                  message: "Email address is not in correct format",
+                  message: ERROR_MESSAGES.NOT_EMAIL_REGEX,
                 },
               })}
             />
             <ErrorMessage fieldName="email" errors={errors} multipleErrors />
           </LabelInputWrapper>
           <LabelInputWrapper>
-            <Label required icon="PASSWORD">
+            <Label required icon="password">
               Password
             </Label>
             <Input
@@ -75,14 +76,18 @@ const SignUpPage = ({
             />
             <ErrorMessage fieldName="password" errors={errors} />
           </LabelInputWrapper>
-          <Button type="submit" highlighted>
+          <LabelInputWrapper>
+            <Label>Display name (optional)</Label>
+            <Input placeholder="Max Mustermann" {...register("name")} />
+          </LabelInputWrapper>
+          <Button type="submit" variant="highlighted">
             Sign up
           </Button>
           {!!errorMessage?.length && (
-            <NotificationLabel variant="RED">{errorMessage}</NotificationLabel>
+            <NotificationLabel variant="red">{errorMessage}</NotificationLabel>
           )}
           {!!successMessage?.length && (
-            <NotificationLabel variant="GREEN">
+            <NotificationLabel variant="green">
               {successMessage}
             </NotificationLabel>
           )}

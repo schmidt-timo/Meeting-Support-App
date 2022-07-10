@@ -9,7 +9,7 @@ import {
 } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import LoginScreen from "../pages/login";
-import { supabase } from "./supabase";
+import { supabase } from "./supabase/config";
 
 type AuthContextType = {
   session: Session | null;

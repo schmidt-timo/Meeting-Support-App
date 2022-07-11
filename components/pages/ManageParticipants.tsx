@@ -30,7 +30,7 @@ const ManageParticipantsContent = ({
 
   return (
     <>
-      <div className="space-y-5">
+      <div className="space-y-5 pb-5">
         <ParticipantItemInput
           errorMessage={errorMessage}
           onAdd={(newParticipant) => {

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { MdCheck, MdClose } from "react-icons/md";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import { generateRandomID } from "../../utils/functions";
+import { validateNumberRegex } from "../../utils/regex";
 import { MeetingAgendaItem } from "../../utils/types";
 import ErrorMessage from "../formElements/ErrorMessage";
 
@@ -49,21 +50,24 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
           <input
             className="text-sm w-16 border p-0.5"
             placeholder="Duration"
-            {...register("agendaItemDuration")}
+            {...register("agendaItemDuration", {
+              pattern: {
+                value: validateNumberRegex,
+                message: ERROR_MESSAGES.NOT_NUMBER_REGEX,
+              },
+            })}
             defaultValue={agendaItem?.duration}
           />
           <p className="text-sm">min</p>
         </div>
+        <ErrorMessage errors={errors} fieldName="agendaItemDuration" />
         <textarea
-          className="w-full text-xs border p-0.5 resize-none"
+          className="w-full text-xs border p-0.5"
           style={{ minHeight: "40px" }}
           placeholder="Description"
           {...register("agendaItemDescription")}
           defaultValue={agendaItem?.description}
         />
-
-        {/* <p className="text-xs">{agendaItem.description}</p> */}
-
         <div className="space-x-2 flex justify-end pt-2">
           <button
             type="submit"

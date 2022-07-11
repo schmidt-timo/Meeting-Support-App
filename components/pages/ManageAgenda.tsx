@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MdAddCircle } from "react-icons/md";
 import { MeetingAgendaItem } from "../../utils/types";
 import AgendaItem from "../AgendaItem/AgendaItem";
 import AgendaItemInput from "../AgendaItem/AgendaItemInput";
@@ -45,9 +46,16 @@ const ManageAgendaContent = ({
             }
           />
         ) : (
-          <Button onClick={() => setShowNewItemButton(false)}>Add item</Button>
+          <Button
+            onClick={() => setShowNewItemButton(false)}
+            className="flex items-center justify-center space-x-2"
+          >
+            <MdAddCircle className="w-5 h-5 text-gray-600" />
+            <p>Add item</p>
+          </Button>
         )}
       </div>
+
       <Button variant="highlighted" onClick={() => onNext(agendaItems)}>
         {buttonText}
       </Button>

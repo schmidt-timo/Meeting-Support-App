@@ -20,7 +20,7 @@ const UpdateProfilePage = ({ user, onClose, onUpdateProfile }: Props) => {
 
   return (
     <SubPageTemplate title="Update name and color" onClose={onClose}>
-      <div className="space-y-3">
+      <div className="space-y-3 pb-3">
         <LabelInputWrapper>
           <Label>Name</Label>
           <Input
@@ -30,17 +30,12 @@ const UpdateProfilePage = ({ user, onClose, onUpdateProfile }: Props) => {
         </LabelInputWrapper>
         <LabelInputWrapper>
           <Label>Avatar Color</Label>
-          <div
-            className="flex gap-2 flex-wrap"
-            style={{
-              maxWidth: "20rem",
-            }}
-          >
+          <div className="grid gap-2 grid-cols-5 grid-rows-2 max-w-mobile">
             {COLORS.map((c) => (
               <button
                 key={c}
                 style={{ backgroundColor: c }}
-                className="w-12 h-12 flex-shrink-0 relative flex items-center justify-center"
+                className="aspect-square relative flex items-center justify-center"
                 onClick={() => setColor(c)}
               >
                 {c === color && <MdCheck className="w-8 h-8" />}

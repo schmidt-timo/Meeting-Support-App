@@ -186,6 +186,7 @@ const MeetingInfoBox = ({
             <MeetingInfoBoxButton
               symbol="participants"
               className="mobileSM:hidden"
+              onClick={onManageParticipants}
             >
               {meeting.participants.length}
             </MeetingInfoBoxButton>

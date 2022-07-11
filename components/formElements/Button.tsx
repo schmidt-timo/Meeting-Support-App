@@ -13,7 +13,7 @@ const Button = ({
 }: Props) => {
   return (
     <button
-      className={`w-full rounded-xl text-sm px-3 h-input outline-0
+      className={`w-full rounded-xl text-sm px-3 h-input outline-0 flex-shrink-0
       ${
         variant === "normal" &&
         "bg-gray-300 hover:bg-gray-400 hover:text-white text-black"

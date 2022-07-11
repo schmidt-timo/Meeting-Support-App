@@ -50,7 +50,7 @@ const ManageAgendaContent = ({
           <Button onClick={() => setShowNewItemButton(false)}>Add item</Button>
         )}
       </div>
-      <Button highlighted onClick={() => onNext(agendaItems)}>
+      <Button variant="highlighted" onClick={() => onNext(agendaItems)}>
         {buttonText}
       </Button>
     </>

@@ -26,16 +26,20 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
     >
       <div className="px-3 space-y-3">
         {!!ownMeetings.length && (
-          <MeetingCategory title={MEETING_CATEGORY_LABELS.yourMeetings}>
+          <MeetingCategory
+            title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
+          >
             {ownMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} />
+              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
             ))}
           </MeetingCategory>
         )}
         {!!otherMeetings.length && (
-          <MeetingCategory title={MEETING_CATEGORY_LABELS.otherMeetings}>
+          <MeetingCategory
+            title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
+          >
             {otherMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} />
+              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
             ))}
           </MeetingCategory>
         )}

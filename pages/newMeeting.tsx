@@ -10,29 +10,42 @@ import ManageParticipants from "../components/pages/ManageParticipants";
 import { convertStringsToDate, generateRandomID } from "../utils/functions";
 import { createMeeting } from "../lib/supabase/meetings";
 import { useAuth } from "../lib/auth";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+import {
+  getParticipantInfo,
+  getParticipantInfoIfEmailIsRegistered,
+} from "../lib/supabase/users";
 
 type Views = "CREATE_MEETING" | "MANAGE_AGENDA" | "MANAGE_PARTICIPANTS";
 
 const NewMeeting: NextPage = () => {
   const { user } = useAuth();
   const router = useRouter();
+
+  const initialParticipant = {
+    id: user!.id,
+    email: user!.email!,
+  };
+
   const [currentView, setCurrentView] = useState<Views>("CREATE_MEETING");
   const [meetingData, setMeetingData] = useState<NewMeetingInputs>();
   const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>([]);
-  const [participants, setParticipants] = useState<MeetingParticipant[]>([]);
+  const [participants, setParticipants] = useState<MeetingParticipant[]>([
+    initialParticipant,
+  ]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setParticipants([
-      ...participants,
-      {
-        id: user!.id,
-        email: user!.email!,
-      },
-    ]); // TODO: add current registered user automatically to participants list
+    // retrieve current user data and replace initial participant
+    getParticipantInfo(user!.id).then((p) => {
+      setParticipants([p]);
+    });
   }, []);
 
   return (
     <>
+      {loading && <LoadingScreen />}
+
       {currentView === "CREATE_MEETING" && (
         <NewMeetingPage
           meetingData={meetingData}
@@ -64,12 +77,30 @@ const NewMeeting: NextPage = () => {
           userId={user!.id}
           participants={participants}
           buttonText="Create Meeting"
-          onBack={(participants) => {
-            setParticipants(participants);
+          onBack={(updatedParticipants) => {
+            setParticipants(updatedParticipants);
             setCurrentView("MANAGE_AGENDA");
           }}
-          onCreate={(participants) => {
-            setParticipants(participants);
+          onAddParticipant={async (participantToAdd) => {
+            const { data, error } = await getParticipantInfoIfEmailIsRegistered(
+              participantToAdd.email
+            );
+
+            if (data) {
+              setParticipants([...participants, data]);
+              return data;
+            }
+
+            if (error) {
+              setParticipants([...participants, participantToAdd]);
+              return participantToAdd;
+            }
+          }}
+          onDeleteParticipant={(participantId) =>
+            setParticipants(participants.filter((p) => p.id !== participantId))
+          }
+          onCreate={async (updatedParticipants) => {
+            setParticipants(updatedParticipants);
             const meeting: Meeting = {
               id: generateRandomID(),
               title: meetingData!!.title,
@@ -86,21 +117,21 @@ const NewMeeting: NextPage = () => {
               createdBy: user!.id,
               completed: false,
               agenda: agendaItems,
-              participants: participants,
+              participants: updatedParticipants,
             };
 
-            const meetingCreation = async () => {
-              const { data, error } = await createMeeting(meeting);
+            setLoading(true);
+            const { data, error } = await createMeeting(meeting);
 
-              if (error) {
-                throw error;
-              }
+            if (error) {
+              setLoading(false);
+              throw error;
+            }
 
-              if (data) {
-                router.push("/");
-              }
-            };
-            meetingCreation();
+            if (data) {
+              setLoading(false);
+              router.push("/");
+            }
           }}
           onClose={() => router.push("/")}
         />

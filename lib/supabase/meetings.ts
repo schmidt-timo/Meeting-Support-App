@@ -1,4 +1,4 @@
-import { supabase } from ".";
+import { supabase } from "./config";
 import {
   Meeting,
   MeetingAgendaItem,
@@ -6,21 +6,22 @@ import {
 } from "../../utils/types";
 
 export const fetchAllMeetings = async () => {
-  return await supabase.from("meetings").select("*");
+  return await supabase
+    .from("meetings")
+    .select("*")
+    .order("startDate", { ascending: true });
 };
 
 export const fetchSingleMeeting = async (meetingId: string) => {
-  return await supabase.from("meetings").select("*").eq("id", meetingId);
+  return await supabase
+    .from("meetings")
+    .select("*")
+    .eq("id", meetingId)
+    .single();
 };
 
 export const createMeeting = async (meeting: Meeting) => {
-  return await supabase.from("meetings").insert([
-    {
-      ...meeting,
-      agenda: meeting.agenda?.map((a) => JSON.stringify(a)),
-      participants: meeting.participants?.map((p) => JSON.stringify(p)),
-    },
-  ]);
+  return await supabase.from("meetings").insert([meeting]);
 };
 
 export const updateAgenda = async (
@@ -37,12 +38,12 @@ export const updateAgenda = async (
 
 export const updateParticipants = async (
   meetingId: string,
-  participants: MeetingParticipant[]
+  newParticipants: MeetingParticipant[]
 ) => {
   return await supabase
     .from("meetings")
     .update({
-      participants: participants.map((p) => JSON.stringify(p)),
+      participants: newParticipants,
     })
     .match({ id: meetingId });
 };

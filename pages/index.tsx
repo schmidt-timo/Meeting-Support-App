@@ -3,24 +3,11 @@ import { useRouter } from "next/router";
 import MeetingOverviewPage from "../components/pages/MeetingOverviewPage";
 import { Meeting } from "../utils/types";
 import { useAuth } from "../lib/auth";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import { fetchAllMeetings } from "../lib/supabase/meetings";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data: meetingData, error } = await fetchAllMeetings();
-
-  let meetings: Meeting[] = [];
-
-  if (meetingData) {
-    meetingData.map((meeting) =>
-      meetings.push({
-        ...meeting,
-        agenda: meeting.agenda.map((agendaItem: any) => JSON.parse(agendaItem)),
-        participants: meeting.participants.map((participant: any) =>
-          JSON.parse(participant)
-        ),
-      })
-    );
-  }
+  const { data: meetings, error } = await fetchAllMeetings();
 
   if (error) {
     throw error;
@@ -37,9 +24,13 @@ type Props = {
   meetings: Meeting[];
 };
 
-const Home: NextPage<Props> = ({ meetings }) => {
+const MeetingOverview: NextPage<Props> = ({ meetings }) => {
   const router = useRouter();
   const { user } = useAuth();
+
+  if (!meetings) {
+    return <LoadingScreen />;
+  }
 
   return (
     <MeetingOverviewPage
@@ -53,4 +44,4 @@ const Home: NextPage<Props> = ({ meetings }) => {
   );
 };
 
-export default Home;
+export default MeetingOverview;

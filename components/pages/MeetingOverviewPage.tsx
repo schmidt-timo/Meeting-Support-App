@@ -49,16 +49,19 @@ const MeetingOverviewPage = ({
     >
       <div className="px-3 space-y-3">
         {meetings.length === 0 && (
-          <InfoTextBox title="New here?">
+          <InfoTextBox title="No meetings found">
             Add new meetings by using the QR code scanner with the button on the
             top or add them manually by entering the meeting ID. You can also
             create your own meetings by using the plus button.
           </InfoTextBox>
         )}
         {!!ownMeetings.length && (
-          <MeetingCategory title={MEETING_CATEGORY_LABELS.yourMeetings}>
+          <MeetingCategory
+            title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
+          >
             {ownMeetings.map((m) => (
               <MeetingInfoBox
+                userId={userId}
                 meeting={m}
                 key={m.id}
                 onEdit={() => router.push(`${m.id}/edit`)}
@@ -69,9 +72,11 @@ const MeetingOverviewPage = ({
           </MeetingCategory>
         )}
         {!!otherMeetings.length && (
-          <MeetingCategory title={MEETING_CATEGORY_LABELS.otherMeetings}>
+          <MeetingCategory
+            title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
+          >
             {otherMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} />
+              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
             ))}
           </MeetingCategory>
         )}

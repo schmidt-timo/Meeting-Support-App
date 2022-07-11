@@ -68,7 +68,7 @@ const NewMeetingPage = ({
           <LabelInputWrapper>
             <div className="w-full flex space-y-0 space-x-3 justify-between">
               <span className="w-full space-y-1">
-                <Label required icon="DATE">
+                <Label required icon="date">
                   Start Date
                 </Label>
                 <Input
@@ -85,7 +85,7 @@ const NewMeetingPage = ({
                 />
               </span>
               <span className="w-full space-y-1">
-                <Label required icon="TIME">
+                <Label required icon="time">
                   Start time
                 </Label>
                 <Input
@@ -118,7 +118,7 @@ const NewMeetingPage = ({
           <LabelInputWrapper>
             <div className="w-full flex space-y-0 space-x-3 justify-between">
               <span className="w-full space-y-1">
-                <Label required icon="DATE">
+                <Label required icon="date">
                   End Date
                 </Label>
                 <Input
@@ -135,7 +135,7 @@ const NewMeetingPage = ({
                 />
               </span>
               <span className="w-full space-y-1">
-                <Label required icon="TIME">
+                <Label required icon="time">
                   End time
                 </Label>
                 <Input
@@ -179,7 +179,7 @@ const NewMeetingPage = ({
           </LabelInputWrapper>
         </div>
         <div>
-          <Button highlighted type="submit">
+          <Button variant="highlighted" type="submit">
             {buttonText}
           </Button>
         </div>

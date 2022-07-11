@@ -6,23 +6,26 @@ import ParticipantItemInput from "../ParticipantItem/ParticipantItemInput";
 import ParticipantItem from "../ParticipantItem/ParticipantItem";
 import SubPageTemplate from "../templates/SubPageTemplate";
 import { ERROR_MESSAGES } from "../../utils/constants";
-import NotificationLabel from "../formElements/NotificationLabel";
 
 type ManageParticipantsContentProps = {
   userId: string;
   participants: MeetingParticipant[];
   buttonText: string;
-  onCreate: (items: MeetingParticipant[]) => void;
+  onCreate: (participants: MeetingParticipant[]) => void;
+  onAddParticipant: (
+    participant: MeetingParticipant
+  ) => Promise<MeetingParticipant>;
+  onDeleteParticipant: (participantId: string) => void;
 };
 
 const ManageParticipantsContent = ({
   userId,
-  participants: initialParticipants,
+  participants,
   buttonText,
   onCreate,
+  onAddParticipant,
+  onDeleteParticipant,
 }: ManageParticipantsContentProps) => {
-  const [participants, setParticipants] =
-    useState<MeetingParticipant[]>(initialParticipants);
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
@@ -30,21 +33,20 @@ const ManageParticipantsContent = ({
       <div className="space-y-5">
         <ParticipantItemInput
           errorMessage={errorMessage}
-          onAdd={(p) => {
-            const participantAlreadyExists =
-              participants.findIndex((pa) => pa.id === p.id) !== -1;
+          onAdd={(newParticipant) => {
+            onAddParticipant(newParticipant).then(() => {
+              const participantAlreadyExists =
+                participants.findIndex(
+                  (pa) => pa.email === newParticipant.email
+                ) !== -1;
 
-            if (participantAlreadyExists) {
-              setErrorMessage(ERROR_MESSAGES.PARTICIPANT_ALREADY_EXISTS);
-              setTimeout(() => {
-                setErrorMessage("");
-              }, 3000);
-            } else {
-              // TODO: Look up in address book and add with name
-              // also make sure participants can't be added twice
-              // else show name field
-              setParticipants([...participants, p]);
-            }
+              if (participantAlreadyExists) {
+                setErrorMessage(ERROR_MESSAGES.PARTICIPANT_ALREADY_EXISTS);
+                setTimeout(() => {
+                  setErrorMessage("");
+                }, 3000);
+              }
+            });
           }}
         />
         <div className="space-y-2">
@@ -54,17 +56,12 @@ const ManageParticipantsContent = ({
               userId={userId}
               key={p.id}
               participant={p}
-              onDelete={(participantId) => {
-                const updatedParticipants = participants.filter(
-                  (p) => p.id !== participantId
-                );
-                setParticipants(updatedParticipants);
-              }}
+              onDelete={onDeleteParticipant}
             />
           ))}
         </div>
       </div>
-      <Button highlighted onClick={() => onCreate(participants)}>
+      <Button variant="highlighted" onClick={() => onCreate(participants)}>
         {buttonText}
       </Button>
     </>
@@ -75,9 +72,13 @@ type Props = {
   userId: string;
   participants: MeetingParticipant[];
   buttonText: string;
-  onBack?: (items: MeetingParticipant[]) => void;
-  onCreate: (items: MeetingParticipant[]) => void;
+  onBack?: (participants: MeetingParticipant[]) => void;
+  onCreate: (participants: MeetingParticipant[]) => void;
   onClose: () => void;
+  onAddParticipant: (
+    participant: MeetingParticipant
+  ) => Promise<MeetingParticipant>;
+  onDeleteParticipant: (participantId: string) => void;
 };
 
 const ManageParticipants = ({
@@ -87,6 +88,8 @@ const ManageParticipants = ({
   buttonText,
   onCreate,
   onClose,
+  onAddParticipant,
+  onDeleteParticipant,
 }: Props) => {
   return (
     <>
@@ -101,6 +104,8 @@ const ManageParticipants = ({
             participants={participants}
             buttonText={buttonText}
             onCreate={onCreate}
+            onAddParticipant={onAddParticipant}
+            onDeleteParticipant={onDeleteParticipant}
           />
         </SubPageTemplate>
       ) : (
@@ -110,6 +115,8 @@ const ManageParticipants = ({
             participants={participants}
             buttonText={buttonText}
             onCreate={onCreate}
+            onAddParticipant={onAddParticipant}
+            onDeleteParticipant={onDeleteParticipant}
           />
         </SubPageTemplate>
       )}

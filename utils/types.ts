@@ -1,5 +1,15 @@
 import React from "react";
 
+// For components
+
+export type HeaderButton = {
+  id: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+};
+
+// For database
+
 export type MeetingAgendaItem = {
   id: string;
   title: string;
@@ -25,12 +35,6 @@ export type Meeting = {
   agenda?: MeetingAgendaItem[];
   participants?: MeetingParticipant[];
   completed: boolean;
-};
-
-export type HeaderButton = {
-  id: string;
-  icon: React.ReactNode;
-  onClick: () => void;
 };
 
 export type User = {

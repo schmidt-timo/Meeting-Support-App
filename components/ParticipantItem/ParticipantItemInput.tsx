@@ -25,7 +25,9 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ParticipantInputs>();
+  } = useForm<ParticipantInputs>({
+    criteriaMode: "all",
+  });
   const onSubmit = (data: ParticipantInputs) => {
     const participant: MeetingParticipant = {
       id: generateRandomID(),
@@ -39,6 +41,7 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
       <LabelInputWrapper>
         <Label>Add new participant</Label>
         <Input
+          autoFocus
           placeholder="example@domain.com"
           {...register("email", {
             required: ERROR_MESSAGES.IS_REQUIRED,
@@ -48,11 +51,13 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
             },
           })}
         />
-        <ErrorMessage fieldName="email" errors={errors} />
-        {!!errorMessage?.length && (
+        <ErrorMessage fieldName="email" errors={errors} multipleErrors />
+        {errorMessage && !!errorMessage.length && (
           <NotificationLabel>{errorMessage}</NotificationLabel>
         )}
-        <Button type="submit">Add participant</Button>
+        <Button type="submit" className="bg-gray-400">
+          Add participant
+        </Button>
       </LabelInputWrapper>
     </form>
   );

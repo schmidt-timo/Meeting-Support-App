@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import {
@@ -11,56 +12,54 @@ import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
 import Textarea from "../formElements/Textarea";
 import SubPageTemplate from "../templates/SubPageTemplate";
-
-export type MeetingDataInputs = {
-  title: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  location: string;
-  description: string;
-};
+import { MeetingDataInputs } from "./NewMeetingPage";
 
 type Props = {
-  meetingData?: MeetingDataInputs;
-  buttonText: string;
-  onNext: (meetingData: MeetingDataInputs) => void;
+  meetingData: any;
+  onSave: (meeting: MeetingDataInputs) => void;
   onClose: () => void;
 };
 
-const NewMeetingPage = ({
-  meetingData,
-  buttonText,
-  onNext,
-  onClose,
-}: Props) => {
+const EditMeetingPage = ({ meetingData, onSave, onClose }: Props) => {
   const {
     register,
     handleSubmit,
     watch,
+    formState,
     formState: { errors },
   } = useForm<MeetingDataInputs>({
     criteriaMode: "all",
     defaultValues: {
-      title: meetingData?.title,
-      startDate: meetingData?.startDate,
-      startTime: meetingData?.startTime,
-      endDate: meetingData?.endDate,
-      endTime: meetingData?.endTime,
+      title: meetingData.title,
+      startDate: meetingData.startDate.split("T")[0],
+      startTime: new Date(meetingData.startDate).toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      endDate: meetingData.endDate.split("T")[0],
+      endTime: new Date(meetingData.endDate).toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       location: meetingData?.location,
       description: meetingData?.description,
     },
   });
 
+  const valuesHaveChanged = formState.isDirty;
+
   const onSubmit = (data: MeetingDataInputs) => {
-    onNext(data);
+    if (valuesHaveChanged) {
+      onSave(data);
+    } else {
+      onClose();
+    }
   };
   const { startDate, startTime, endDate } = watch();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SubPageTemplate title="Create Meeting" onClose={onClose}>
+      <SubPageTemplate title="Edit Meeting" onClose={onClose}>
         <div className="space-y-3 pb-3">
           <LabelInputWrapper>
             <Label required>Meeting title</Label>
@@ -169,14 +168,14 @@ const NewMeetingPage = ({
             />
           </LabelInputWrapper>
         </div>
-        <div>
+        {
           <Button variant="highlighted" type="submit">
-            {buttonText}
+            Save
           </Button>
-        </div>
+        }
       </SubPageTemplate>
     </form>
   );
 };
 
-export default NewMeetingPage;
+export default EditMeetingPage;

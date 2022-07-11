@@ -12,6 +12,7 @@ export const MEETING_CATEGORY_LABELS = {
 export const ERROR_MESSAGES = {
   IS_REQUIRED: "This field is required",
   NOT_EMAIL_REGEX: "This is not an email address",
+  NOT_NUMBER_REGEX: "This is not a number",
   PASSWORD: {
     MIN_LENGTH: "Passwords must to have at least 6 characters",
     NO_MATCH: "Passwords do not match",

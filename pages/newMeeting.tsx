@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NewMeetingPage, {
-  NewMeetingInputs,
+  MeetingDataInputs,
 } from "../components/pages/NewMeetingPage";
 import ManageAgenda from "../components/pages/ManageAgenda";
 import { Meeting, MeetingAgendaItem, MeetingParticipant } from "../utils/types";
@@ -28,7 +28,7 @@ const NewMeeting: NextPage = () => {
   };
 
   const [currentView, setCurrentView] = useState<Views>("CREATE_MEETING");
-  const [meetingData, setMeetingData] = useState<NewMeetingInputs>();
+  const [meetingData, setMeetingData] = useState<MeetingDataInputs>();
   const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>([]);
   const [participants, setParticipants] = useState<MeetingParticipant[]>([
     initialParticipant,

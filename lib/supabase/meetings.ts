@@ -24,6 +24,19 @@ export const createMeeting = async (meeting: Meeting) => {
   return await supabase.from("meetings").insert([meeting]);
 };
 
+export const updateMeetingDetails = async (meeting: Meeting) => {
+  return await supabase
+    .from("meetings")
+    .update({
+      title: meeting.title,
+      startDate: meeting.startDate,
+      endDate: meeting.endDate,
+      location: meeting.location,
+      description: meeting.description,
+    })
+    .match({ id: meeting.id });
+};
+
 export const updateAgenda = async (
   meetingId: string,
   agendaItems: MeetingAgendaItem[]

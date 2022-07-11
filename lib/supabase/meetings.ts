@@ -26,12 +26,12 @@ export const createMeeting = async (meeting: Meeting) => {
 
 export const updateAgenda = async (
   meetingId: string,
-  agenda: MeetingAgendaItem[]
+  agendaItems: MeetingAgendaItem[]
 ) => {
   return await supabase
     .from("meetings")
     .update({
-      agenda: agenda.map((a) => JSON.stringify(a)),
+      agenda: agendaItems,
     })
     .match({ id: meetingId });
 };

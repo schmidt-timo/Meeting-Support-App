@@ -70,6 +70,21 @@ const NewMeeting: NextPage = () => {
             setCurrentView("MANAGE_PARTICIPANTS");
           }}
           onClose={() => router.push("/")}
+          onAddAgendaItem={(item) => {
+            return new Promise((resolve, reject) => {
+              setAgendaItems([...agendaItems, item]);
+              resolve();
+            });
+          }}
+          onUpdateAgendaItem={(item) => {
+            const index = agendaItems.findIndex((el) => el.id === item.id);
+            const updatedItems = agendaItems;
+            updatedItems[index] = item;
+            setAgendaItems(updatedItems);
+          }}
+          onDeleteAgendaItem={(itemId) => {
+            setAgendaItems(agendaItems.filter((item) => item.id !== itemId));
+          }}
         />
       )}
       {currentView === "MANAGE_PARTICIPANTS" && (

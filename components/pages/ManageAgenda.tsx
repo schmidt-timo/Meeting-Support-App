@@ -9,15 +9,19 @@ type ManageAgendaContentProps = {
   buttonText: string;
   agendaItems: MeetingAgendaItem[];
   onNext: (items: MeetingAgendaItem[]) => void;
+  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onDeleteAgendaItem: (itemId: string) => void;
 };
 
 const ManageAgendaContent = ({
-  agendaItems: initialItems,
+  agendaItems,
   buttonText,
   onNext,
+  onAddAgendaItem,
+  onUpdateAgendaItem,
+  onDeleteAgendaItem,
 }: ManageAgendaContentProps) => {
-  const [agendaItems, setAgendaItems] =
-    useState<MeetingAgendaItem[]>(initialItems);
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
 
   return (
@@ -27,24 +31,18 @@ const ManageAgendaContent = ({
           <AgendaItem
             agendaItem={a}
             key={a.id}
-            onDelete={(itemId) =>
-              setAgendaItems(agendaItems.filter((item) => item.id !== itemId))
-            }
-            onChange={(item) => {
-              const index = agendaItems.findIndex((el) => el.id === item.id);
-              const updatedItems = agendaItems;
-              updatedItems[index] = item;
-              setAgendaItems(updatedItems);
-            }}
+            onDelete={onDeleteAgendaItem}
+            onChange={onUpdateAgendaItem}
           />
         ))}
         {!showNewItemButton ? (
           <AgendaItemInput
             onAbort={() => setShowNewItemButton(true)}
-            onSave={(item) => {
-              setAgendaItems([...agendaItems, item]);
-              setShowNewItemButton(true);
-            }}
+            onSave={(item) =>
+              onAddAgendaItem(item).then(() => {
+                setShowNewItemButton(true);
+              })
+            }
           />
         ) : (
           <Button onClick={() => setShowNewItemButton(false)}>Add item</Button>
@@ -63,6 +61,9 @@ type Props = {
   buttonText: string;
   onNext: (items: MeetingAgendaItem[]) => void;
   onClose: () => void;
+  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onDeleteAgendaItem: (itemId: string) => void;
 };
 
 const ManageAgenda = ({
@@ -71,6 +72,9 @@ const ManageAgenda = ({
   buttonText,
   onNext,
   onClose,
+  onAddAgendaItem,
+  onUpdateAgendaItem,
+  onDeleteAgendaItem,
 }: Props) => {
   return (
     <>
@@ -84,6 +88,9 @@ const ManageAgenda = ({
             agendaItems={agendaItems}
             buttonText={buttonText}
             onNext={onNext}
+            onAddAgendaItem={onAddAgendaItem}
+            onUpdateAgendaItem={onUpdateAgendaItem}
+            onDeleteAgendaItem={onDeleteAgendaItem}
           />
         </SubPageTemplate>
       ) : (
@@ -92,6 +99,9 @@ const ManageAgenda = ({
             agendaItems={agendaItems}
             buttonText={buttonText}
             onNext={onNext}
+            onAddAgendaItem={onAddAgendaItem}
+            onUpdateAgendaItem={onUpdateAgendaItem}
+            onDeleteAgendaItem={onDeleteAgendaItem}
           />
         </SubPageTemplate>
       )}

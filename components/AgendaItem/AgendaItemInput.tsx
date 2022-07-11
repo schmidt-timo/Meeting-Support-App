@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { MdCheck, MdClose } from "react-icons/md";
+import { ERROR_MESSAGES } from "../../utils/constants";
 import { generateRandomID } from "../../utils/functions";
 import { MeetingAgendaItem } from "../../utils/types";
+import ErrorMessage from "../formElements/ErrorMessage";
 
 type AgendaInputs = {
   agendaItemTitle: string;
@@ -19,7 +21,6 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<AgendaInputs>();
   const onSubmit = (data: AgendaInputs) => {
@@ -38,9 +39,12 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
         <input
           className="w-full font-bold border p-0.5"
           placeholder="Title"
-          {...register("agendaItemTitle")}
+          {...register("agendaItemTitle", {
+            required: ERROR_MESSAGES.IS_REQUIRED,
+          })}
           defaultValue={agendaItem?.title}
         />
+        <ErrorMessage errors={errors} fieldName="agendaItemTitle" />
         <div className="w-full space-x-2 items-center flex">
           <input
             className="text-sm w-16 border p-0.5"

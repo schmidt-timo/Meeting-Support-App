@@ -5,7 +5,7 @@ import { MeetingParticipant } from "../../utils/types";
 type Props = {
   userId: string;
   participant: MeetingParticipant;
-  onDelete: (participantId: string) => void;
+  onDelete?: (participantId: string) => void;
 };
 
 const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
@@ -29,7 +29,7 @@ const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
           <p className="text-sm truncate">{participant.email}</p>
         </div>
       </div>
-      {participant.id !== userId && (
+      {onDelete && participant.id !== userId && (
         <button
           onClick={() => onDelete(participant.id)}
           className="bg-red-200 rounded-full w-7 h-7 flex justify-center items-center flex-shrink-0"

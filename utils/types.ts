@@ -30,8 +30,8 @@ export type Meeting = {
   endDate: Date;
   location?: string;
   description?: string;
-  agenda?: MeetingAgendaItem[];
-  participants?: MeetingParticipant[];
+  agenda: MeetingAgendaItem[];
+  participants: MeetingParticipant[];
   completed: boolean;
 };
 

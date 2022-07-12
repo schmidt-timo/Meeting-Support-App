@@ -2,7 +2,9 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import ManageParticipants from "../../components/pages/ManageParticipants";
+import ViewParticipants from "../../components/pages/ViewParticipants";
 import { useAuth } from "../../lib/auth";
 import {
   fetchSingleMeeting,
@@ -31,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       meetingId: meeting.id,
+      createdBy: meeting.createdBy,
       participants: meeting.participants,
     },
   };
@@ -38,15 +41,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 type Props = {
   meetingId: string;
+  createdBy: string;
   participants: MeetingParticipant[];
 };
 
 const EditParticipants: NextPage<Props> = ({
   meetingId,
+  createdBy,
   participants: initialParticipants,
 }) => {
   const { user } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [participants, setParticipants] =
     useState<MeetingParticipant[]>(initialParticipants);
 
@@ -72,8 +78,43 @@ const EditParticipants: NextPage<Props> = ({
     }
 
     // check if participants are already registered
-    checkParticipants().then((p) => setParticipants(p));
+    checkParticipants().then((p) => {
+      setParticipants(p);
+      setIsLoading(false);
+    });
   }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (createdBy !== user!.id) {
+    return (
+      <ViewParticipants
+        userId={user!.id}
+        participants={participants}
+        onClose={() => router.push("/")}
+        onDeclineMeeting={async () => {
+          const newParticipants = convertParticipantsForDatabase(
+            participants.filter((p) => p.id !== user!.id)
+          );
+
+          const { data, error } = await updateParticipants(
+            meetingId,
+            newParticipants
+          );
+
+          if (error) {
+            throw error;
+          }
+
+          if (data) {
+            router.push("/");
+          }
+        }}
+      />
+    );
+  }
 
   return (
     <ManageParticipants

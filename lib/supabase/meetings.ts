@@ -1,6 +1,7 @@
 import { supabase } from "./config";
 import {
   DatabaseMeeting,
+  DatabaseParticipant,
   MeetingAgendaItem,
   MeetingParticipant,
 } from "../../utils/types";
@@ -55,7 +56,7 @@ export const updateAgenda = async (
 
 export const updateParticipants = async (
   meetingId: string,
-  newParticipants: MeetingParticipant[]
+  newParticipants: DatabaseParticipant[]
 ) => {
   return await supabase
     .from("meetings")

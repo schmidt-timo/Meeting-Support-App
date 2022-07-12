@@ -97,7 +97,8 @@ const MeetingInfoBox = ({
     endDate: new Date(initialMeeting.endDate),
   };
 
-  const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 1;
+  const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 0;
+
   const isTheSameDay =
     meeting.startDate.toLocaleDateString("de-DE") ===
     meeting.endDate.toLocaleDateString("de-DE");

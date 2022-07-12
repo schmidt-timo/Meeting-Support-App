@@ -34,19 +34,19 @@ const ManageParticipantsContent = ({
         <ParticipantItemInput
           errorMessage={errorMessage}
           onAdd={(newParticipant) => {
-            onAddParticipant(newParticipant).then(() => {
-              const participantAlreadyExists =
-                participants.findIndex(
-                  (pa) => pa.email === newParticipant.email
-                ) !== -1;
+            const participantAlreadyExists =
+              participants.findIndex(
+                (pa) => pa.email === newParticipant.email
+              ) !== -1;
 
-              if (participantAlreadyExists) {
-                setErrorMessage(ERROR_MESSAGES.PARTICIPANT_ALREADY_EXISTS);
-                setTimeout(() => {
-                  setErrorMessage("");
-                }, 3000);
-              }
-            });
+            if (participantAlreadyExists) {
+              setErrorMessage(ERROR_MESSAGES.PARTICIPANT_ALREADY_EXISTS);
+              setTimeout(() => {
+                setErrorMessage("");
+              }, 3000);
+            } else {
+              onAddParticipant(newParticipant);
+            }
           }}
         />
         <div className="space-y-2">

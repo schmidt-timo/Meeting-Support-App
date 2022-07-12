@@ -24,6 +24,10 @@ export const createMeeting = async (meeting: Meeting) => {
   return await supabase.from("meetings").insert([meeting]);
 };
 
+export const deleteMeeting = async (meetingId: string) => {
+  return await supabase.from("meetings").delete().match({ id: meetingId });
+};
+
 export const updateMeetingDetails = async (meeting: Meeting) => {
   return await supabase
     .from("meetings")

@@ -2,9 +2,9 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-import MeetingCategory from "../../components/MeetingCategory/MeetingCategory";
 import EditMeetingPage from "../../components/pages/EditMeetingPage";
 import {
+  deleteMeeting,
   fetchSingleMeeting,
   updateMeetingDetails,
 } from "../../lib/supabase/meetings";
@@ -27,9 +27,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const EditMeeting: NextPage = ({ meeting }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
 
-  if (loading) {
+  if (!meeting) {
     return <LoadingScreen />;
   }
 
@@ -63,6 +63,17 @@ const EditMeeting: NextPage = ({ meeting }) => {
         }
       }}
       onClose={() => router.push("/")}
+      onDelete={async () => {
+        const { data, error } = await deleteMeeting(meeting.id);
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          router.push("/");
+        }
+      }}
     />
   );
 };

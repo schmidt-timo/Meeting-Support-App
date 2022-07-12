@@ -8,8 +8,6 @@ export type HeaderButton = {
   onClick: () => void;
 };
 
-// For database
-
 export type MeetingAgendaItem = {
   id: string;
   title: string;
@@ -41,4 +39,24 @@ export type User = {
   id: string;
   name: string;
   color: string;
+};
+
+// FOR DATABASE
+
+export type DatabaseParticipant = {
+  id: string;
+  email: string;
+};
+
+export type DatabaseMeeting = {
+  id: string;
+  createdBy: string;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  location?: string;
+  description?: string;
+  agenda: MeetingAgendaItem[];
+  participants: DatabaseParticipant[];
+  completed: boolean;
 };

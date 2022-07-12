@@ -14,6 +14,7 @@ const SubPageTemplate = ({ title, children, onClose, onBack }: Props) => {
       <div className="flex px-6 py-5 justify-between items-center space-x-3 truncate flex-shrink-0 sticky top-0 w-full bg-gray-200 z-20">
         {onBack && (
           <button
+            type="button"
             onClick={onBack}
             className="rounded-full p-1 bg-black hover:bg-black group"
           >
@@ -22,6 +23,7 @@ const SubPageTemplate = ({ title, children, onClose, onBack }: Props) => {
         )}
         <h1 className="font-bold text-xl truncate">{title}</h1>
         <button
+          type="button"
           onClick={onClose}
           className="rounded-full p-1 bg-black hover:bg-black group"
         >

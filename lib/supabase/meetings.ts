@@ -1,6 +1,6 @@
 import { supabase } from "./config";
 import {
-  Meeting,
+  DatabaseMeeting,
   MeetingAgendaItem,
   MeetingParticipant,
 } from "../../utils/types";
@@ -20,7 +20,7 @@ export const fetchSingleMeeting = async (meetingId: string) => {
     .single();
 };
 
-export const createMeeting = async (meeting: Meeting) => {
+export const createMeeting = async (meeting: DatabaseMeeting) => {
   return await supabase.from("meetings").insert([meeting]);
 };
 
@@ -28,7 +28,7 @@ export const deleteMeeting = async (meetingId: string) => {
   return await supabase.from("meetings").delete().match({ id: meetingId });
 };
 
-export const updateMeetingDetails = async (meeting: Meeting) => {
+export const updateMeetingDetails = async (meeting: DatabaseMeeting) => {
   return await supabase
     .from("meetings")
     .update({

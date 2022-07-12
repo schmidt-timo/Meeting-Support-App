@@ -15,6 +15,7 @@ import {
   formatMeetingTime,
   formatParticipantsText,
 } from "../../utils/formatting";
+import { isTheSameDay } from "../../utils/functions";
 import { Meeting } from "../../utils/types";
 
 type MeetingInfoBoxButtonProps = {
@@ -99,10 +100,6 @@ const MeetingInfoBox = ({
 
   const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 0;
 
-  const isTheSameDay =
-    meeting.startDate.toLocaleDateString("de-DE") ===
-    meeting.endDate.toLocaleDateString("de-DE");
-
   return (
     <div className="relative p-3 bg-gray-200 rounded-xl">
       {!meeting.completed && (
@@ -113,7 +110,7 @@ const MeetingInfoBox = ({
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
         {meeting.title}
       </p>
-      {isTheSameDay ? (
+      {isTheSameDay(meeting.startDate, meeting.endDate) ? (
         <>
           <InfoLine symbol="date">
             {formatMeetingDate(meeting.startDate)}

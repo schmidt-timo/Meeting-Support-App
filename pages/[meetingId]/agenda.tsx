@@ -1,12 +1,19 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
 import ManageAgenda from "../../components/pages/ManageAgenda";
 import { fetchSingleMeeting, updateAgenda } from "../../lib/supabase/meetings";
 import { arraysAreEqual } from "../../utils/functions";
 import { MeetingAgendaItem } from "../../utils/types";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+interface Params extends ParsedUrlQuery {
+  meetingId: string;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const params = context.params as Params;
+
   const { data: meeting, error } = await fetchSingleMeeting(params.meetingId);
 
   if (error) {

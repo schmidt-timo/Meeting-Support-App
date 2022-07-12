@@ -1,6 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import EditMeetingPage from "../../components/pages/EditMeetingPage";
 import {
@@ -9,7 +8,7 @@ import {
   updateMeetingDetails,
 } from "../../lib/supabase/meetings";
 import { convertStringsToDate } from "../../utils/functions";
-import { Meeting } from "../../utils/types";
+import { DatabaseMeeting, Meeting } from "../../utils/types";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { data: meeting, error } = await fetchSingleMeeting(params.meetingId);
@@ -27,7 +26,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const EditMeeting: NextPage = ({ meeting }) => {
   const router = useRouter();
-  const [showModal, setShowModal] = useState(false);
 
   if (!meeting) {
     return <LoadingScreen />;
@@ -37,7 +35,7 @@ const EditMeeting: NextPage = ({ meeting }) => {
     <EditMeetingPage
       meetingData={meeting}
       onSave={async (updatedMeeting) => {
-        const newMeeting: Meeting = {
+        const newMeeting: DatabaseMeeting = {
           ...meeting,
           title: updatedMeeting!!.title,
           startDate: convertStringsToDate(

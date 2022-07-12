@@ -4,7 +4,7 @@ import {
   filterMeetingsNotCreatedByUserId,
 } from "../../utils/filtering";
 import { Meeting } from "../../utils/types";
-import MeetingCategory from "../MeetingCategory/MeetingCategory";
+import Accordion from "../Accordion/Accordion";
 import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
 import PageTemplate from "../templates/PageTemplate";
 
@@ -26,22 +26,22 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
     >
       <div className="px-3 space-y-3">
         {!!ownMeetings.length && (
-          <MeetingCategory
+          <Accordion
             title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
           >
             {ownMeetings.map((m) => (
               <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
             ))}
-          </MeetingCategory>
+          </Accordion>
         )}
         {!!otherMeetings.length && (
-          <MeetingCategory
+          <Accordion
             title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
           >
             {otherMeetings.map((m) => (
               <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
             ))}
-          </MeetingCategory>
+          </Accordion>
         )}
       </div>
     </PageTemplate>

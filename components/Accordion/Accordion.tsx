@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const MeetingCategory = ({ title, children }: Props) => {
+const Accordion = ({ title, children }: Props) => {
   const [collapsed, setCollapsed] = React.useState<Boolean>(false);
 
   return (
@@ -28,4 +28,4 @@ const MeetingCategory = ({ title, children }: Props) => {
   );
 };
 
-export default MeetingCategory;
+export default Accordion;

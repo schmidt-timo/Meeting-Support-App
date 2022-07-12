@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
 import ManageParticipants from "../../components/pages/ManageParticipants";
 import { useAuth } from "../../lib/auth";
@@ -8,10 +9,19 @@ import {
   updateParticipants,
 } from "../../lib/supabase/meetings";
 import { getParticipantInfoIfEmailIsRegistered } from "../../lib/supabase/users";
-import { arraysAreEqual } from "../../utils/functions";
+import {
+  arraysAreEqual,
+  convertParticipantsForDatabase,
+} from "../../utils/functions";
 import { MeetingParticipant } from "../../utils/types";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+interface Params extends ParsedUrlQuery {
+  meetingId: string;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const params = context.params as Params;
+
   const { data: meeting, error } = await fetchSingleMeeting(params.meetingId);
 
   if (error) {
@@ -41,7 +51,7 @@ const EditParticipants: NextPage<Props> = ({
     useState<MeetingParticipant[]>(initialParticipants);
 
   useEffect(() => {
-    async function checkParticipants() {
+    async function checkParticipants(): Promise<MeetingParticipant[]> {
       return new Promise(async (resolve, reject) => {
         let temp: MeetingParticipant[] = [];
         for (const p of participants) {
@@ -72,7 +82,12 @@ const EditParticipants: NextPage<Props> = ({
       buttonText="Save"
       onCreate={async (p) => {
         if (!arraysAreEqual(initialParticipants, p)) {
-          const { data, error } = await updateParticipants(meetingId, p);
+          const newParticipants = convertParticipantsForDatabase(p);
+
+          const { data, error } = await updateParticipants(
+            meetingId,
+            newParticipants
+          );
 
           if (error) {
             throw error;

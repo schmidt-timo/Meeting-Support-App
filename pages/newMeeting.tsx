@@ -5,9 +5,17 @@ import NewMeetingPage, {
   MeetingDataInputs,
 } from "../components/pages/NewMeetingPage";
 import ManageAgenda from "../components/pages/ManageAgenda";
-import { Meeting, MeetingAgendaItem, MeetingParticipant } from "../utils/types";
+import {
+  DatabaseMeeting,
+  MeetingAgendaItem,
+  MeetingParticipant,
+} from "../utils/types";
 import ManageParticipants from "../components/pages/ManageParticipants";
-import { convertStringsToDate, generateRandomID } from "../utils/functions";
+import {
+  convertParticipantsForDatabase,
+  convertStringsToDate,
+  generateRandomID,
+} from "../utils/functions";
 import { createMeeting } from "../lib/supabase/meetings";
 import { useAuth } from "../lib/auth";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
@@ -116,8 +124,9 @@ const NewMeeting: NextPage = () => {
           }
           onCreate={async (updatedParticipants) => {
             setParticipants(updatedParticipants);
-            const meeting: Meeting = {
+            const meeting: DatabaseMeeting = {
               id: generateRandomID(),
+              createdBy: user!.id,
               title: meetingData!!.title,
               startDate: convertStringsToDate(
                 meetingData!!.startDate,
@@ -129,10 +138,9 @@ const NewMeeting: NextPage = () => {
               ),
               location: meetingData?.location,
               description: meetingData?.description,
-              createdBy: user!.id,
-              completed: false,
               agenda: agendaItems,
-              participants: updatedParticipants,
+              participants: convertParticipantsForDatabase(updatedParticipants),
+              completed: false,
             };
 
             setLoading(true);

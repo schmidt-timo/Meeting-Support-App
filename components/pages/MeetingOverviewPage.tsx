@@ -7,7 +7,7 @@ import {
 } from "../../utils/filtering";
 import { Meeting } from "../../utils/types";
 import InfoTextBox from "../InfoTextBox/InfoTextBox";
-import MeetingCategory from "../MeetingCategory/MeetingCategory";
+import Accordion from "../Accordion/Accordion";
 import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
 import PageTemplate from "../templates/PageTemplate";
 
@@ -56,29 +56,35 @@ const MeetingOverviewPage = ({
           </InfoTextBox>
         )}
         {!!ownMeetings.length && (
-          <MeetingCategory
+          <Accordion
             title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
           >
             {ownMeetings.map((m) => (
               <MeetingInfoBox
+                key={m.id}
                 userId={userId}
                 meeting={m}
-                key={m.id}
                 onEdit={() => router.push(`${m.id}/edit`)}
                 onManageAgenda={() => router.push(`${m.id}/agenda`)}
                 onManageParticipants={() => router.push(`${m.id}/participants`)}
               />
             ))}
-          </MeetingCategory>
+          </Accordion>
         )}
         {!!otherMeetings.length && (
-          <MeetingCategory
+          <Accordion
             title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
           >
             {otherMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
+              <MeetingInfoBox
+                key={m.id}
+                userId={userId}
+                meeting={m}
+                onManageParticipants={() => router.push(`${m.id}/participants`)}
+                onViewDetails={() => router.push(`${m.id}/details`)}
+              />
             ))}
-          </MeetingCategory>
+          </Accordion>
         )}
       </div>
     </PageTemplate>

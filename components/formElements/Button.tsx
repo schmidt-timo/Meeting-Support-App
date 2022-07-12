@@ -1,18 +1,32 @@
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
-  highlighted?: boolean;
+  variant?: "normal" | "highlighted" | "red";
   className?: string;
+  type?: string;
   onClick?: () => void;
 };
 
-const Button = ({ children, highlighted, className, onClick }: Props) => {
+const Button = ({
+  children,
+  variant = "normal",
+  className,
+  type,
+  onClick,
+}: Props) => {
   return (
     <button
-      className={`w-full rounded-xl text-white font-medium px-3 py-2 outline-0 ${
-        highlighted
-          ? "bg-gray-700 hover:bg-black"
-          : "bg-gray-400 hover:bg-gray-500"
-      } ${className}`}
+      type={type}
+      className={`w-full rounded-xl text-sm px-3 h-input outline-0 flex-shrink-0
+      ${
+        variant === "normal" &&
+        "bg-gray-300 hover:bg-gray-400 hover:text-white text-black"
+      }
+      ${variant === "highlighted" && "bg-gray-700 hover:bg-black text-white"}
+      ${
+        variant === "red" &&
+        "bg-red-200 hover:bg-red-300 text-red-500 font-medium"
+      }
+      ${className}`}
       onClick={onClick}
     >
       {children}

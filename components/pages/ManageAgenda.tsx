@@ -1,23 +1,28 @@
 import { useState } from "react";
+import { MdAddCircle } from "react-icons/md";
 import { MeetingAgendaItem } from "../../utils/types";
 import AgendaItem from "../AgendaItem/AgendaItem";
 import AgendaItemInput from "../AgendaItem/AgendaItemInput";
 import Button from "../formElements/Button";
-import SubviewBuilder from "../SubviewBuilder/SubviewBuilder";
+import SubPageTemplate from "../templates/SubPageTemplate";
 
 type ManageAgendaContentProps = {
   buttonText: string;
   agendaItems: MeetingAgendaItem[];
   onNext: (items: MeetingAgendaItem[]) => void;
+  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onDeleteAgendaItem: (itemId: string) => void;
 };
 
 const ManageAgendaContent = ({
-  agendaItems: initialItems,
+  agendaItems,
   buttonText,
   onNext,
+  onAddAgendaItem,
+  onUpdateAgendaItem,
+  onDeleteAgendaItem,
 }: ManageAgendaContentProps) => {
-  const [agendaItems, setAgendaItems] =
-    useState<MeetingAgendaItem[]>(initialItems);
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
 
   return (
@@ -27,30 +32,31 @@ const ManageAgendaContent = ({
           <AgendaItem
             agendaItem={a}
             key={a.id}
-            onDelete={(itemId) =>
-              setAgendaItems(agendaItems.filter((item) => item.id !== itemId))
-            }
-            onChange={(item) => {
-              const index = agendaItems.findIndex((el) => el.id === item.id);
-              const updatedItems = agendaItems;
-              updatedItems[index] = item;
-              setAgendaItems(updatedItems);
-            }}
+            onDelete={onDeleteAgendaItem}
+            onChange={onUpdateAgendaItem}
           />
         ))}
         {!showNewItemButton ? (
           <AgendaItemInput
             onAbort={() => setShowNewItemButton(true)}
-            onSave={(item) => {
-              setAgendaItems([...agendaItems, item]);
-              setShowNewItemButton(true);
-            }}
+            onSave={(item) =>
+              onAddAgendaItem(item).then(() => {
+                setShowNewItemButton(true);
+              })
+            }
           />
         ) : (
-          <Button onClick={() => setShowNewItemButton(false)}>Add item</Button>
+          <Button
+            onClick={() => setShowNewItemButton(false)}
+            className="flex items-center justify-center space-x-2"
+          >
+            <MdAddCircle className="w-5 h-5 text-gray-600" />
+            <p>Add item</p>
+          </Button>
         )}
       </div>
-      <Button highlighted onClick={() => onNext(agendaItems)}>
+
+      <Button variant="highlighted" onClick={() => onNext(agendaItems)}>
         {buttonText}
       </Button>
     </>
@@ -63,6 +69,9 @@ type Props = {
   buttonText: string;
   onNext: (items: MeetingAgendaItem[]) => void;
   onClose: () => void;
+  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onDeleteAgendaItem: (itemId: string) => void;
 };
 
 const ManageAgenda = ({
@@ -71,11 +80,14 @@ const ManageAgenda = ({
   buttonText,
   onNext,
   onClose,
+  onAddAgendaItem,
+  onUpdateAgendaItem,
+  onDeleteAgendaItem,
 }: Props) => {
   return (
     <>
       {onBack ? (
-        <SubviewBuilder
+        <SubPageTemplate
           title="Manage agenda"
           onBack={() => onBack(agendaItems)}
           onClose={onClose}
@@ -84,16 +96,22 @@ const ManageAgenda = ({
             agendaItems={agendaItems}
             buttonText={buttonText}
             onNext={onNext}
+            onAddAgendaItem={onAddAgendaItem}
+            onUpdateAgendaItem={onUpdateAgendaItem}
+            onDeleteAgendaItem={onDeleteAgendaItem}
           />
-        </SubviewBuilder>
+        </SubPageTemplate>
       ) : (
-        <SubviewBuilder title="Manage agenda" onClose={onClose}>
+        <SubPageTemplate title="Manage agenda" onClose={onClose}>
           <ManageAgendaContent
             agendaItems={agendaItems}
             buttonText={buttonText}
             onNext={onNext}
+            onAddAgendaItem={onAddAgendaItem}
+            onUpdateAgendaItem={onUpdateAgendaItem}
+            onDeleteAgendaItem={onDeleteAgendaItem}
           />
-        </SubviewBuilder>
+        </SubPageTemplate>
       )}
     </>
   );

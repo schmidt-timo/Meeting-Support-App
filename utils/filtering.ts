@@ -19,5 +19,8 @@ export function filterMeetingsNotCreatedByUserId(
   meetings: Meeting[],
   userId: string
 ) {
-  return meetings.filter((m) => m.createdBy !== userId);
+  const meetingsNotCreatedByMe = meetings.filter((m) => m.createdBy !== userId);
+  return meetingsNotCreatedByMe.filter((m) =>
+    m.participants?.find((p) => p.id === userId)
+  );
 }

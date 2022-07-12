@@ -1,5 +1,13 @@
 import React from "react";
 
+// For components
+
+export type HeaderButton = {
+  id: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+};
+
 export type MeetingAgendaItem = {
   id: string;
   title: string;
@@ -9,8 +17,9 @@ export type MeetingAgendaItem = {
 
 export type MeetingParticipant = {
   id: string;
-  name?: string;
   email: string;
+  name?: string;
+  color?: string;
 };
 
 export type Meeting = {
@@ -21,20 +30,33 @@ export type Meeting = {
   endDate: Date;
   location?: string;
   description?: string;
-  agenda?: MeetingAgendaItem[];
-  participants?: MeetingParticipant[];
+  agenda: MeetingAgendaItem[];
+  participants: MeetingParticipant[];
   completed: boolean;
-};
-
-export type HeaderButton = {
-  id: string;
-  icon: React.ReactNode;
-  onClick: () => void;
 };
 
 export type User = {
   id: string;
   name: string;
+  color: string;
+};
+
+// FOR DATABASE
+
+export type DatabaseParticipant = {
+  id: string;
   email: string;
-  knownParticipants: MeetingParticipant[];
+};
+
+export type DatabaseMeeting = {
+  id: string;
+  createdBy: string;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  location?: string;
+  description?: string;
+  agenda: MeetingAgendaItem[];
+  participants: DatabaseParticipant[];
+  completed: boolean;
 };

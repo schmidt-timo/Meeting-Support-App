@@ -36,8 +36,7 @@ type Props = {
 };
 
 const MobileNavigation = ({ activeItemId, onClick }: Props) => {
-  const router = useRouter();
-  const [activeItem, setActiveItem] = React.useState<string>(activeItemId);
+  const activeItem = activeItemId;
 
   return (
     <div className="fixed bottom-0 w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10">
@@ -63,7 +62,8 @@ const MobileNavigation = ({ activeItemId, onClick }: Props) => {
         ) : (
           <MdInsertChartOutlined className="w-5 h-5 text-gray-500" />
         )}
-        <p>Meeting Reports</p>
+        <p className="mobileSM:hidden">Reports</p>
+        <p className="hidden mobileSM:inline-flex">Meeting Reports</p>
       </NavItem>
       <NavItem
         active={activeItem === NAVIGATION_IDS.profile}

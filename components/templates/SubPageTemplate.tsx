@@ -8,31 +8,35 @@ type Props = {
   onBack?: () => void;
 };
 
-const SubviewBuilder = ({ title, children, onClose, onBack }: Props) => {
+const SubPageTemplate = ({ title, children, onClose, onBack }: Props) => {
   return (
-    <div className="w-full h-screen flex flex-col bg-gray-200 px-6">
-      <div className="flex py-5 justify-between items-center space-x-3">
+    <div className="w-full h-screen flex flex-col bg-gray-200">
+      <div className="flex px-6 py-5 justify-between items-center space-x-3 truncate flex-shrink-0 sticky top-0 w-full bg-gray-200 z-20">
         {onBack && (
           <button
+            type="button"
             onClick={onBack}
             className="rounded-full p-1 bg-black hover:bg-black group"
           >
             <MdKeyboardBackspace className="text-white w-6 h-6 group-hover:text-white" />
           </button>
         )}
-        <h1 className="font-bold text-xl">{title}</h1>
+        <h1 className="font-bold text-xl truncate">{title}</h1>
         <button
+          type="button"
           onClick={onClose}
           className="rounded-full p-1 bg-black hover:bg-black group"
         >
           <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
         </button>
       </div>
-      <div className="w-full flex flex-col flex-1 justify-between pb-6">
-        {children}
+      <div className="w-full flex flex-col flex-1 bg-gray-200">
+        <div className="flex h-full flex-col justify-between px-6 pb-6 overflow-y-scroll">
+          {children}
+        </div>
       </div>
     </div>
   );
 };
 
-export default SubviewBuilder;
+export default SubPageTemplate;

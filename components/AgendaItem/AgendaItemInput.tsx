@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { MdCheck, MdClose } from "react-icons/md";
-import { generateAgendaItemId } from "../../utils/functions";
+import { ERROR_MESSAGES } from "../../utils/constants";
+import { generateRandomID } from "../../utils/functions";
+import { validateNumberRegex } from "../../utils/regex";
 import { MeetingAgendaItem } from "../../utils/types";
+import ErrorMessage from "../formElements/ErrorMessage";
 
 type AgendaInputs = {
   agendaItemTitle: string;
@@ -19,12 +22,11 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<AgendaInputs>();
   const onSubmit = (data: AgendaInputs) => {
     const item: MeetingAgendaItem = {
-      id: agendaItem?.id ?? generateAgendaItemId(),
+      id: agendaItem?.id ?? generateRandomID(),
       title: data.agendaItemTitle,
       duration: data.agendaItemDuration,
       description: data.agendaItemDescription,
@@ -38,28 +40,34 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
         <input
           className="w-full font-bold border p-0.5"
           placeholder="Title"
-          {...register("agendaItemTitle")}
+          {...register("agendaItemTitle", {
+            required: ERROR_MESSAGES.IS_REQUIRED,
+          })}
           defaultValue={agendaItem?.title}
         />
+        <ErrorMessage errors={errors} fieldName="agendaItemTitle" />
         <div className="w-full space-x-2 items-center flex">
           <input
             className="text-sm w-16 border p-0.5"
             placeholder="Duration"
-            {...register("agendaItemDuration")}
+            {...register("agendaItemDuration", {
+              pattern: {
+                value: validateNumberRegex,
+                message: ERROR_MESSAGES.NOT_NUMBER_REGEX,
+              },
+            })}
             defaultValue={agendaItem?.duration}
           />
           <p className="text-sm">min</p>
         </div>
+        <ErrorMessage errors={errors} fieldName="agendaItemDuration" />
         <textarea
-          className="w-full text-xs border p-0.5 resize-none"
+          className="w-full text-xs border p-0.5"
           style={{ minHeight: "40px" }}
           placeholder="Description"
           {...register("agendaItemDescription")}
           defaultValue={agendaItem?.description}
         />
-
-        {/* <p className="text-xs">{agendaItem.description}</p> */}
-
         <div className="space-x-2 flex justify-end pt-2">
           <button
             type="submit"

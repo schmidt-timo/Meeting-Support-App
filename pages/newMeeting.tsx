@@ -2,30 +2,58 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NewMeetingPage, {
-  NewMeetingInputs,
-} from "../components/views/NewMeetingPage";
-import ManageAgenda from "../components/views/ManageAgenda";
-import { Meeting, MeetingAgendaItem, MeetingParticipant } from "../utils/types";
-import ManageParticipants from "../components/views/ManageParticipants";
-import { exampleParticipant } from "../utils/exampleData";
-import { generateMeetingId } from "../utils/functions";
+  MeetingDataInputs,
+} from "../components/pages/NewMeetingPage";
+import ManageAgenda from "../components/pages/ManageAgenda";
+import {
+  DatabaseMeeting,
+  MeetingAgendaItem,
+  MeetingParticipant,
+} from "../utils/types";
+import ManageParticipants from "../components/pages/ManageParticipants";
+import {
+  convertParticipantsForDatabase,
+  convertStringsToDate,
+  generateRandomID,
+} from "../utils/functions";
+import { createMeeting } from "../lib/supabase/meetings";
+import { useAuth } from "../lib/auth";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+import {
+  getParticipantInfo,
+  getParticipantInfoIfEmailIsRegistered,
+} from "../lib/supabase/users";
 
 type Views = "CREATE_MEETING" | "MANAGE_AGENDA" | "MANAGE_PARTICIPANTS";
 
 const NewMeeting: NextPage = () => {
-  const currentUserId = "timoschmidt"; //TODO: Get current user id
+  const { user } = useAuth();
   const router = useRouter();
+
+  const initialParticipant = {
+    id: user!.id,
+    email: user!.email!,
+  };
+
   const [currentView, setCurrentView] = useState<Views>("CREATE_MEETING");
-  const [meetingData, setMeetingData] = useState<NewMeetingInputs>();
+  const [meetingData, setMeetingData] = useState<MeetingDataInputs>();
   const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>([]);
-  const [participants, setParticipants] = useState<MeetingParticipant[]>([]);
+  const [participants, setParticipants] = useState<MeetingParticipant[]>([
+    initialParticipant,
+  ]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setParticipants([...participants, exampleParticipant]); // TODO: add current registered user automatically to participants list
+    // retrieve current user data and replace initial participant
+    getParticipantInfo(user!.id).then((p) => {
+      setParticipants([p]);
+    });
   }, []);
 
   return (
     <>
+      {loading && <LoadingScreen />}
+
       {currentView === "CREATE_MEETING" && (
         <NewMeetingPage
           meetingData={meetingData}
@@ -50,40 +78,83 @@ const NewMeeting: NextPage = () => {
             setCurrentView("MANAGE_PARTICIPANTS");
           }}
           onClose={() => router.push("/")}
+          onAddAgendaItem={(item) => {
+            return new Promise((resolve, reject) => {
+              setAgendaItems([...agendaItems, item]);
+              resolve();
+            });
+          }}
+          onUpdateAgendaItem={(item) => {
+            const index = agendaItems.findIndex((el) => el.id === item.id);
+            const updatedItems = agendaItems;
+            updatedItems[index] = item;
+            setAgendaItems(updatedItems);
+          }}
+          onDeleteAgendaItem={(itemId) => {
+            setAgendaItems(agendaItems.filter((item) => item.id !== itemId));
+          }}
         />
       )}
       {currentView === "MANAGE_PARTICIPANTS" && (
         <ManageParticipants
+          userId={user!.id}
           participants={participants}
           buttonText="Create Meeting"
-          onBack={(participants) => {
-            setParticipants(participants);
+          onBack={(updatedParticipants) => {
+            setParticipants(updatedParticipants);
             setCurrentView("MANAGE_AGENDA");
           }}
-          onCreate={(participants) => {
-            setParticipants(participants);
-            const meeting: Meeting = {
-              id: generateMeetingId(),
-              title: meetingData!!.meetingTitle,
-              startDate: new Date(
-                `${meetingData!!.meetingStartDate}T${
-                  meetingData!!.meetingStartTime
-                }`
+          onAddParticipant={async (participantToAdd) => {
+            const { data, error } = await getParticipantInfoIfEmailIsRegistered(
+              participantToAdd.email
+            );
+
+            if (data) {
+              setParticipants([...participants, data]);
+              return data;
+            }
+
+            if (error) {
+              setParticipants([...participants, participantToAdd]);
+              return participantToAdd;
+            }
+          }}
+          onDeleteParticipant={(participantId) =>
+            setParticipants(participants.filter((p) => p.id !== participantId))
+          }
+          onCreate={async (updatedParticipants) => {
+            setParticipants(updatedParticipants);
+            const meeting: DatabaseMeeting = {
+              id: generateRandomID(),
+              createdBy: user!.id,
+              title: meetingData!!.title,
+              startDate: convertStringsToDate(
+                meetingData!!.startDate,
+                meetingData!!.startTime
               ),
-              endDate: new Date(
-                `${meetingData!!.meetingEndDate}T${
-                  meetingData!!.meetingEndTime
-                }`
+              endDate: convertStringsToDate(
+                meetingData!!.endDate,
+                meetingData!!.endTime
               ),
-              location: meetingData?.meetingLocation,
-              description: meetingData?.meetingDescription,
-              createdBy: currentUserId,
-              completed: false,
+              location: meetingData?.location,
+              description: meetingData?.description,
               agenda: agendaItems,
-              participants: participants,
+              participants: convertParticipantsForDatabase(updatedParticipants),
+              completed: false,
             };
-            console.log(meeting);
-            // TODO: Add meeting and go back to overview page
+
+            setLoading(true);
+            const { data, error } = await createMeeting(meeting);
+
+            if (error) {
+              setLoading(false);
+              throw error;
+            }
+
+            if (data) {
+              setLoading(false);
+              router.push("/");
+            }
           }}
           onClose={() => router.push("/")}
         />

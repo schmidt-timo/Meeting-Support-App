@@ -7,9 +7,9 @@ import {
 } from "../../utils/filtering";
 import { Meeting } from "../../utils/types";
 import InfoTextBox from "../InfoTextBox/InfoTextBox";
-import MeetingCategory from "../MeetingCategory/MeetingCategory";
+import Accordion from "../Accordion/Accordion";
 import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
-import ViewBuilder from "../ViewBuilder/ViewBuilder";
+import PageTemplate from "../templates/PageTemplate";
 
 type Props = {
   userId: string;
@@ -29,7 +29,7 @@ const MeetingOverviewPage = ({
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
   return (
-    <ViewBuilder
+    <PageTemplate
       header={{
         title: "Meetings",
         buttons: [
@@ -49,34 +49,45 @@ const MeetingOverviewPage = ({
     >
       <div className="px-3 space-y-3">
         {meetings.length === 0 && (
-          <InfoTextBox title="New here?">
+          <InfoTextBox title="No meetings found">
             Add new meetings by using the QR code scanner with the button on the
             top or add them manually by entering the meeting ID. You can also
             create your own meetings by using the plus button.
           </InfoTextBox>
         )}
         {!!ownMeetings.length && (
-          <MeetingCategory title={MEETING_CATEGORY_LABELS.yourMeetings}>
+          <Accordion
+            title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
+          >
             {ownMeetings.map((m) => (
               <MeetingInfoBox
-                meeting={m}
                 key={m.id}
+                userId={userId}
+                meeting={m}
                 onEdit={() => router.push(`${m.id}/edit`)}
                 onManageAgenda={() => router.push(`${m.id}/agenda`)}
                 onManageParticipants={() => router.push(`${m.id}/participants`)}
               />
             ))}
-          </MeetingCategory>
+          </Accordion>
         )}
         {!!otherMeetings.length && (
-          <MeetingCategory title={MEETING_CATEGORY_LABELS.otherMeetings}>
+          <Accordion
+            title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
+          >
             {otherMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} />
+              <MeetingInfoBox
+                key={m.id}
+                userId={userId}
+                meeting={m}
+                onManageParticipants={() => router.push(`${m.id}/participants`)}
+                onViewDetails={() => router.push(`${m.id}/details`)}
+              />
             ))}
-          </MeetingCategory>
+          </Accordion>
         )}
       </div>
-    </ViewBuilder>
+    </PageTemplate>
   );
 };
 

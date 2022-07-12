@@ -15,7 +15,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const ViewBuilder = ({ header, activeNavItemId, children }: Props) => {
+const PageTemplate = ({ header, activeNavItemId, children }: Props) => {
   const router = useRouter();
   const [activeNavItem, setActiveNavItem] = React.useState(activeNavItemId);
 
@@ -53,4 +53,4 @@ const ViewBuilder = ({ header, activeNavItemId, children }: Props) => {
   );
 };
 
-export default ViewBuilder;
+export default PageTemplate;

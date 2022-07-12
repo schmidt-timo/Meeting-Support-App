@@ -15,11 +15,12 @@ import {
   formatMeetingTime,
   formatParticipantsText,
 } from "../../utils/formatting";
+import { isTheSameDay } from "../../utils/functions";
 import { Meeting } from "../../utils/types";
 
 type MeetingInfoBoxButtonProps = {
-  symbol?: "EDIT" | "WATCH" | "AGENDA" | "PARTICIPANTS";
-  color?: "RED" | "GREEN";
+  symbol?: "edit" | "watch" | "agenda" | "participants";
+  color?: "red" | "green";
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
@@ -35,35 +36,35 @@ const MeetingInfoBoxButton = ({
   return (
     <button
       className={`rounded-xl px-2.5 py-1 bg-white hover:bg-gray-300 min-w-xs max-w-xl
-      ${color === "GREEN" && "bg-green-300"} 
-      ${color === "RED" && "bg-red-300"}
+      ${color === "green" && "bg-green-300"} 
+      ${color === "red" && "bg-red-300"}
       ${symbol && "flex items-center justify-center space-x-1"}
       ${className}
       `}
       onClick={onClick}
     >
-      {symbol === "EDIT" && <MdMode className="w-3.5 h-3.5" />}
-      {symbol === "WATCH" && <MdRemoveRedEye className="w-3.5 h-3.5" />}
-      {symbol === "AGENDA" && <MdAssignment className="w-3.5 h-3.5" />}
-      {symbol === "PARTICIPANTS" && <MdPeople className="w-3.5 h-3.5" />}
+      {symbol === "edit" && <MdMode className="w-3.5 h-3.5" />}
+      {symbol === "watch" && <MdRemoveRedEye className="w-3.5 h-3.5" />}
+      {symbol === "agenda" && <MdAssignment className="w-3.5 h-3.5" />}
+      {symbol === "participants" && <MdPeople className="w-3.5 h-3.5" />}
       <p className="font-medium truncate text-xs">{children}</p>
     </button>
   );
 };
 
 type InfoLineProps = {
-  symbol: "DATE" | "TIME" | "LOCATION";
+  symbol: "date" | "time" | "location";
   children: React.ReactNode;
 };
 
 const InfoLine = ({ symbol, children }: InfoLineProps) => {
   return (
     <span className="flex items-center space-x-1">
-      {symbol === "DATE" && (
+      {symbol === "date" && (
         <MdCalendarToday className="h-2.5 w-3 text-gray-500" />
       )}
-      {symbol === "TIME" && <MdAccessTime className="h-3 w-3 text-gray-500" />}
-      {symbol === "LOCATION" && (
+      {symbol === "time" && <MdAccessTime className="h-3 w-3 text-gray-500" />}
+      {symbol === "location" && (
         <MdOutlineLocationOn className="h-3 w-3 text-gray-500" />
       )}
       <p className="text-xs">{children}</p>
@@ -73,6 +74,7 @@ const InfoLine = ({ symbol, children }: InfoLineProps) => {
 
 type Props = {
   meeting: Meeting;
+  userId: string;
   onEdit?: () => void;
   onManageAgenda?: () => void;
   onManageParticipants?: () => void;
@@ -81,15 +83,22 @@ type Props = {
 };
 
 const MeetingInfoBox = ({
-  meeting,
+  meeting: initialMeeting,
+  userId,
   onEdit,
   onManageAgenda,
   onManageParticipants,
   onViewDetails,
   onViewReport,
 }: Props) => {
-  const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 1;
-  console.log(meeting);
+  // Fix dates
+  const meeting = {
+    ...initialMeeting,
+    startDate: new Date(initialMeeting.startDate),
+    endDate: new Date(initialMeeting.endDate),
+  };
+
+  const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 0;
 
   return (
     <div className="relative p-3 bg-gray-200 rounded-xl">
@@ -101,58 +110,86 @@ const MeetingInfoBox = ({
       <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
         {meeting.title}
       </p>
-      <InfoLine symbol="DATE">{formatMeetingDate(meeting.startDate)}</InfoLine>
-      <InfoLine symbol="TIME">
-        {formatMeetingTime(meeting.startDate, meeting.endDate)}
-      </InfoLine>
+      {isTheSameDay(meeting.startDate, meeting.endDate) ? (
+        <>
+          <InfoLine symbol="date">
+            {formatMeetingDate(meeting.startDate)}
+          </InfoLine>
+          <InfoLine symbol="time">
+            {formatMeetingTime(meeting.startDate, meeting.endDate)}
+          </InfoLine>
+        </>
+      ) : (
+        <>
+          <div className="flex space-x-2">
+            <InfoLine symbol="date">
+              {`from ${formatMeetingDate(meeting.startDate)}`}
+            </InfoLine>
+            <InfoLine symbol="time">
+              {meeting.startDate.toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </InfoLine>
+          </div>
+          <div className="flex space-x-2">
+            <InfoLine symbol="date">
+              {`to ${formatMeetingDate(meeting.endDate)}`}
+            </InfoLine>
+            <InfoLine symbol="time">
+              {meeting.endDate.toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </InfoLine>
+          </div>
+        </>
+      )}
       {meeting.location ? (
-        <InfoLine symbol="LOCATION">{meeting.location}</InfoLine>
+        <InfoLine symbol="location">{meeting.location}</InfoLine>
       ) : (
         <div className="h-4" />
       )}
       <div className="mt-3 flex justify-end space-x-2">
-        {/* // TODO: Replace timoschmidt with current user id */}
-        {!meeting.completed && meeting.createdBy === "timoschmidt" && (
+        {!meeting.completed && meeting.createdBy === userId && (
           <MeetingInfoBoxButton
-            symbol="EDIT"
+            symbol="edit"
             className="min-w-xs"
             onClick={onEdit}
           >
             Edit
           </MeetingInfoBoxButton>
         )}
-        {!meeting.completed &&
-          meeting.agenda &&
-          meeting.createdBy === "timoschmidt" && (
-            <MeetingInfoBoxButton
-              symbol="AGENDA"
-              color={agendaIsAvailable ? "GREEN" : "RED"}
-              onClick={onManageAgenda}
-            >
-              {formatAgendaText(meeting.agenda)}
-            </MeetingInfoBoxButton>
-          )}
-        {/* // TODO: Replace timoschmidt with current user id */}
-        {!meeting.completed && meeting.createdBy !== "timoschmidt" && (
-          <MeetingInfoBoxButton symbol="WATCH" onClick={onViewDetails}>
+        {!meeting.completed && meeting.agenda && meeting.createdBy === userId && (
+          <MeetingInfoBoxButton
+            symbol="agenda"
+            color={agendaIsAvailable ? "green" : "red"}
+            onClick={onManageAgenda}
+          >
+            {formatAgendaText(meeting.agenda)}
+          </MeetingInfoBoxButton>
+        )}
+        {!meeting.completed && meeting.createdBy !== userId && (
+          <MeetingInfoBoxButton symbol="watch" onClick={onViewDetails}>
             View details
           </MeetingInfoBoxButton>
         )}
         {meeting.completed && (
-          <MeetingInfoBoxButton symbol="WATCH" onClick={onViewReport}>
+          <MeetingInfoBoxButton symbol="watch" onClick={onViewReport}>
             View report
           </MeetingInfoBoxButton>
         )}
         {!meeting.completed && meeting.participants && (
           <>
             <MeetingInfoBoxButton
-              symbol="PARTICIPANTS"
+              symbol="participants"
               className="mobileSM:hidden"
+              onClick={onManageParticipants}
             >
               {meeting.participants.length}
             </MeetingInfoBoxButton>
             <MeetingInfoBoxButton
-              symbol="PARTICIPANTS"
+              symbol="participants"
               className="hidden mobileSM:inline-flex"
               onClick={onManageParticipants}
             >

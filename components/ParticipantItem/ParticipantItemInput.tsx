@@ -5,27 +5,33 @@ import Input from "../formElements/Input";
 import Label from "../formElements/Label";
 import LabelInputWrapper from "../formElements/LabelInputWrapper";
 import { validateEmailRegex } from "../../utils/regex";
-import { generateParticipantId } from "../../utils/functions";
+import { generateRandomID } from "../../utils/functions";
+import { ERROR_MESSAGES } from "../../utils/constants";
+import ErrorMessage from "../formElements/ErrorMessage";
+import NotificationLabel from "../formElements/NotificationLabel";
 
 type ParticipantInputs = {
-  participantEmail: string;
+  email: string;
 };
 
 type Props = {
+  errorMessage?: string;
   onAdd: (participant: MeetingParticipant) => void;
 };
 
-const ParticipantItemInput = ({ onAdd }: Props) => {
+const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ParticipantInputs>();
+  } = useForm<ParticipantInputs>({
+    criteriaMode: "all",
+  });
   const onSubmit = (data: ParticipantInputs) => {
     const participant: MeetingParticipant = {
-      id: generateParticipantId(),
-      email: data.participantEmail,
+      id: generateRandomID(),
+      email: data.email,
     };
     onAdd(participant);
     reset();
@@ -35,20 +41,23 @@ const ParticipantItemInput = ({ onAdd }: Props) => {
       <LabelInputWrapper>
         <Label>Add new participant</Label>
         <Input
-          placeholder="Email address*"
-          {...register("participantEmail", {
-            required: true,
-            pattern: {
-              value: validateEmailRegex, // TODO: Geht nicht mit Umlauten
-              message: "This is not an email address",
+          autoFocus
+          placeholder="example@domain.com"
+          {...register("email", {
+            required: ERROR_MESSAGES.IS_REQUIRED,
+            validate: {
+              isEmailAddress: (v) =>
+                validateEmailRegex.test(v) || ERROR_MESSAGES.NOT_EMAIL_REGEX,
             },
           })}
         />
-        {
-          errors.participantEmail && <p>This is not an email adress</p>
-          // TODO: Change
-        }
-        <Button type="submit">Add participant</Button>
+        <ErrorMessage fieldName="email" errors={errors} multipleErrors />
+        {errorMessage && !!errorMessage.length && (
+          <NotificationLabel>{errorMessage}</NotificationLabel>
+        )}
+        <Button type="submit" className="bg-gray-400">
+          Add participant
+        </Button>
       </LabelInputWrapper>
     </form>
   );

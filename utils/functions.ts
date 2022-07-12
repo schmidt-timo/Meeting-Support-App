@@ -1,4 +1,5 @@
-var uniqid = require("uniqid");
+import { v4 as uuidv4 } from "uuid";
+import { DatabaseParticipant, MeetingParticipant } from "./types";
 
 export function getNameInitials(name: string) {
   const nameParts = name.split(" ");
@@ -9,18 +10,52 @@ export function getNameInitials(name: string) {
   return result;
 }
 
-export function generateUserId() {
-  return uniqid("user-");
+export function generateRandomID() {
+  return uuidv4();
 }
 
-export function generateParticipantId() {
-  return uniqid("participant-");
+export function convertStringsToDate(date: string, time: string) {
+  return new Date(`${date}T${time}`);
 }
 
-export function generateMeetingId() {
-  return uniqid("meeting-");
+export function dateAsStringIsTodayOrLater(dateString: string) {
+  return Date.parse(dateString) >= Date.parse(new Date().toDateString());
 }
 
-export function generateAgendaItemId() {
-  return uniqid("ai-");
+export function isTheSameDay(date1: Date, date2: Date) {
+  return (
+    date1.toLocaleDateString("de-DE") === date2.toLocaleDateString("de-DE")
+  );
+}
+
+export function objectsAreEqual(obj1: any, obj2: any) {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
+
+export function arraysAreEqual(arr1: any[], arr2: any[]) {
+  if (arr1 === arr2) {
+    return true;
+  }
+  if (arr1 == null || arr2 == null) {
+    return false;
+  }
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  return true;
+}
+
+export function convertParticipantsForDatabase(
+  participants: MeetingParticipant[]
+): DatabaseParticipant[] {
+  let databaseParticipants: DatabaseParticipant[] = [];
+
+  participants.forEach((p) => {
+    databaseParticipants.push({
+      id: p.id,
+      email: p.email,
+    });
+  });
+
+  return databaseParticipants;
 }

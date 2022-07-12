@@ -1,21 +1,41 @@
-import type { NextPage } from "next";
-import { exampleMeetings } from "../utils/exampleData";
-import { filterPendingMeetings } from "../utils/filtering";
+import type { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import MeetingOverviewPage from "../components/views/MeetingOverviewPage";
+import MeetingOverviewPage from "../components/pages/MeetingOverviewPage";
+import { Meeting } from "../utils/types";
+import { useAuth } from "../lib/auth";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+import { fetchAllMeetings } from "../lib/supabase/meetings";
 
-// TODO: REPLACE: Get userId and load meetings
-const meetings = exampleMeetings;
-const userId = "timoschmidt";
+export const getStaticProps: GetStaticProps = async () => {
+  const { data: meetings, error } = await fetchAllMeetings();
 
-const Home: NextPage = () => {
+  if (error) {
+    throw error;
+  }
+
+  return {
+    props: {
+      meetings,
+    },
+  };
+};
+
+type Props = {
+  meetings: Meeting[];
+};
+
+const MeetingOverview: NextPage<Props> = ({ meetings }) => {
   const router = useRouter();
-  const filteredMeetings = filterPendingMeetings(meetings);
+  const { user } = useAuth();
+
+  if (!meetings) {
+    return <LoadingScreen />;
+  }
 
   return (
     <MeetingOverviewPage
-      userId={userId}
-      meetings={filteredMeetings}
+      meetings={meetings}
+      userId={user!.id}
       onAddMeeting={
         () => {} // TODO: Add onClick
       }
@@ -24,4 +44,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default MeetingOverview;

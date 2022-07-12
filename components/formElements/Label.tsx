@@ -1,20 +1,33 @@
-import { MdOutlineEast } from "react-icons/md";
+import {
+  MdAccessTime,
+  MdCalendarToday,
+  MdEmail,
+  MdOutlineEast,
+  MdPassword,
+} from "react-icons/md";
 
 type Props = {
+  icon?: "arrow" | "email" | "password" | "date" | "time";
   children: React.ReactNode;
-  mandatory?: boolean;
+  required?: boolean;
 };
 
-const Label = ({ children, mandatory }: Props) => {
+const Label = ({ icon = "arrow", children, required }: Props) => {
   return (
     <div
-      className={`px-0.5 flex items-center space-x-1 text-xs text-gray-500 uppercase ${
-        mandatory && "h-4"
+      className={`px-0.5 flex items-center justify-between space-x-1 text-xs text-gray-500 uppercase ${
+        required && "h-4"
       }`}
     >
-      <MdOutlineEast />
-      <p>{children}</p>
-      {mandatory && <p className="text-lg pt-1.5 text-gray-500">*</p>}
+      <span className="flex items-center space-x-1">
+        {icon === "arrow" && <MdOutlineEast />}
+        {icon === "email" && <MdEmail />}
+        {icon === "password" && <MdPassword />}
+        {icon === "date" && <MdCalendarToday />}
+        {icon === "time" && <MdAccessTime />}
+        <p>{children}</p>
+      </span>
+      {required && <p className="text-lg pt-1.5 text-gray-500">*</p>}
     </div>
   );
 };

@@ -111,11 +111,12 @@ export const exampleUser: User = {
   id: "timoschmidt",
   name: "Timo Schmidt",
   email: "email@address.com",
-  knownParticipants: [],
+  color: "#FF0000",
 };
 
 export const exampleParticipant: MeetingParticipant = {
   id: "exampleParticipant",
   name: "Max Mustermann",
   email: "maxmustermann@email.com",
+  color: "#FF0000",
 };

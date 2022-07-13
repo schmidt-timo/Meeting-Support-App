@@ -59,3 +59,27 @@ export function convertParticipantsForDatabase(
 
   return databaseParticipants;
 }
+
+export function calculateTotalTime(startDate: Date, endDate: Date) {
+  const totalSeconds =
+    Math.floor(endDate.getTime() - startDate.getTime()) / 1000;
+
+  return {
+    total: Math.floor(totalSeconds),
+    hours: Math.floor((totalSeconds / 3600) % 24),
+    minutes: Math.floor((totalSeconds / 60) % 60),
+    seconds: Math.floor(totalSeconds % 60),
+  };
+}
+
+export function calculatePassedTime(startDate: Date) {
+  const totalSeconds =
+    Math.floor(new Date().getTime() - startDate.getTime()) / 1000;
+
+  return {
+    total: Math.floor(totalSeconds),
+    hours: Math.floor((totalSeconds / 3600) % 24),
+    minutes: Math.floor((totalSeconds / 60) % 60),
+    seconds: Math.floor(totalSeconds % 60),
+  };
+}

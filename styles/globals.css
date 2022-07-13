@@ -26,6 +26,10 @@ a {
   -moz-appearance: none;
 }
 
+.monospace {
+  font-variant-numeric: tabular-nums;
+}
+
 @supports (-webkit-touch-callout: none) {
   .h-screen {
     height: -webkit-fill-available;

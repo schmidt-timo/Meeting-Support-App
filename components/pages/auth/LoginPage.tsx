@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
-import { validateEmailRegex } from "../../utils/regex";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import NotificationLabel from "../formElements/NotificationLabel";
-import AuthPageTemplate from "../templates/AuthPageTemplate";
+import { ERROR_MESSAGES } from "../../../utils/constants";
+import { validateEmailRegex } from "../../../utils/regex";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import NotificationLabel from "../../formElements/NotificationLabel";
+import AuthPageLayout from "../layouts/AuthPageLayout";
 
 export type LoginInputs = {
   email: string;
@@ -40,7 +40,7 @@ const LoginPage = ({
   };
 
   return (
-    <AuthPageTemplate
+    <AuthPageLayout
       title="Login"
       secondaryChildren={
         <Button onClick={onSignUpNewAccount}>Sign up for new account</Button>
@@ -92,7 +92,7 @@ const LoginPage = ({
           )}
         </div>
       </form>
-    </AuthPageTemplate>
+    </AuthPageLayout>
   );
 };
 

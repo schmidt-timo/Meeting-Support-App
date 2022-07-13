@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
-import ProfilePage from "../components/pages/ProfilePage";
-import ChangeEmailPage from "../components/profile/ChangeEmailPage";
-import ChangePasswordPage from "../components/profile/ChangePasswordPage";
-import DeleteAccountPage from "../components/profile/DeleteAccountPage";
-import UpdateProfilePage from "../components/profile/UpdateProfilePage";
+import ProfilePage from "../components/pages/profile/ProfilePage";
+import ChangeEmailPage from "../components/pages/profile/ChangeEmailPage";
+import ChangePasswordPage from "../components/pages/profile/ChangePasswordPage";
+import DeleteAccountPage from "../components/pages/profile/DeleteAccountPage";
+import UpdateProfilePage from "../components/pages/profile/UpdateProfilePage";
 import { useAuth } from "../lib/auth";
 import {
   deleteUserAccount,

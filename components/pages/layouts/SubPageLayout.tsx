@@ -8,7 +8,7 @@ type Props = {
   onBack?: () => void;
 };
 
-const SubPageTemplate = ({ title, children, onClose, onBack }: Props) => {
+const SubPageLayout = ({ title, children, onClose, onBack }: Props) => {
   return (
     <div className="w-full h-screen flex flex-col bg-gray-200">
       <div className="flex px-6 py-5 justify-between items-center space-x-3 truncate flex-shrink-0 sticky top-0 w-full bg-gray-200 z-20">
@@ -39,4 +39,4 @@ const SubPageTemplate = ({ title, children, onClose, onBack }: Props) => {
   );
 };
 
-export default SubPageTemplate;
+export default SubPageLayout;

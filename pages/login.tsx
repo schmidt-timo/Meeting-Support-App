@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import LoginPage, { LoginInputs } from "../components/pages/LoginPage";
-import SignUpPage, { SignUpInputs } from "../components/pages/SignUpPage";
-import ResetPasswordPage from "../components/pages/ResetPasswordPage";
-import SetNewPasswordPage from "../components/pages/SetNewPasswordPage";
+import LoginPage, { LoginInputs } from "../components/pages/auth/LoginPage";
+import SignUpPage, { SignUpInputs } from "../components/pages/auth/SignUpPage";
+import ResetPasswordPage from "../components/pages/auth/ResetPasswordPage";
+import SetNewPasswordPage from "../components/pages/auth/SetNewPasswordPage";
 import { supabase } from "../lib/supabase/config";
 import { createUser } from "../lib/supabase/users";
 import { COLORS } from "../utils/constants";

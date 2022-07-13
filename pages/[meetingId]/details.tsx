@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-import ViewDetailsPage from "../../components/pages/ViewDetailsPage";
+import ViewDetailsPage from "../../components/pages/meetings/ViewDetailsPage";
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase/config";
 import { fetchSingleMeeting } from "../../lib/supabase/meetings";

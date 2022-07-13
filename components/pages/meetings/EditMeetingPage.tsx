@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
+import { ERROR_MESSAGES } from "../../../utils/constants";
 import {
   convertStringsToDate,
   dateAsStringIsTodayOrLater,
-} from "../../utils/functions";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import NotificationLabel from "../formElements/NotificationLabel";
-import Textarea from "../formElements/Textarea";
-import Modal from "../Modal/Modal";
-import SubPageTemplate from "../templates/SubPageTemplate";
+} from "../../../utils/functions";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import NotificationLabel from "../../formElements/NotificationLabel";
+import Textarea from "../../formElements/Textarea";
+import Modal from "../../Modal/Modal";
+import SubPageLayout from "../layouts/SubPageLayout";
 import { MeetingDataInputs } from "./NewMeetingPage";
 
 type Props = {
@@ -82,7 +82,7 @@ const EditMeetingPage = ({ meetingData, onSave, onClose, onDelete }: Props) => {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SubPageTemplate title="Edit Meeting" onClose={onClose}>
+        <SubPageLayout title="Edit Meeting" onClose={onClose}>
           <div className="space-y-3 pb-3">
             <LabelInputWrapper>
               <Label required>Meeting title</Label>
@@ -212,7 +212,7 @@ const EditMeetingPage = ({ meetingData, onSave, onClose, onDelete }: Props) => {
           <Button type="submit" variant="highlighted">
             Save
           </Button>
-        </SubPageTemplate>
+        </SubPageLayout>
       </form>
     </>
   );

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
-import { validateEmailRegex } from "../../utils/regex";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import NotificationLabel from "../formElements/NotificationLabel";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { ERROR_MESSAGES } from "../../../utils/constants";
+import { validateEmailRegex } from "../../../utils/regex";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import NotificationLabel from "../../formElements/NotificationLabel";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
   onClose: () => void;
@@ -37,7 +37,7 @@ const ChangeEmailPage = ({ onClose, onChangeEmail }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SubPageTemplate title="Change email address" onClose={onClose}>
+      <SubPageLayout title="Change email address" onClose={onClose}>
         <div className="space-y-3">
           <NotificationLabel variant="yellow">
             After clicking the button you will be logged out automatically and
@@ -68,7 +68,7 @@ const ChangeEmailPage = ({ onClose, onChangeEmail }: Props) => {
         <Button variant="highlighted" type="submit">
           Send confirmation link
         </Button>
-      </SubPageTemplate>
+      </SubPageLayout>
     </form>
   );
 };

@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
-import { validateEmailRegex } from "../../utils/regex";
-import { User } from "../../utils/types";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { ERROR_MESSAGES } from "../../../utils/constants";
+import { validateEmailRegex } from "../../../utils/regex";
+import { User } from "../../../utils/types";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
   onClose: () => void;
@@ -37,7 +37,7 @@ const ChangePasswordPage = ({ onClose, onChangePassword }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SubPageTemplate title="Change password" onClose={onClose}>
+      <SubPageLayout title="Change password" onClose={onClose}>
         <div className="space-y-3">
           <LabelInputWrapper>
             <Label icon="email">New password</Label>
@@ -75,7 +75,7 @@ const ChangePasswordPage = ({ onClose, onChangePassword }: Props) => {
         <Button variant="highlighted" type="submit">
           Change password
         </Button>
-      </SubPageTemplate>
+      </SubPageLayout>
     </form>
   );
 };

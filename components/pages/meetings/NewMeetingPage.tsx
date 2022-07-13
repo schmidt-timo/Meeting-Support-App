@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
+import { ERROR_MESSAGES } from "../../../utils/constants";
 import {
   convertStringsToDate,
   dateAsStringIsTodayOrLater,
-} from "../../utils/functions";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import Textarea from "../formElements/Textarea";
-import SubPageTemplate from "../templates/SubPageTemplate";
+} from "../../../utils/functions";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import Textarea from "../../formElements/Textarea";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 export type MeetingDataInputs = {
   title: string;
@@ -60,7 +60,7 @@ const NewMeetingPage = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SubPageTemplate title="Create Meeting" onClose={onClose}>
+      <SubPageLayout title="Create Meeting" onClose={onClose}>
         <div className="space-y-3 pb-3">
           <LabelInputWrapper>
             <Label required>Meeting title</Label>
@@ -174,7 +174,7 @@ const NewMeetingPage = ({
             {buttonText}
           </Button>
         </div>
-      </SubPageTemplate>
+      </SubPageLayout>
     </form>
   );
 };

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { MeetingParticipant } from "../../utils/types";
-import Button from "../formElements/Button";
-import Label from "../formElements/Label";
-import ParticipantItemInput from "../ParticipantItem/ParticipantItemInput";
-import ParticipantItem from "../ParticipantItem/ParticipantItem";
-import SubPageTemplate from "../templates/SubPageTemplate";
-import { ERROR_MESSAGES } from "../../utils/constants";
+import { MeetingParticipant } from "../../../utils/types";
+import Button from "../../formElements/Button";
+import Label from "../../formElements/Label";
+import ParticipantItemInput from "../../ParticipantItem/ParticipantItemInput";
+import ParticipantItem from "../../ParticipantItem/ParticipantItem";
+import SubPageLayout from "../layouts/SubPageLayout";
+import { ERROR_MESSAGES } from "../../../utils/constants";
 
 type ManageParticipantsContentProps = {
   userId: string;
@@ -94,7 +94,7 @@ const ManageParticipants = ({
   return (
     <>
       {onBack ? (
-        <SubPageTemplate
+        <SubPageLayout
           title="Manage participants"
           onClose={onClose}
           onBack={() => onBack(participants)}
@@ -107,9 +107,9 @@ const ManageParticipants = ({
             onAddParticipant={onAddParticipant}
             onDeleteParticipant={onDeleteParticipant}
           />
-        </SubPageTemplate>
+        </SubPageLayout>
       ) : (
-        <SubPageTemplate title="Manage participants" onClose={onClose}>
+        <SubPageLayout title="Manage participants" onClose={onClose}>
           <ManageParticipantsContent
             userId={userId}
             participants={participants}
@@ -118,7 +118,7 @@ const ManageParticipants = ({
             onAddParticipant={onAddParticipant}
             onDeleteParticipant={onDeleteParticipant}
           />
-        </SubPageTemplate>
+        </SubPageLayout>
       )}
     </>
   );

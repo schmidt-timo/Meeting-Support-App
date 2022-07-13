@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-import EditMeetingPage from "../../components/pages/EditMeetingPage";
+import EditMeetingPage from "../../components/pages/meetings/EditMeetingPage";
 import {
   deleteMeeting,
   fetchSingleMeeting,

@@ -1,5 +1,5 @@
 import { MdVpnKey } from "react-icons/md";
-import Logo from "../Logo/Logo";
+import Logo from "../../Logo/Logo";
 
 type Props = {
   title: string;
@@ -7,7 +7,7 @@ type Props = {
   secondaryChildren: React.ReactNode;
 };
 
-const AuthPageTemplate = ({ title, children, secondaryChildren }: Props) => {
+const AuthPageLayout = ({ title, children, secondaryChildren }: Props) => {
   return (
     <div className="w-full bg-white min-h-screen rounded-xl px-8 flex flex-col justify-center items-center py-10">
       <Logo />
@@ -29,4 +29,4 @@ const AuthPageTemplate = ({ title, children, secondaryChildren }: Props) => {
   );
 };
 
-export default AuthPageTemplate;
+export default AuthPageLayout;

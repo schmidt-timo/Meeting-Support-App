@@ -1,15 +1,18 @@
 import { useRouter } from "next/router";
 import { MdQrCodeScanner, MdOutlineAdd } from "react-icons/md";
-import { MEETING_CATEGORY_LABELS, NAVIGATION_IDS } from "../../utils/constants";
+import {
+  MEETING_CATEGORY_LABELS,
+  NAVIGATION_IDS,
+} from "../../../utils/constants";
 import {
   filterMeetingsCreatedByUserId,
   filterMeetingsNotCreatedByUserId,
-} from "../../utils/filtering";
-import { Meeting } from "../../utils/types";
-import InfoTextBox from "../InfoTextBox/InfoTextBox";
-import Accordion from "../Accordion/Accordion";
-import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
-import PageTemplate from "../templates/PageTemplate";
+} from "../../../utils/filtering";
+import { Meeting } from "../../../utils/types";
+import InfoTextBox from "../../InfoTextBox/InfoTextBox";
+import Accordion from "../../Accordion/Accordion";
+import MeetingInfoBox from "../../MeetingInfoBox/MeetingInfoBox";
+import PageLayout from "../layouts/PageLayout";
 
 type Props = {
   userId: string;
@@ -29,7 +32,7 @@ const MeetingOverviewPage = ({
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
   return (
-    <PageTemplate
+    <PageLayout
       header={{
         title: "Meetings",
         buttons: [
@@ -67,6 +70,7 @@ const MeetingOverviewPage = ({
                 onEdit={() => router.push(`${m.id}/edit`)}
                 onManageAgenda={() => router.push(`${m.id}/agenda`)}
                 onManageParticipants={() => router.push(`${m.id}/participants`)}
+                onStartMeeting={() => router.push(`${m.id}/start`)}
               />
             ))}
           </Accordion>
@@ -82,12 +86,13 @@ const MeetingOverviewPage = ({
                 meeting={m}
                 onManageParticipants={() => router.push(`${m.id}/participants`)}
                 onViewDetails={() => router.push(`${m.id}/details`)}
+                // onStartMeeting={() => router.push(`${m.id}/start`)} TODO:
               />
             ))}
           </Accordion>
         )}
       </div>
-    </PageTemplate>
+    </PageLayout>
   );
 };
 

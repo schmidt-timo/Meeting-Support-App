@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
-import ManageParticipants from "../../components/pages/ManageParticipants";
-import ViewParticipants from "../../components/pages/ViewParticipants";
+import ManageParticipants from "../../components/pages/meetings/ManageParticipants";
+import ViewParticipants from "../../components/pages/meetings/ViewParticipants";
 import { useAuth } from "../../lib/auth";
 import {
   fetchSingleMeeting,

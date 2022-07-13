@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { MdCheck } from "react-icons/md";
-import { COLORS } from "../../utils/constants";
-import { User } from "../../utils/types";
-import Button from "../formElements/Button";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { COLORS } from "../../../utils/constants";
+import { User } from "../../../utils/types";
+import Button from "../../formElements/Button";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
   user: User;
@@ -19,7 +19,7 @@ const UpdateProfilePage = ({ user, onClose, onUpdateProfile }: Props) => {
   const [color, setColor] = useState(user.color);
 
   return (
-    <SubPageTemplate title="Update name and color" onClose={onClose}>
+    <SubPageLayout title="Update name and color" onClose={onClose}>
       <div className="space-y-3 pb-3">
         <LabelInputWrapper>
           <Label>Name</Label>
@@ -56,7 +56,7 @@ const UpdateProfilePage = ({ user, onClose, onUpdateProfile }: Props) => {
       >
         Save changes
       </Button>
-    </SubPageTemplate>
+    </SubPageLayout>
   );
 };
 

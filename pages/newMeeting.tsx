@@ -3,14 +3,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NewMeetingPage, {
   MeetingDataInputs,
-} from "../components/pages/NewMeetingPage";
-import ManageAgenda from "../components/pages/ManageAgenda";
+} from "../components/pages/meetings/NewMeetingPage";
+import ManageAgenda from "../components/pages/meetings/ManageAgenda";
 import {
   DatabaseMeeting,
   MeetingAgendaItem,
   MeetingParticipant,
 } from "../utils/types";
-import ManageParticipants from "../components/pages/ManageParticipants";
+import ManageParticipants from "../components/pages/meetings/ManageParticipants";
 import {
   convertParticipantsForDatabase,
   convertStringsToDate,

@@ -5,15 +5,18 @@ import {
   MdOutlineLocationOn,
   MdPerson,
 } from "react-icons/md";
-import { getParticipantInfoIfEmailIsRegistered } from "../../lib/supabase/users";
-import { formatMeetingDate, formatMeetingTime } from "../../utils/formatting";
-import { isTheSameDay } from "../../utils/functions";
-import { Meeting, MeetingParticipant } from "../../utils/types";
-import Accordion from "../Accordion/Accordion";
-import LoadingScreen from "../LoadingScreen/LoadingScreen";
-import DetailsAgendaItem from "../MeetingDetails/DetailsAgendaItem";
-import DetailsParticipantItem from "../MeetingDetails/DetailsParticipantItem";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { getParticipantInfoIfEmailIsRegistered } from "../../../lib/supabase/users";
+import {
+  formatMeetingDate,
+  formatMeetingTime,
+} from "../../../utils/formatting";
+import { isTheSameDay } from "../../../utils/functions";
+import { Meeting, MeetingParticipant } from "../../../utils/types";
+import Accordion from "../../Accordion/Accordion";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
+import DetailsAgendaItem from "../../MeetingDetails/DetailsAgendaItem";
+import DetailsParticipantItem from "../../MeetingDetails/DetailsParticipantItem";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
   userId: string;
@@ -72,7 +75,7 @@ const ViewDetailsPage = ({
   }
 
   return (
-    <SubPageTemplate title={meeting.title} onClose={onClose}>
+    <SubPageLayout title={meeting.title} onClose={onClose}>
       <div className="space-y-3">
         <div className="w-full">
           <Accordion title="General info">
@@ -152,7 +155,7 @@ const ViewDetailsPage = ({
           </Accordion>
         )}
       </div>
-    </SubPageTemplate>
+    </SubPageLayout>
   );
 };
 

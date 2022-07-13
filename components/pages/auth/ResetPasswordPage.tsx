@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
-import { validateEmailRegex } from "../../utils/regex";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import Label from "../formElements/Label";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import NotificationLabel from "../formElements/NotificationLabel";
-import AuthPageTemplate from "../templates/AuthPageTemplate";
+import { ERROR_MESSAGES } from "../../../utils/constants";
+import { validateEmailRegex } from "../../../utils/regex";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import Label from "../../formElements/Label";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import NotificationLabel from "../../formElements/NotificationLabel";
+import AuthPageLayout from "../layouts/AuthPageLayout";
 
 export type ResetPasswordInputs = {
   email: string;
@@ -36,7 +36,7 @@ const ResetPasswordPage = ({
     onResetPassword(data.email);
   };
   return (
-    <AuthPageTemplate
+    <AuthPageLayout
       title="Reset your password"
       secondaryChildren={<Button onClick={onLogin}>Back to login</Button>}
     >
@@ -69,7 +69,7 @@ const ResetPasswordPage = ({
           )}
         </div>
       </form>
-    </AuthPageTemplate>
+    </AuthPageLayout>
   );
 };
 

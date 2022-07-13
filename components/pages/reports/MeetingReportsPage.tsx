@@ -1,12 +1,15 @@
-import { MEETING_CATEGORY_LABELS, NAVIGATION_IDS } from "../../utils/constants";
+import {
+  MEETING_CATEGORY_LABELS,
+  NAVIGATION_IDS,
+} from "../../../utils/constants";
 import {
   filterMeetingsCreatedByUserId,
   filterMeetingsNotCreatedByUserId,
-} from "../../utils/filtering";
-import { Meeting } from "../../utils/types";
-import Accordion from "../Accordion/Accordion";
-import MeetingInfoBox from "../MeetingInfoBox/MeetingInfoBox";
-import PageTemplate from "../templates/PageTemplate";
+} from "../../../utils/filtering";
+import { Meeting } from "../../../utils/types";
+import Accordion from "../../Accordion/Accordion";
+import MeetingInfoBox from "../../MeetingInfoBox/MeetingInfoBox";
+import PageLayout from "../layouts/PageLayout";
 
 type Props = {
   userId: string;
@@ -18,7 +21,7 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
   return (
-    <PageTemplate
+    <PageLayout
       header={{
         title: "Meeting Reports",
       }}
@@ -44,7 +47,7 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
           </Accordion>
         )}
       </div>
-    </PageTemplate>
+    </PageLayout>
   );
 };
 

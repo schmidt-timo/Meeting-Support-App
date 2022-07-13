@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import MeetingOverviewPage from "../components/pages/MeetingOverviewPage";
+import MeetingOverviewPage from "../components/pages/meetings/MeetingOverviewPage";
 import { Meeting } from "../utils/types";
 import { useAuth } from "../lib/auth";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";

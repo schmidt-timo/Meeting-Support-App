@@ -1,8 +1,8 @@
-import { NAVIGATION_IDS } from "../../utils/constants";
-import { getNameInitials } from "../../utils/functions";
-import { User } from "../../utils/types";
-import Button from "../formElements/Button";
-import PageTemplate from "../templates/PageTemplate";
+import { NAVIGATION_IDS } from "../../../utils/constants";
+import { getNameInitials } from "../../../utils/functions";
+import { User } from "../../../utils/types";
+import Button from "../../formElements/Button";
+import PageLayout from "../layouts/PageLayout";
 
 type Props = {
   user: User;
@@ -24,7 +24,7 @@ const ProfilePage = ({
   onDeleteAccount,
 }: Props) => {
   return (
-    <PageTemplate
+    <PageLayout
       header={{
         title: "Profile",
       }}
@@ -61,7 +61,7 @@ const ProfilePage = ({
           </Button>
         </div>
       </div>
-    </PageTemplate>
+    </PageLayout>
   );
 };
 

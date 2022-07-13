@@ -1,8 +1,8 @@
-import { MeetingParticipant } from "../../utils/types";
-import Button from "../formElements/Button";
-import Label from "../formElements/Label";
-import ParticipantItem from "../ParticipantItem/ParticipantItem";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { MeetingParticipant } from "../../../utils/types";
+import Button from "../../formElements/Button";
+import Label from "../../formElements/Label";
+import ParticipantItem from "../../ParticipantItem/ParticipantItem";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
   userId: string;
@@ -18,7 +18,7 @@ const ViewParticipants = ({
   onDeclineMeeting,
 }: Props) => {
   return (
-    <SubPageTemplate title="View participants" onClose={onClose}>
+    <SubPageLayout title="View participants" onClose={onClose}>
       <div className="space-y-5">
         <div className="space-y-2">
           <Label>Your participation</Label>
@@ -33,7 +33,7 @@ const ViewParticipants = ({
           ))}
         </div>
       </div>
-    </SubPageTemplate>
+    </SubPageLayout>
   );
 };
 

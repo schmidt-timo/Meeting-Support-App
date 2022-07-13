@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
-import { ERROR_MESSAGES } from "../../utils/constants";
-import Button from "../formElements/Button";
-import ErrorMessage from "../formElements/ErrorMessage";
-import Input from "../formElements/Input";
-import LabelInputWrapper from "../formElements/LabelInputWrapper";
-import NotificationLabel from "../formElements/NotificationLabel";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { ERROR_MESSAGES } from "../../../utils/constants";
+import Button from "../../formElements/Button";
+import ErrorMessage from "../../formElements/ErrorMessage";
+import Input from "../../formElements/Input";
+import LabelInputWrapper from "../../formElements/LabelInputWrapper";
+import NotificationLabel from "../../formElements/NotificationLabel";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
   email: string;
@@ -36,7 +36,7 @@ const DeleteAccountPage = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SubPageTemplate title="Delete Account" onClose={onClose}>
+      <SubPageLayout title="Delete Account" onClose={onClose}>
         <div className="space-y-3">
           <NotificationLabel variant="red">
             Be careful! This cannot be undone! Once you delete your account, you
@@ -64,7 +64,7 @@ const DeleteAccountPage = ({
         <Button variant="red" type="submit">
           Confirm Deletion
         </Button>
-      </SubPageTemplate>
+      </SubPageLayout>
     </form>
   );
 };

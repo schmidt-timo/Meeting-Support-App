@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { MdAddCircle } from "react-icons/md";
-import { MeetingAgendaItem } from "../../utils/types";
-import AgendaItem from "../AgendaItem/AgendaItem";
-import AgendaItemInput from "../AgendaItem/AgendaItemInput";
-import Button from "../formElements/Button";
-import SubPageTemplate from "../templates/SubPageTemplate";
+import { MeetingAgendaItem } from "../../../utils/types";
+import AgendaItem from "../../AgendaItem/AgendaItem";
+import AgendaItemInput from "../../AgendaItem/AgendaItemInput";
+import Button from "../../formElements/Button";
+import SubPageLayout from "../layouts/SubPageLayout";
 
 type ManageAgendaContentProps = {
   buttonText: string;
@@ -87,7 +87,7 @@ const ManageAgenda = ({
   return (
     <>
       {onBack ? (
-        <SubPageTemplate
+        <SubPageLayout
           title="Manage agenda"
           onBack={() => onBack(agendaItems)}
           onClose={onClose}
@@ -100,9 +100,9 @@ const ManageAgenda = ({
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
           />
-        </SubPageTemplate>
+        </SubPageLayout>
       ) : (
-        <SubPageTemplate title="Manage agenda" onClose={onClose}>
+        <SubPageLayout title="Manage agenda" onClose={onClose}>
           <ManageAgendaContent
             agendaItems={agendaItems}
             buttonText={buttonText}
@@ -111,7 +111,7 @@ const ManageAgenda = ({
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
           />
-        </SubPageTemplate>
+        </SubPageLayout>
       )}
     </>
   );

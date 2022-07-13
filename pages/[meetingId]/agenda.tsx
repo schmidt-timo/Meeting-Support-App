@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
-import ManageAgenda from "../../components/pages/ManageAgenda";
+import ManageAgenda from "../../components/pages/meetings/ManageAgenda";
 import { fetchSingleMeeting, updateAgenda } from "../../lib/supabase/meetings";
 import { arraysAreEqual } from "../../utils/functions";
 import { MeetingAgendaItem } from "../../utils/types";

@@ -80,6 +80,7 @@ type Props = {
   onManageParticipants?: () => void;
   onViewDetails?: () => void;
   onViewReport?: () => void;
+  onStartMeeting?: () => void;
 };
 
 const MeetingInfoBox = ({
@@ -90,6 +91,7 @@ const MeetingInfoBox = ({
   onManageParticipants,
   onViewDetails,
   onViewReport,
+  onStartMeeting,
 }: Props) => {
   // Fix dates
   const meeting = {
@@ -103,7 +105,10 @@ const MeetingInfoBox = ({
   return (
     <div className="relative p-3 bg-gray-200 rounded-xl">
       {!meeting.completed && (
-        <button className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300">
+        <button
+          onClick={onStartMeeting}
+          className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300"
+        >
           <MdPlayArrow className="w-7 h-7" />
         </button>
       )}

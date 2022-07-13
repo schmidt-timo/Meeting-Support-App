@@ -14,6 +14,7 @@ import ManageParticipants from "../components/pages/meetings/ManageParticipants"
 import {
   convertParticipantsForDatabase,
   convertStringsToDate,
+  generateMeetingID,
   generateRandomID,
 } from "../utils/functions";
 import { createMeeting } from "../lib/supabase/meetings";
@@ -123,38 +124,42 @@ const NewMeeting: NextPage = () => {
             setParticipants(participants.filter((p) => p.id !== participantId))
           }
           onCreate={async (updatedParticipants) => {
-            setParticipants(updatedParticipants);
-            const meeting: DatabaseMeeting = {
-              id: generateRandomID(),
-              createdBy: user!.id,
-              title: meetingData!!.title,
-              startDate: convertStringsToDate(
-                meetingData!!.startDate,
-                meetingData!!.startTime
-              ),
-              endDate: convertStringsToDate(
-                meetingData!!.endDate,
-                meetingData!!.endTime
-              ),
-              location: meetingData?.location,
-              description: meetingData?.description,
-              agenda: agendaItems,
-              participants: convertParticipantsForDatabase(updatedParticipants),
-              completed: false,
-            };
+            return new Promise(async (resolve, reject) => {
+              setLoading(true);
+              setParticipants(updatedParticipants);
+              const meeting: DatabaseMeeting = {
+                id: generateMeetingID(),
+                createdBy: user!.id,
+                title: meetingData!!.title,
+                startDate: convertStringsToDate(
+                  meetingData!!.startDate,
+                  meetingData!!.startTime
+                ),
+                endDate: convertStringsToDate(
+                  meetingData!!.endDate,
+                  meetingData!!.endTime
+                ),
+                location: meetingData?.location,
+                description: meetingData?.description,
+                agenda: agendaItems,
+                participants:
+                  convertParticipantsForDatabase(updatedParticipants),
+                completed: false,
+              };
 
-            setLoading(true);
-            const { data, error } = await createMeeting(meeting);
+              const { data, error } = await createMeeting(meeting);
 
-            if (error) {
-              setLoading(false);
-              throw error;
-            }
+              if (error) {
+                setLoading(false);
+                throw error;
+              }
 
-            if (data) {
-              setLoading(false);
-              router.push("/");
-            }
+              if (data) {
+                setLoading(false);
+                resolve();
+                router.push("/");
+              }
+            });
           }}
           onClose={() => router.push("/")}
         />

@@ -73,7 +73,7 @@ type Props = {
   participants: MeetingParticipant[];
   buttonText: string;
   onBack?: (participants: MeetingParticipant[]) => void;
-  onCreate: (participants: MeetingParticipant[]) => void;
+  onCreate: (participants: MeetingParticipant[]) => Promise<void>;
   onClose: () => void;
   onAddParticipant: (
     participant: MeetingParticipant

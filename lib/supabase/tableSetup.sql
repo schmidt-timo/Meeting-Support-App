@@ -1,7 +1,7 @@
 -- REQUIRED TABLES FOR MEETINGS AND USERS
 
 create table meetings (
-  "id" uuid default uuid_generate_v4(),
+  "id" varchar not null,
   "createdBy" text not null,
   "title" text not null,
   "startDate" timestamp with time zone not null,

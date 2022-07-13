@@ -1,3 +1,4 @@
+import { customAlphabet } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 import { DatabaseParticipant, MeetingParticipant } from "./types";
 
@@ -12,6 +13,11 @@ export function getNameInitials(name: string) {
 
 export function generateRandomID() {
   return uuidv4();
+}
+
+// Generate shorter IDs for meetings
+export function generateMeetingID() {
+  return customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)();
 }
 
 export function convertStringsToDate(date: string, time: string) {

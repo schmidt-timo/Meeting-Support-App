@@ -8,20 +8,27 @@ import {
 } from "react-icons/md";
 import { Meeting } from "../../../utils/types";
 import Label from "../../formElements/Label";
-import Textarea from "../../formElements/Textarea";
+import NotificationLabel from "../../formElements/NotificationLabel";
 import AgendaController from "./AgendaController";
 import MeetingCounter from "./MeetingCounter";
+import MeetingNotes, { DatabaseSyncStatus } from "./MeetingNotes";
 
 type MeetingViewPageProps = {
   meeting: Meeting;
   onShowMeetingInfo: () => void;
   onClose: () => void;
+  meetingNote: string;
+  onChangeNote: (note: string) => void;
+  databaseStatus: DatabaseSyncStatus;
 };
 
 const MeetingViewPage = ({
   meeting,
   onShowMeetingInfo,
   onClose,
+  onChangeNote,
+  meetingNote,
+  databaseStatus,
 }: MeetingViewPageProps) => {
   return (
     <div className="p-5 space-y-3">
@@ -61,12 +68,18 @@ const MeetingViewPage = ({
         {meeting.agenda.length > 0 ? (
           <AgendaController agendaItems={meeting.agenda} />
         ) : (
-          <p className="text-sm">No agenda available for this meeting.</p>
+          <NotificationLabel variant="yellow">
+            No agenda available for this meeting.
+          </NotificationLabel>
         )}
       </div>
       <div className="space-y-2">
         <Label>Your Notes</Label>
-        <Textarea placeholder="Your notes" />
+        <MeetingNotes
+          meetingNote={meetingNote}
+          onChangeNote={onChangeNote}
+          databaseStatus={databaseStatus}
+        />
       </div>
       <div className="flex items-center justify-between space-x-2">
         <button className="w-full p-3 bg-gray-300 rounded-xl flex flex-col items-center">

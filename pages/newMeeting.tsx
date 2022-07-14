@@ -151,6 +151,7 @@ const NewMeeting: NextPage = () => {
 
               if (error) {
                 setLoading(false);
+                reject();
                 throw error;
               }
 

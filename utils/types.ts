@@ -41,6 +41,13 @@ export type User = {
   color: string;
 };
 
+export type MeetingNote = {
+  id: string;
+  meetingId: string;
+  createdBy: string;
+  content: string;
+};
+
 // FOR DATABASE
 
 export type DatabaseParticipant = {

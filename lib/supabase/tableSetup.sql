@@ -16,12 +16,23 @@ create table meetings (
 );
 
 create table users (
-  id uuid not null,
-  name text not null,
-  color text not null,
+  "id" uuid not null,
+  "name" text not null,
+  "color" text not null,
 
   foreign key (id) references auth.users(id)
 );
+
+-- TABLE FOR NOTES
+
+create table meeting_notes (
+  "id" uuid default uuid_generate_v4(),
+  "meetingId" varchar not null,
+  "createdBy" uuid not null,
+  "content" text,
+
+  primary key(id)
+)
 
 -- VIEW TO CHECK IF USERS ARE ALREADY REGISTERED IN THE APP
 

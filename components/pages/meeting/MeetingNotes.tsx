@@ -1,95 +1,54 @@
-import { useEffect, useState } from "react";
-import { MeetingNote } from "../../../utils/types";
-import Button from "../../formElements/Button";
+import { MdCheck } from "react-icons/md";
 import Textarea from "../../formElements/Textarea";
 
+export type DatabaseSyncStatus = "SYNCHING" | "SYNCHED" | "NONE" | "ERROR";
+
 type Props = {
-  meetingNote?: MeetingNote;
-  onCreateNote: (noteText: string) => void;
-  onSaveNote: (noteText: string) => void;
+  meetingNote: string;
+  databaseStatus: DatabaseSyncStatus;
+  onChangeNote: (noteText: string) => void;
 };
 
-const MeetingNotes = ({ meetingNote, onCreateNote, onSaveNote }: Props) => {
-  const [databaseStatus, setDatabaseStatus] = useState<{
-    text: string;
-    color: string;
-  }>({
-    text: "",
-    color: "#FF0000",
-  });
-
-  const [text, setText] = useState(meetingNote?.content ?? "");
-
-  useEffect(() => {
-    if (meetingNote) {
-      setDatabaseStatus({
-        text: "Found in database",
-        color: "rgb(234 179 8)",
-      });
-    }
-  }, []);
-
-  function error() {
-    setDatabaseStatus({
-      text: "Error! Couldn't be saved",
-      color: "rgb(239 68 68)",
-    });
-  }
-
-  function changed() {
-    setDatabaseStatus({
-      text: "Saving to database",
-      color: "rgb(34 197 94)",
-    });
-  }
-
-  function synchronized() {
-    setTimeout(() => {
-      setDatabaseStatus({
-        text: "Saved!",
-        color: "rgb(239 68 68)",
-      });
-    }, 3000);
-  }
-
+const MeetingNotes = ({ meetingNote, onChangeNote, databaseStatus }: Props) => {
   return (
-    <>
+    <div className="flex flex-col relative">
       <Textarea
-        value={text}
+        value={meetingNote}
         placeholder="Your notes"
-        onFocus={() => {
-          if (!meetingNote) {
-            onCreateNote(text);
-          }
-        }}
         onChange={(e) => {
-          setText(e.target.value);
-          //   changed();
-          //   setTimeout(() => {
-          //     onSaveNote(text!)
-          //       .then(() => {
-          //         synchronized();
-          //       })
-          //       .catch(() => {
-          //         error();
-          //       });
-          //   }, 3000);
+          onChangeNote(e.target.value);
         }}
       />
-
-      <div className="">
-        <Button onClick={() => onSaveNote(text)}>Save</Button>
-        <p
-          className="text-xs w-full"
-          style={{
-            color: databaseStatus.color,
-          }}
-        >
-          {databaseStatus.text}
-        </p>
-      </div>
-    </>
+      <DatabaseSyncStatus status={databaseStatus} />
+    </div>
   );
 };
 
 export default MeetingNotes;
+
+type DatabaseSyncStatusProps = {
+  status: DatabaseSyncStatus;
+};
+
+const DatabaseSyncStatus = ({ status }: DatabaseSyncStatusProps) => {
+  return (
+    <div
+      className={`text-extrasmall py-0.5 px-2 text-center absolute bottom-1 right-1 rounded-xl
+    ${status === "SYNCHING" && "bg-yellow-100"}
+    ${status === "SYNCHED" && "bg-green-100"}
+    ${status === "ERROR" && "bg-red-100"}
+    `}
+    >
+      {status === "SYNCHING" && (
+        <div className="text-yellow-500">Synching ...</div>
+      )}
+      {status === "SYNCHED" && (
+        <div className="text-green-500 flex items-center space-x-1">
+          <MdCheck className="w-3 h-3 flex-shrink-0" />
+          <p>Synched</p>
+        </div>
+      )}
+      {status === "ERROR" && <div className="text-red-500">Error</div>}
+    </div>
+  );
+};

@@ -104,3 +104,34 @@ export const updateMeetingNote = async (
       id: meetingNoteId,
     });
 };
+
+export const markMeetingAsComplete = async (meetingId: string) => {
+  return await supabase
+    .from("meetings")
+    .update({ completed: true })
+    .eq("id", meetingId);
+};
+
+export const getAgendaStatusForMeeting = async (meetingId: string) => {
+  return await supabase
+    .from("meetings")
+    .select("agendaStatus")
+    .eq("id", meetingId)
+    .single();
+};
+
+export const updateAgendaStatus = async (
+  meetingId: string,
+  newIndex: number,
+  startedAt: Date
+) => {
+  return await supabase
+    .from("meetings")
+    .update({
+      agendaStatus: {
+        currentItemIndex: newIndex,
+        startedAt: startedAt,
+      },
+    })
+    .eq("id", meetingId);
+};

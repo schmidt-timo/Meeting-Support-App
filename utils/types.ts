@@ -33,6 +33,8 @@ export type Meeting = {
   agenda: MeetingAgendaItem[];
   participants: MeetingParticipant[];
   completed: boolean;
+  scribeId?: string;
+  agendaStatus?: MeetingAgendaStatus;
 };
 
 export type User = {
@@ -46,6 +48,11 @@ export type MeetingNote = {
   meetingId: string;
   createdBy: string;
   content: string;
+};
+
+export type MeetingAgendaStatus = {
+  currentItemIndex: number;
+  startedAt?: Date;
 };
 
 // FOR DATABASE
@@ -66,4 +73,6 @@ export type DatabaseMeeting = {
   agenda: MeetingAgendaItem[];
   participants: DatabaseParticipant[];
   completed: boolean;
+  scribeId?: string;
+  currentAgendaItem?: MeetingAgendaStatus;
 };

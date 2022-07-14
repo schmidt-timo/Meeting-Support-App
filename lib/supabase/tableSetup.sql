@@ -11,6 +11,7 @@ create table meetings (
   "agenda" json,
   "participants" json,
   "completed" boolean not null default false,
+  "agendaStatus" json default ('{}'),
 
   primary key (id)
 );

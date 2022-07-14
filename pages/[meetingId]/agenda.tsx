@@ -40,23 +40,20 @@ const EditAgenda: NextPage<Props> = ({
   const router = useRouter();
   const [agendaItems, setAgendaItems] =
     useState<MeetingAgendaItem[]>(initialAgendaItems);
-  console.log(agendaItems);
 
   return (
     <ManageAgenda
       agendaItems={agendaItems}
       buttonText="Save"
       onNext={async (items) => {
-        if (!arraysAreEqual(initialAgendaItems, items)) {
-          const { data, error } = await updateAgenda(meetingId, items);
+        const { data, error } = await updateAgenda(meetingId, items);
 
-          if (error) {
-            throw error;
-          }
+        if (error) {
+          throw error;
+        }
 
-          if (data) {
-            router.push("/");
-          }
+        if (data) {
+          router.push("/");
         }
       }}
       onClose={() => router.push("/")}

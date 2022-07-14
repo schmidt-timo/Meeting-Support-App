@@ -1,23 +1,29 @@
 import { useState, useEffect } from "react";
 import { MdNotifications, MdNotificationsActive } from "react-icons/md";
+import { formatWithLeadingZeros } from "../../../utils/formatting";
 import {
   calculatePassedTime,
   calculateTotalTime,
 } from "../../../utils/functions";
-import { Meeting } from "../../../utils/types";
 
 type Props = {
-  meeting: Meeting;
+  startDate: Date;
+  endDate: Date;
   onReachingEndTime: () => void;
+  className?: string;
 };
 
-const MeetingCounter = ({ meeting, onReachingEndTime }: Props) => {
-  const [passedTime, setPassedTime] = useState(
-    calculatePassedTime(meeting.startDate)
-  );
-  const totalTime = calculateTotalTime(meeting.startDate, meeting.endDate);
+const MeetingCounter = ({
+  startDate,
+  endDate,
+  onReachingEndTime,
+  className,
+}: Props) => {
+  const [passedTime, setPassedTime] = useState(calculatePassedTime(startDate));
+  const totalTime = calculateTotalTime(startDate, endDate);
 
   const endTimeReached = passedTime.total >= totalTime.total;
+  const startTimeReached = startDate < new Date();
 
   if (passedTime.total === totalTime.total) {
     onReachingEndTime();
@@ -25,31 +31,37 @@ const MeetingCounter = ({ meeting, onReachingEndTime }: Props) => {
 
   useEffect(() => {
     setInterval(() => {
-      setPassedTime(calculatePassedTime(meeting.startDate));
+      setPassedTime(calculatePassedTime(startDate));
     }, 1000);
   });
 
-  function formatWithLeadingZeros(value: number) {
-    return value < 10 ? `0${value}` : value;
-  }
-
   return (
-    <div className="flex space-x-1 monospace text-sm">
-      <div
-        className={
-          endTimeReached ? "text-red-500 font-bold rounded-xl text-white" : ""
-        }
-      >
-        <span>{formatWithLeadingZeros(passedTime.hours)}</span>
-        <span>:</span>
-        <span>{formatWithLeadingZeros(passedTime.minutes)}</span>
-        <span>:</span>
-        <span>{formatWithLeadingZeros(passedTime.seconds)}</span>
+    <div className={`flex space-x-1 monospace text-sm ${className}`}>
+      <div className={endTimeReached ? "text-red-500 font-medium" : ""}>
+        {startTimeReached ? (
+          <>
+            {passedTime.hours > 0 && (
+              <>
+                <span>{formatWithLeadingZeros(passedTime.hours)}</span>
+                <span>:</span>
+              </>
+            )}
+            <span>{formatWithLeadingZeros(passedTime.minutes)}</span>
+            <span>:</span>
+            <span>{formatWithLeadingZeros(passedTime.seconds)}</span>
+          </>
+        ) : (
+          <span>00:00:00</span>
+        )}
       </div>
       <p>/</p>
       <div>
-        <span>{formatWithLeadingZeros(totalTime.hours)}</span>
-        <span>:</span>
+        {totalTime.hours > 0 && (
+          <>
+            <span>{formatWithLeadingZeros(totalTime.hours)}</span>
+            <span>:</span>
+          </>
+        )}
         <span>{formatWithLeadingZeros(totalTime.minutes)}</span>
         <span>:</span>
         <span>{formatWithLeadingZeros(totalTime.seconds)}</span>

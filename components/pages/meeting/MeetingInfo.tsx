@@ -79,17 +79,13 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
             </DetailsLine>
           </div>
         </Accordion>
-        {/* <div>
-          <p className="text-sm font-medium">Meeting Creator</p>
-          {meetingCreator.name ? (
-            <p className="text-xl font-bold">{meetingCreator.name}</p>
-          ) : (
-            <p className="text-xl font-bold">{meetingCreator.email}</p>
-          )}
-          {meetingCreator.name && (
-            <p className="text-sm">({meetingCreator.email})</p>
-          )}
-        </div> */}
+        {meeting.description && (
+          <Accordion title="Description">
+            <div className="w-full rounded-xl p-3 bg-white space-y-1">
+              <p className="text-xs">{meeting.description}</p>
+            </div>
+          </Accordion>
+        )}
       </div>
     </SubPageLayout>
   );

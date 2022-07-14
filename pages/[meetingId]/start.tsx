@@ -3,19 +3,27 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+import FullAgenda from "../../components/pages/meeting/FullAgenda";
 import MeetingInfo from "../../components/pages/meeting/MeetingInfo";
 import { DatabaseSyncStatus } from "../../components/pages/meeting/MeetingNotes";
 import MeetingViewPage from "../../components/pages/meeting/MeetingViewPage";
 import { useAuth } from "../../lib/auth";
+import { supabase } from "../../lib/supabase/config";
 import {
   createMeetingNote,
   fetchMeetingNote,
   fetchSingleMeeting,
+  getAgendaStatusForMeeting,
   getMeetingCreator,
+  updateAgendaStatus,
   updateMeetingNote,
 } from "../../lib/supabase/meetings";
 import { generateRandomID } from "../../utils/functions";
-import { Meeting, MeetingParticipant } from "../../utils/types";
+import {
+  Meeting,
+  MeetingAgendaStatus,
+  MeetingParticipant,
+} from "../../utils/types";
 
 interface Params extends ParsedUrlQuery {
   meetingId: string;
@@ -50,7 +58,7 @@ type Props = {
   meetingCreator: MeetingParticipant;
 };
 
-type Views = "MEETING" | "INFO" | "QUESTIONS" | "PARTICIPANTS";
+type Views = "MEETING" | "INFO" | "QUESTIONS" | "PARTICIPANTS" | "AGENDA";
 
 const MeetingView: NextPage<Props> = ({
   meeting: initialMeeting,
@@ -73,7 +81,16 @@ const MeetingView: NextPage<Props> = ({
   const [meetingNoteText, setMeetingNoteText] = useState<string>("");
   const [meetingNoteId, setMeetingNoteId] = useState<string | null>(null);
   const [dbSyncStatus, setDbSyncStatus] = useState<DatabaseSyncStatus>("NONE");
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [currentAgendaStatus, setCurrentAgendaStatus] =
+    useState<MeetingAgendaStatus>({
+      currentItemIndex: 0,
+      startedAt: new Date(),
+    });
+
+  useEffect(() => {
+    console.log(currentAgendaStatus);
+  }, [currentAgendaStatus]);
 
   const createNewMeetingNote = async () => {
     const { data, error } = await createMeetingNote({
@@ -117,12 +134,36 @@ const MeetingView: NextPage<Props> = ({
         newMeetingNote();
       }
     };
-    getMeetingNote().then(() => setIsLoading(false));
+    getMeetingNote();
+    getCurrentAgendaStatus();
   }, []);
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  useEffect(() => {
+    const currentAgendaItemListener = supabase
+      .from("meetings")
+      .on("UPDATE", (payload) => {
+        setCurrentAgendaStatus(payload.new.agendaStatus);
+      })
+      .subscribe();
+
+    return () => {
+      currentAgendaItemListener.unsubscribe();
+    };
+  }, []);
+
+  const getCurrentAgendaStatus = async () => {
+    const { data, error } = await getAgendaStatusForMeeting(meeting.id);
+
+    if (error) {
+      throw error;
+    }
+
+    if (data) {
+      if (Object.keys(data.agendaStatus).length !== 0) {
+        setCurrentAgendaStatus(data.agendaStatus);
+      }
+    }
+  };
 
   return (
     <>
@@ -134,40 +175,59 @@ const MeetingView: NextPage<Props> = ({
         />
       )}
 
-      <MeetingViewPage
-        meeting={meeting}
-        onShowMeetingInfo={() => setView("INFO")}
-        databaseStatus={dbSyncStatus}
-        onClose={() => {
-          //TODO: Ask if meeting should be ended for everyone?
-          // Meeting should disappear from overview and go into reports
-          // Go back
-          router.push("/");
-        }}
-        meetingNote={meetingNoteText}
-        onChangeNote={(text) => {
-          setMeetingNoteText(text);
-          setDbSyncStatus("SYNCHING");
-          const updateNotes = async () => {
-            return await updateMeetingNote(meetingNoteId!, text);
-          };
+      {view === "AGENDA" && <FullAgenda onClose={() => setView("MEETING")} />}
 
-          if (meetingNoteId) {
-            setTimeout(() => {
-              updateNotes()
-                .then(({ status }) => {
-                  if (status === 200) {
-                    setDbSyncStatus("SYNCHED");
-                  }
-                })
-                .catch((error) => {
-                  setDbSyncStatus("ERROR");
-                  throw error;
+      {view === "MEETING" && (
+        <MeetingViewPage
+          meeting={meeting}
+          onShowMeetingInfo={() => setView("INFO")}
+          databaseStatus={dbSyncStatus}
+          onClose={() => {
+            //TODO: Ask if meeting should be ended for everyone?
+            // Meeting should disappear from overview and go into reports
+            // Go back
+            router.push("/");
+          }}
+          meetingNote={meetingNoteText}
+          onChangeNote={(text) => {
+            setMeetingNoteText(text);
+            setDbSyncStatus("SYNCHING");
+            const updateNotes = async () => {
+              return await updateMeetingNote(meetingNoteId!, text);
+            };
+
+            if (meetingNoteId) {
+              setTimeout(() => {
+                updateNotes()
+                  .then(({ status }) => {
+                    if (status === 200) {
+                      setDbSyncStatus("SYNCHED");
+                    }
+                  })
+                  .catch((error) => {
+                    setDbSyncStatus("ERROR");
+                    throw error;
+                  });
+              }, 5000);
+            }
+          }}
+          setCurrentAgendaItem={async (newIndex) => {
+            const startedAt = new Date();
+            await updateAgendaStatus(meeting.id, newIndex, startedAt)
+              .then(() => {
+                setCurrentAgendaStatus({
+                  currentItemIndex: newIndex,
+                  startedAt,
                 });
-            }, 5000);
-          }
-        }}
-      />
+              })
+              .catch((error) => {
+                throw error;
+              });
+          }}
+          currentAgendaStatus={currentAgendaStatus}
+          onShowFullAgenda={() => setView("AGENDA")}
+        />
+      )}
     </>
   );
 };

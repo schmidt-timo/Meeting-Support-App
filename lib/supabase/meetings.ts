@@ -1,11 +1,9 @@
-import { supabase } from "./config";
 import {
   DatabaseMeeting,
   DatabaseParticipant,
   MeetingAgendaItem,
-  MeetingNote,
-  MeetingParticipant,
 } from "../../utils/types";
+import { supabase } from "./config";
 
 export const fetchAllMeetings = async () => {
   return await supabase
@@ -75,63 +73,9 @@ export const updateParticipants = async (
     .match({ id: meetingId });
 };
 
-export const fetchMeetingNote = async (
-  meetingId: string,
-  participantId: string
-) => {
-  return await supabase
-    .from("meeting_notes")
-    .select("*")
-    .eq("meetingId", meetingId)
-    .eq("createdBy", participantId)
-    .single();
-};
-
-export const createMeetingNote = async (meetingNote: MeetingNote) => {
-  return await supabase.from("meeting_notes").insert([meetingNote]);
-};
-
-export const updateMeetingNote = async (
-  meetingNoteId: string,
-  text: string
-) => {
-  return await supabase
-    .from("meeting_notes")
-    .update({
-      content: text,
-    })
-    .match({
-      id: meetingNoteId,
-    });
-};
-
 export const markMeetingAsComplete = async (meetingId: string) => {
   return await supabase
     .from("meetings")
     .update({ completed: true })
-    .eq("id", meetingId);
-};
-
-export const getAgendaStatusForMeeting = async (meetingId: string) => {
-  return await supabase
-    .from("meetings")
-    .select("agendaStatus")
-    .eq("id", meetingId)
-    .single();
-};
-
-export const updateAgendaStatus = async (
-  meetingId: string,
-  newIndex: number,
-  startedAt: Date
-) => {
-  return await supabase
-    .from("meetings")
-    .update({
-      agendaStatus: {
-        currentItemIndex: newIndex,
-        startedAt: startedAt,
-      },
-    })
     .eq("id", meetingId);
 };

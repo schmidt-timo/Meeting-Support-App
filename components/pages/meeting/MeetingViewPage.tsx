@@ -1,44 +1,49 @@
 import {
-  MdQrCodeScanner,
   MdOutlineClose,
-  MdFileUpload,
   MdPeople,
+  MdQrCodeScanner,
   MdQuestionAnswer,
-  MdFullscreen,
 } from "react-icons/md";
-import { Meeting, MeetingAgendaStatus } from "../../../utils/types";
+import {
+  Meeting,
+  MeetingAgendaStatus,
+  MeetingNote,
+} from "../../../utils/types";
 import Label from "../../formElements/Label";
 import NotificationLabel from "../../formElements/NotificationLabel";
 import AgendaController from "./AgendaController";
 import MeetingCounter from "./MeetingCounter";
 import MeetingNotes, { DatabaseSyncStatus } from "./MeetingNotes";
+import PresentationView from "./PresentationView";
 
 type MeetingViewPageProps = {
   meeting: Meeting;
-  onShowMeetingInfo: () => void;
-  onClose: () => void;
-  meetingNote: string;
-  onChangeNote: (note: string) => void;
-  databaseStatus: DatabaseSyncStatus;
-  setCurrentAgendaItem: (newIndex: number) => void;
-  currentAgendaStatus: MeetingAgendaStatus;
+  onShowInfo: () => void;
+  onExitMeeting: () => void;
+  agendaStatus: MeetingAgendaStatus;
   onShowFullAgenda: () => void;
+  onAgendaItemChange: (newIndex: number) => Promise<void>;
+  onMeetingNoteChange: (newText: string) => Promise<MeetingNote>;
+  meetingNote: MeetingNote;
+  databaseStatus: DatabaseSyncStatus;
+  setDatabaseStatus: (status: DatabaseSyncStatus) => void;
 };
 
 const MeetingViewPage = ({
   meeting,
-  onShowMeetingInfo,
-  onClose,
-  onChangeNote,
+  onShowInfo,
+  onExitMeeting,
+  agendaStatus,
+  onShowFullAgenda,
+  onAgendaItemChange,
+  onMeetingNoteChange,
   meetingNote,
   databaseStatus,
-  setCurrentAgendaItem,
-  currentAgendaStatus,
-  onShowFullAgenda,
+  setDatabaseStatus,
 }: MeetingViewPageProps) => {
   return (
-    <div className="p-5 space-y-3">
-      <div className="w-full flex items-center justify-between">
+    <>
+      <div className="w-full p-4 flex items-center justify-between bg-white sticky top-0 z-20">
         <span className="w-full truncate pr-2">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
           <MeetingCounter
@@ -52,66 +57,70 @@ const MeetingViewPage = ({
         </span>
         <span className="space-x-2 flex">
           <button
-            onClick={onShowMeetingInfo}
+            onClick={onShowInfo}
             className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0"
           >
             <MdQrCodeScanner className="w-5 h-5" />
           </button>
           <button
             className="w-9 h-9 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0"
-            onClick={onClose}
+            onClick={onExitMeeting}
           >
             <MdOutlineClose className="w-7 h-7" />
           </button>
         </span>
       </div>
-      <div className="border border-black rounded-xl aspect-video bg-gray-300 p-2">
-        <button className="flex items-center justify-center rounded-full w-7 h-7 bg-black text-white flex-shrink-0">
-          <MdFullscreen className="w-5 h-5" />
-        </button>
-        <p>Hier steht Text</p>
+
+      <div className="px-4 space-y-3 overflow-y-scroll pb-24">
+        {!!meeting.agenda.length && (
+          <PresentationView
+            currentAgendaIndex={agendaStatus.currentItemIndex}
+            agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
+            agendaTimerStartDate={agendaStatus.startedAt}
+            meetingTimer={{
+              start: meeting.startDate,
+              end: meeting.endDate,
+            }}
+          />
+        )}
+        {!!meeting.agenda.length ? (
+          <AgendaController
+            agendaStatus={agendaStatus!}
+            agendaItems={meeting.agenda}
+            onShowFullAgenda={onShowFullAgenda}
+            onAgendaItemChange={onAgendaItemChange}
+          />
+        ) : (
+          <NotificationLabel variant="yellow">
+            No agenda available for this meeting.
+          </NotificationLabel>
+        )}
+        <div className="space-y-2">
+          <Label>Your Notes (only visible for you)</Label>
+          <MeetingNotes
+            meetingNote={meetingNote}
+            onChangeNote={onMeetingNoteChange}
+            databaseStatus={databaseStatus}
+            setDatabaseStatus={setDatabaseStatus}
+          />
+        </div>
       </div>
 
-      {meeting.agenda.length > 0 ? (
-        <AgendaController
-          agendaStatus={currentAgendaStatus}
-          agendaItems={meeting.agenda}
-          setCurrentAgendaItem={setCurrentAgendaItem}
-          onShowFullAgenda={onShowFullAgenda}
-        />
-      ) : (
-        <NotificationLabel variant="yellow">
-          No agenda available for this meeting.
-        </NotificationLabel>
-      )}
-
-      <div className="space-y-2">
-        <Label>Your Notes (only visible for you)</Label>
-        <MeetingNotes
-          meetingNote={meetingNote}
-          onChangeNote={onChangeNote}
-          databaseStatus={databaseStatus}
-        />
-      </div>
-      <div className="flex items-center justify-between space-x-1">
-        <button className="w-full p-3 bg-gray-300 rounded-xl flex flex-col items-center">
-          <MdFileUpload className="w-4 h-4" />
-          <p className="text-xs">Upload</p>
-        </button>
-        <button className="w-full p-3 bg-gray-300 rounded-xl flex flex-col items-center">
+      <div className="w-full text-xs flex justify-between fixed bottom-0 left-0 p-4 bg-white space-x-2">
+        <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
           <MdPeople className="w-4 h-4" />
-          <p className="text-xs">Participants</p>
+          <p>Participants</p>
         </button>
-        <button className="w-full p-3 bg-gray-300 rounded-xl flex flex-col items-center">
+        <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
           <MdQuestionAnswer className="w-4 h-4" />
-          <p className="text-xs">Questions</p>
+          <p>Questions</p>
         </button>
-        <button className="w-full p-3 bg-gray-300 rounded-xl flex flex-col items-center">
+        <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
           <MdQuestionAnswer className="w-4 h-4" />
-          <p className="text-xs">Shared Notes</p>
+          <p>Shared Notes</p>
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

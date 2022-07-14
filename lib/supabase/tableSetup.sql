@@ -11,7 +11,7 @@ create table meetings (
   "agenda" json,
   "participants" json,
   "completed" boolean not null default false,
-  "agendaStatus" json default ('{}'),
+  "agendaStatus" json not null default ('{}'),
 
   primary key (id)
 );
@@ -33,11 +33,11 @@ create table meeting_notes (
   "content" text,
 
   primary key(id)
-)
+);
 
 -- VIEW TO CHECK IF USERS ARE ALREADY REGISTERED IN THE APP
 
-create  existing_users as
+create view existing_users as
 select users.id, name, color, accounts.email
 from users
 inner join auth.users as accounts

@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { MdNotifications, MdNotificationsActive } from "react-icons/md";
+import { useState } from "react";
 import { formatWithLeadingZeros } from "../../../utils/formatting";
 import {
   calculatePassedTime,
@@ -29,11 +28,9 @@ const MeetingCounter = ({
     onReachingEndTime();
   }
 
-  useEffect(() => {
-    setInterval(() => {
-      setPassedTime(calculatePassedTime(startDate));
-    }, 1000);
-  });
+  setInterval(() => {
+    setPassedTime(calculatePassedTime(startDate));
+  }, 1000);
 
   return (
     <div className={`flex space-x-1 monospace text-sm ${className}`}>

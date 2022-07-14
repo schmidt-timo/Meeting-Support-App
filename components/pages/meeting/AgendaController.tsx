@@ -7,14 +7,14 @@ import MeetingCounter from "./MeetingCounter";
 type Props = {
   agendaStatus: MeetingAgendaStatus;
   agendaItems: MeetingAgendaItem[];
-  setCurrentAgendaItem: (newIndex: number) => void;
+  onAgendaItemChange: (newIndex: number) => void;
   onShowFullAgenda: () => void;
 };
 
 const AgendaController = ({
   agendaStatus: status,
   agendaItems,
-  setCurrentAgendaItem,
+  onAgendaItemChange: setCurrentAgendaItem,
   onShowFullAgenda,
 }: Props) => {
   const [remainingItems, setRemainingItems] = useState<MeetingAgendaItem[]>([]);
@@ -28,14 +28,16 @@ const AgendaController = ({
   return (
     <div className="border border-black rounded-xl">
       <div
-        className={`text-white bg-black flex flex-col text-center px-3 pt-2 pb-3 space-y-1 ${
+        className={`text-white bg-black flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
           !!remainingItems.length ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
         {agendaItems[status.currentItemIndex] && (
           <div className="flex justify-between text-sm font-medium">
-            <p className="w-full truncate px-1">
-              {agendaItems[status.currentItemIndex].title}
+            <p className="w-full truncate-2-lines px-1 py-1">
+              {`${status.currentItemIndex + 1}. ${
+                agendaItems[status.currentItemIndex].title
+              }`}
             </p>
           </div>
         )}
@@ -78,9 +80,11 @@ const AgendaController = ({
       </div>
       {!!remainingItems.length && (
         <div className="p-3 text-gray-500 text-sm">
-          {remainingItems.slice(0, 3).map((item) => (
+          {remainingItems.slice(0, 3).map((item, index) => (
             <span className="flex justify-between" key={item.id}>
-              <p className="truncate pr-2">{item.title}</p>
+              <p className="truncate pr-2">{`${
+                status.currentItemIndex + 2 + index
+              }. ${item.title}`}</p>
               {item.duration && (
                 <p>{formatAgendaItemDuration(item.duration * 60)}</p>
               )}

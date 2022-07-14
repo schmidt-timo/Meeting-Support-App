@@ -52,3 +52,10 @@ a {
     transform: rotate(360deg);
   }
 }
+
+.truncate-2-lines {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

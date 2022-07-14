@@ -21,6 +21,6 @@ export function filterMeetingsNotCreatedByUserId(
 ) {
   const meetingsNotCreatedByMe = meetings.filter((m) => m.createdBy !== userId);
   return meetingsNotCreatedByMe.filter((m) =>
-    m.participants?.find((p) => p.id === userId)
+    m.participants.find((p) => p.id === userId)
   );
 }

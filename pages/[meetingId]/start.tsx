@@ -4,17 +4,27 @@ import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import FullAgenda from "../../components/pages/meeting/FullAgenda";
+import ManageQuestions from "../../components/pages/meeting/ManageQuestions";
 import MeetingInfo from "../../components/pages/meeting/MeetingInfo";
 import MeetingViewPage from "../../components/pages/meeting/MeetingViewPage";
+import ManageParticipants from "../../components/pages/meetings/ManageParticipants";
+import { useAuth } from "../../lib/auth";
 import {
+  changeMeetingQuestionAnsweredStatus,
+  createMeetingQuestion,
+  markQuestionAsAnswered,
   updateAgendaStatus,
   updateMeetingNote,
+  updateParticipants,
+  upvoteMeetingQuestion,
   useMeeting,
 } from "../../lib/supabase/meeting";
 import {
   fetchSingleMeeting,
   getMeetingCreator,
 } from "../../lib/supabase/meetings";
+import { getParticipantInfoIfEmailIsRegistered } from "../../lib/supabase/users";
+import { convertParticipantsForDatabase } from "../../utils/functions";
 import { Meeting, MeetingParticipant } from "../../utils/types";
 
 interface Params extends ParsedUrlQuery {
@@ -58,9 +68,17 @@ const MeetingView: NextPage<Props> = ({
 }) => {
   const router = useRouter();
   const [view, setView] = useState<Views>("MEETING");
+  const { user } = useAuth();
 
-  const { agendaStatus, meetingNote, databaseStatus, setDatabaseStatus } =
-    useMeeting(initialMeeting.id);
+  const {
+    agendaStatus,
+    meetingNote,
+    databaseStatus,
+    setDatabaseStatus,
+    participants,
+    setParticipants,
+    meetingQuestions,
+  } = useMeeting(initialMeeting);
 
   if (!agendaStatus || !meetingNote || !initialMeeting) {
     return <LoadingScreen />;
@@ -107,6 +125,83 @@ const MeetingView: NextPage<Props> = ({
           meetingNote={meetingNote}
           databaseStatus={databaseStatus}
           setDatabaseStatus={setDatabaseStatus}
+          onManageParticipants={() => setView("PARTICIPANTS")}
+          onManageQuestions={() => setView("QUESTIONS")}
+        />
+      )}
+
+      {view === "QUESTIONS" && (
+        <ManageQuestions
+          meetingQuestions={meetingQuestions}
+          onClose={() => setView("MEETING")}
+          onAddQuestion={(question) => {
+            createMeetingQuestion(meeting.id, question);
+          }}
+          onUpvote={async (question) => {
+            const alreadyUpvoted = question.upvotes.includes(user!.id);
+            if (alreadyUpvoted) {
+              // remove upvote
+              const removeUpvote = question.upvotes.filter(
+                (u) => u !== user!.id
+              );
+              upvoteMeetingQuestion(question.id, removeUpvote);
+            } else {
+              console.log([...question.upvotes, user!.id]);
+
+              const newUpvotes = [...question.upvotes, user!.id];
+              upvoteMeetingQuestion(question.id, newUpvotes);
+            }
+          }}
+          onMarkAsAnswered={async (question) => {
+            changeMeetingQuestionAnsweredStatus(
+              question.id,
+              !question.answered
+            );
+          }}
+        />
+      )}
+
+      {view === "PARTICIPANTS" && (
+        <ManageParticipants
+          participants={participants}
+          userId={user!.id}
+          buttonText="Save"
+          onClose={() => setView("MEETING")}
+          onAddParticipant={async (participantToAdd) => {
+            const { data, error } = await getParticipantInfoIfEmailIsRegistered(
+              participantToAdd.email
+            );
+
+            if (data) {
+              setParticipants([...participants, data]);
+              return data;
+            }
+
+            if (error) {
+              setParticipants([...participants, participantToAdd]);
+              return participantToAdd;
+            }
+          }}
+          onDeleteParticipant={(participantId) => {
+            setParticipants(participants.filter((p) => p.id !== participantId));
+          }}
+          onCreate={async (updatedParticipants) => {
+            const newParticipants =
+              convertParticipantsForDatabase(updatedParticipants);
+
+            const { data, error } = await updateParticipants(
+              meeting.id,
+              newParticipants
+            );
+
+            if (error) {
+              throw error;
+            }
+
+            if (data) {
+              setView("MEETING");
+            }
+          }}
         />
       )}
     </>

@@ -75,3 +75,8 @@ export function formatAgendaItemDuration(totalSeconds: number) {
     )}`;
   }
 }
+
+export function formatUpvoteText(upvotes: string[]) {
+  const len = upvotes.length;
+  return len === 1 ? `${len} Upvote` : `${len} Upvotes`;
+}

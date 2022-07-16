@@ -1,16 +1,32 @@
 import { useEffect, useState } from "react";
 import { DatabaseSyncStatus } from "../../components/pages/meeting/MeetingNotes";
 import { generateRandomID } from "../../utils/functions";
-import { MeetingAgendaStatus, MeetingNote } from "../../utils/types";
+import {
+  DatabaseParticipant,
+  Meeting,
+  MeetingAgendaStatus,
+  MeetingNote,
+  MeetingParticipant,
+  MeetingQuestion,
+} from "../../utils/types";
 import { useAuth } from "../auth";
 import { getServiceSupabase, supabase } from "./config";
+import { getParticipantInfoIfEmailIsRegistered } from "./users";
 
-export const useMeeting = (meetingId: string) => {
+export const useMeeting = (meeting: Meeting) => {
   const [meetingNote, setMeetingNote] = useState<MeetingNote>();
   const [databaseStatus, setDatabaseStatus] =
     useState<DatabaseSyncStatus>("NONE");
 
+  const [meetingQuestions, setMeetingQuestions] = useState<MeetingQuestion[]>(
+    []
+  );
+
   const [agendaStatus, setAgendaStatus] = useState<MeetingAgendaStatus>();
+
+  const [participants, setParticipants] = useState<MeetingParticipant[]>(
+    meeting.participants
+  );
 
   const { user } = useAuth();
 
@@ -22,7 +38,7 @@ export const useMeeting = (meetingId: string) => {
         executed = true;
         createMeetingNote({
           id: generateRandomID(),
-          meetingId,
+          meetingId: meeting.id,
           createdBy: user!.id,
           content: "",
         }).then((note) => {
@@ -32,40 +48,67 @@ export const useMeeting = (meetingId: string) => {
     };
   })();
 
+  const checkParticipantsInfo = async (
+    participantsToCheck: MeetingParticipant[]
+  ) => {
+    checkParticipants(participantsToCheck).then((updatedParticipants) => {
+      setParticipants(updatedParticipants);
+    });
+  };
+
   useEffect(() => {
     // get meeting note if available
-    fetchMeetingNote(meetingId, user!.id, setMeetingNote).catch((error) => {
+    fetchMeetingNote(meeting.id, user!.id, setMeetingNote).catch((error) => {
       if (error.code === "PGRST116") {
         // if does not exist, create empty note
         createNewMeetingNote();
       }
     });
-    fetchAgendaStatus(meetingId, setAgendaStatus).catch((error) => {
+    fetchAgendaStatus(meeting.id, setAgendaStatus).catch((error) => {
       if (error.message === "isEmpty") {
-        updateAgendaStatus(meetingId, {
+        updateAgendaStatus(meeting.id, {
           currentItemIndex: 0,
           startedAt: new Date(),
         });
       }
     });
 
+    fetchMeetingQuestions(meeting.id, setMeetingQuestions).catch((error) => {
+      console.log(error);
+    });
+
+    checkParticipantsInfo(participants);
+
     const supabaseServer = getServiceSupabase();
 
     const meetingSubscription = supabaseServer
       .from("meetings")
-      .on("UPDATE", (payload) => {
+      .on("*", (payload) => {
         setAgendaStatus(payload.new.agendaStatus);
+        setParticipants(payload.new.participants);
+        checkParticipantsInfo(payload.new.participants);
       })
       .subscribe();
+
     const noteSubscription = supabaseServer
       .from("meeting_notes")
       .on("UPDATE", (payload) => {
         setMeetingNote(payload.new);
       })
       .subscribe();
+
+    const questionSubscription = supabaseServer
+      .from("meeting_questions")
+      .on("*", (payload) => {
+        console.log(payload);
+        fetchMeetingQuestions(meeting.id, setMeetingQuestions);
+      })
+      .subscribe();
+
     return () => {
       meetingSubscription.unsubscribe();
       noteSubscription.unsubscribe();
+      questionSubscription.unsubscribe();
     };
   }, []);
 
@@ -75,6 +118,9 @@ export const useMeeting = (meetingId: string) => {
     setDatabaseStatus,
     agendaStatus,
     setAgendaStatus,
+    participants,
+    setParticipants,
+    meetingQuestions,
   };
 };
 
@@ -174,6 +220,122 @@ export const updateMeetingNote = async (
     })
     .match({
       id: meetingNoteId,
+    })
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
+};
+
+const checkParticipants = async (participants: MeetingParticipant[]) => {
+  let temp: MeetingParticipant[] = [];
+  for (const p of participants) {
+    const { data, error } = await getParticipantInfoIfEmailIsRegistered(
+      p.email
+    );
+
+    if (data) {
+      temp = [...temp, data];
+    } else {
+      temp = [...temp, p];
+    }
+  }
+  return temp;
+};
+
+export const updateParticipants = async (
+  meetingId: string,
+  newParticipants: DatabaseParticipant[]
+) => {
+  return await supabase
+    .from("meetings")
+    .update({
+      participants: newParticipants,
+    })
+    .match({ id: meetingId });
+};
+
+export const fetchMeetingQuestions = async (
+  meetingId: string,
+  setState: (meetingQuestions: MeetingQuestion[]) => void
+) => {
+  const { data, error } = await supabase
+    .from("meeting_questions")
+    .select("*")
+    .eq("meetingId", meetingId)
+    .order("createdAt", { ascending: false });
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    setState(data);
+    return data;
+  }
+};
+
+export const createMeetingQuestion = async (
+  meetingId: string,
+  question: string
+) => {
+  const { data, error } = await supabase
+    .from("meeting_questions")
+    .insert([
+      {
+        meetingId,
+        question,
+      },
+    ])
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
+};
+
+export const upvoteMeetingQuestion = async (
+  questionId: string,
+  upvotes: string[]
+) => {
+  const { data, error } = await supabase
+    .from("meeting_questions")
+    .update({
+      upvotes,
+    })
+    .match({
+      id: questionId,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
+};
+
+export const changeMeetingQuestionAnsweredStatus = async (
+  questionId: string,
+  answered: boolean
+) => {
+  const { data, error } = await supabase
+    .from("meeting_questions")
+    .update({
+      answered,
+    })
+    .match({
+      id: questionId,
     })
     .single();
 

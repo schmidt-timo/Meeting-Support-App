@@ -59,3 +59,10 @@ a {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+.truncate-3-lines {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}

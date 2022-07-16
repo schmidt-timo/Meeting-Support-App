@@ -33,7 +33,6 @@ export type Meeting = {
   agenda: MeetingAgendaItem[];
   participants: MeetingParticipant[];
   completed: boolean;
-  scribeId?: string;
   agendaStatus?: MeetingAgendaStatus;
 };
 
@@ -48,6 +47,15 @@ export type MeetingNote = {
   meetingId: string;
   createdBy: string;
   content: string;
+};
+
+export type MeetingQuestion = {
+  id: string;
+  createdAt: Date;
+  meetingId: string;
+  question: string;
+  upvotes: string[];
+  answered: boolean;
 };
 
 export type MeetingAgendaStatus = {
@@ -73,6 +81,5 @@ export type DatabaseMeeting = {
   agenda: MeetingAgendaItem[];
   participants: DatabaseParticipant[];
   completed: boolean;
-  scribeId?: string;
   currentAgendaItem?: MeetingAgendaStatus;
 };

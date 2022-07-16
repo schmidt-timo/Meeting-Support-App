@@ -27,6 +27,8 @@ type MeetingViewPageProps = {
   meetingNote: MeetingNote;
   databaseStatus: DatabaseSyncStatus;
   setDatabaseStatus: (status: DatabaseSyncStatus) => void;
+  onManageParticipants: () => void;
+  onManageQuestions: () => void;
 };
 
 const MeetingViewPage = ({
@@ -40,6 +42,8 @@ const MeetingViewPage = ({
   meetingNote,
   databaseStatus,
   setDatabaseStatus,
+  onManageParticipants,
+  onManageQuestions,
 }: MeetingViewPageProps) => {
   return (
     <>
@@ -107,11 +111,17 @@ const MeetingViewPage = ({
       </div>
 
       <div className="w-full text-xs flex justify-between fixed bottom-0 left-0 p-4 bg-white space-x-2">
-        <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
+        <button
+          onClick={onManageParticipants}
+          className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+        >
           <MdPeople className="w-4 h-4" />
           <p>Participants</p>
         </button>
-        <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
+        <button
+          onClick={onManageQuestions}
+          className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+        >
           <MdQuestionAnswer className="w-4 h-4" />
           <p>Questions</p>
         </button>

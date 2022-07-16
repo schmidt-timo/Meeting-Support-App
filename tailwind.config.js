@@ -18,6 +18,9 @@ module.exports = {
         150: "150px",
         300: "300px",
       },
+      maxHeight: {
+        question: "7.5rem",
+      },
       height: {
         input: "2.5rem",
       },

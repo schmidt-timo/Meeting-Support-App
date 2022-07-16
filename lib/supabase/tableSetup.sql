@@ -24,16 +24,27 @@ create table users (
   foreign key (id) references auth.users(id)
 );
 
--- TABLE FOR NOTES
+-- TABLE FOR NOTES AND QUESTIONS
 
 create table meeting_notes (
-  "id" uuid default uuid_generate_v4(),
+  "id" uuid not null default uuid_generate_v4(),
   "meetingId" varchar not null,
   "createdBy" uuid not null,
   "content" text,
 
   primary key(id)
 );
+
+create table meeting_questions (
+  "id" uuid not null default uuid_generate_v4(),
+  "createdAt" timestamp with time zone default timezone('utc'::text, now()) not null,
+  "meetingId" varchar not null,
+  "question" text not null,
+  "upvotes" json not null default ('[]'),
+  "answered" boolean not null default false,
+
+  primary key (id)
+)
 
 -- VIEW TO CHECK IF USERS ARE ALREADY REGISTERED IN THE APP
 
@@ -42,22 +53,3 @@ select users.id, name, color, accounts.email
 from users
 inner join auth.users as accounts
 on users.id = accounts.id;
-
--- EXAMPLE DATA
-
-insert into meetings (
-    "createdBy",
-    "title",
-    "startDate",
-    "endDate",
-    "description",
-    "location" 
-)
-values(
-    'fff8b359-6024-4368-bba7-dafa9183e9c9',
-    'Test Meeting',
-    '2022-05-01T10:00:00',
-    '2022-05-01T11:00:00',
-    'This is a meeting description',
-    'Meeting Room A'
-);

@@ -1,25 +1,50 @@
+import { useState } from "react";
 import { MdCheck } from "react-icons/md";
-import Textarea from "../../formElements/Textarea";
+import { MeetingNote } from "../../../utils/types";
 
-export type DatabaseSyncStatus = "SYNCHING" | "SYNCHED" | "NONE" | "ERROR";
+export type DatabaseSyncStatus = "SAVING" | "SAVED" | "NONE" | "NOT_SAVED";
 
 type Props = {
-  meetingNote: string;
+  meetingNote: MeetingNote;
+  onChangeNote: (noteText: string) => Promise<MeetingNote>;
   databaseStatus: DatabaseSyncStatus;
-  onChangeNote: (noteText: string) => void;
+  setDatabaseStatus: (status: DatabaseSyncStatus) => void;
 };
 
-const MeetingNotes = ({ meetingNote, onChangeNote, databaseStatus }: Props) => {
+const MeetingNotes = ({
+  meetingNote,
+  onChangeNote,
+  databaseStatus,
+  setDatabaseStatus,
+}: Props) => {
+  const [value, setValue] = useState(meetingNote.content);
+
   return (
     <div className="flex flex-col relative">
-      <Textarea
-        value={meetingNote}
+      <textarea
+        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none
+        ${databaseStatus === "NOT_SAVED" && "border-red-500"}
+        ${databaseStatus === "SAVED" && "border-green-500"}
+        ${databaseStatus === "SAVING" && "border-yellow-500"}
+        `}
+        value={value}
         placeholder="Your notes"
         onChange={(e) => {
-          onChangeNote(e.target.value);
+          setDatabaseStatus("NOT_SAVED");
+          setValue(e.target.value);
         }}
       />
-      <DatabaseSyncStatus status={databaseStatus} />
+      <DatabaseSyncStatus
+        databaseStatus={databaseStatus}
+        onSave={() => {
+          setDatabaseStatus("SAVING");
+          onChangeNote(value).then((data) => {
+            if (data) {
+              setDatabaseStatus("SAVED");
+            }
+          });
+        }}
+      />
     </div>
   );
 };
@@ -27,28 +52,46 @@ const MeetingNotes = ({ meetingNote, onChangeNote, databaseStatus }: Props) => {
 export default MeetingNotes;
 
 type DatabaseSyncStatusProps = {
-  status: DatabaseSyncStatus;
+  databaseStatus: DatabaseSyncStatus;
+  onSave: () => void;
 };
 
-const DatabaseSyncStatus = ({ status }: DatabaseSyncStatusProps) => {
+const DatabaseSyncStatus = ({
+  databaseStatus,
+  onSave,
+}: DatabaseSyncStatusProps) => {
   return (
     <div
-      className={`text-extrasmall py-0.5 px-2 text-center absolute bottom-1 right-1 rounded-xl
-    ${status === "SYNCHING" && "bg-yellow-100"}
-    ${status === "SYNCHED" && "bg-green-100"}
-    ${status === "ERROR" && "bg-red-100"}
+      className={`flex w-full items-center justify-between p-2 border-l border-r border-b rounded-b-xl
+        ${databaseStatus === "NOT_SAVED" && "border-red-500"}
+        ${databaseStatus === "SAVED" && "border-green-500"}
+        ${databaseStatus === "SAVING" && "border-yellow-500"}
     `}
     >
-      {status === "SYNCHING" && (
-        <div className="text-yellow-500">Synching ...</div>
-      )}
-      {status === "SYNCHED" && (
-        <div className="text-green-500 flex items-center space-x-1">
-          <MdCheck className="w-3 h-3 flex-shrink-0" />
-          <p>Synched</p>
-        </div>
-      )}
-      {status === "ERROR" && <div className="text-red-500">Error</div>}
+      <button
+        onClick={onSave}
+        className={`text-white text-xs px-3 py-1 rounded-xl
+        ${databaseStatus === "NOT_SAVED" && "bg-red-500"}
+        ${databaseStatus === "SAVED" && "bg-green-500"}
+        ${databaseStatus === "SAVING" && "bg-yellow-500"}
+        `}
+      >
+        Save to database
+      </button>
+      <div className="text-xs font-medium pr-2">
+        {databaseStatus === "SAVING" && (
+          <div className="text-yellow-500">Saving ...</div>
+        )}
+        {databaseStatus === "SAVED" && (
+          <div className="text-green-500 flex items-center space-x-1">
+            <MdCheck className="w-4 h-4 flex-shrink-0" />
+            <p>Saved</p>
+          </div>
+        )}
+        {databaseStatus === "NOT_SAVED" && (
+          <div className="text-red-500">Not saved yet</div>
+        )}
+      </div>
     </div>
   );
 };

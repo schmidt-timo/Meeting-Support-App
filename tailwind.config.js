@@ -15,6 +15,7 @@ module.exports = {
         xl: "12rem",
       },
       minHeight: {
+        150: "150px",
         300: "300px",
       },
       height: {
@@ -32,6 +33,7 @@ module.exports = {
   },
   variants: {
     opacity: ({ after }) => after(["disabled"]),
+    outline: ["focus"],
   },
   plugins: [],
 };

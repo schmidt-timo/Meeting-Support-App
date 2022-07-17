@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdAddCircle } from "react-icons/md";
 import { MeetingAgendaItem } from "../../../utils/types";
 import AgendaItem from "../../AgendaItem/AgendaItem";
@@ -24,6 +24,13 @@ const ManageAgendaContent = ({
   onDeleteAgendaItem,
 }: ManageAgendaContentProps) => {
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView();
+    }
+  }, [showNewItemButton]);
 
   return (
     <>
@@ -37,14 +44,16 @@ const ManageAgendaContent = ({
           />
         ))}
         {!showNewItemButton ? (
-          <AgendaItemInput
-            onAbort={() => setShowNewItemButton(true)}
-            onSave={(item) =>
-              onAddAgendaItem(item).then(() => {
-                setShowNewItemButton(true);
-              })
-            }
-          />
+          <div ref={ref}>
+            <AgendaItemInput
+              onAbort={() => setShowNewItemButton(true)}
+              onSave={(item) =>
+                onAddAgendaItem(item).then(() => {
+                  setShowNewItemButton(true);
+                })
+              }
+            />
+          </div>
         ) : (
           <Button
             onClick={() => setShowNewItemButton(false)}

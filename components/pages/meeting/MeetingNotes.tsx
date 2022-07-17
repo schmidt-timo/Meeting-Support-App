@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdCheck } from "react-icons/md";
 import { MeetingNote } from "../../../utils/types";
 
@@ -17,7 +17,33 @@ const MeetingNotes = ({
   databaseStatus,
   setDatabaseStatus,
 }: Props) => {
-  const [value, setValue] = useState(meetingNote.content);
+  const [noteText, setNoteText] = useState(meetingNote.content);
+
+  var updateNote = (function () {
+    // make sure note create function only gets called once
+    var executed = false;
+    return function () {
+      if (!executed) {
+        executed = true;
+        setDatabaseStatus("SAVING");
+        onChangeNote(noteText).then((data) => {
+          if (data) {
+            setDatabaseStatus("SAVED");
+          }
+        });
+      }
+    };
+  })();
+
+  useEffect(() => {
+    // upload notes to database every 5 seconds after change
+    const interval = setInterval(() => {
+      if (databaseStatus !== "SAVED") {
+        updateNote();
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [noteText]);
 
   return (
     <div className="flex flex-col relative">
@@ -27,18 +53,18 @@ const MeetingNotes = ({
         ${databaseStatus === "SAVED" && "border-green-500"}
         ${databaseStatus === "SAVING" && "border-yellow-500"}
         `}
-        value={value}
+        value={noteText}
         placeholder="Your notes"
         onChange={(e) => {
+          setNoteText(e.target.value);
           setDatabaseStatus("NOT_SAVED");
-          setValue(e.target.value);
         }}
       />
-      <DatabaseSyncStatus
+      <DatabaseSyncBar
         databaseStatus={databaseStatus}
         onSave={() => {
           setDatabaseStatus("SAVING");
-          onChangeNote(value).then((data) => {
+          onChangeNote(noteText).then((data) => {
             if (data) {
               setDatabaseStatus("SAVED");
             }
@@ -51,15 +77,12 @@ const MeetingNotes = ({
 
 export default MeetingNotes;
 
-type DatabaseSyncStatusProps = {
+type DatabaseSyncBarProps = {
   databaseStatus: DatabaseSyncStatus;
   onSave: () => void;
 };
 
-const DatabaseSyncStatus = ({
-  databaseStatus,
-  onSave,
-}: DatabaseSyncStatusProps) => {
+const DatabaseSyncBar = ({ databaseStatus, onSave }: DatabaseSyncBarProps) => {
   return (
     <div
       className={`flex w-full items-center justify-between p-2 border-l border-r border-b rounded-b-xl
@@ -69,14 +92,13 @@ const DatabaseSyncStatus = ({
     `}
     >
       <button
+        disabled={databaseStatus === "SAVED"}
         onClick={onSave}
-        className={`text-white text-xs px-3 py-1 rounded-xl
+        className={`text-white text-xs px-3 py-1 rounded-xl disabled:bg-transparent
         ${databaseStatus === "NOT_SAVED" && "bg-red-500"}
-        ${databaseStatus === "SAVED" && "bg-green-500"}
-        ${databaseStatus === "SAVING" && "bg-yellow-500"}
         `}
       >
-        Save to database
+        Save changes manually
       </button>
       <div className="text-xs font-medium pr-2">
         {databaseStatus === "SAVING" && (
@@ -85,7 +107,7 @@ const DatabaseSyncStatus = ({
         {databaseStatus === "SAVED" && (
           <div className="text-green-500 flex items-center space-x-1">
             <MdCheck className="w-4 h-4 flex-shrink-0" />
-            <p>Saved</p>
+            <p>Saved to database</p>
           </div>
         )}
         {databaseStatus === "NOT_SAVED" && (

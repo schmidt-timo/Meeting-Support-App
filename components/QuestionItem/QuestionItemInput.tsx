@@ -22,6 +22,7 @@ const QuestionItemInput = ({ onAdd }: Props) => {
     formState: { errors },
   } = useForm<QuestionInputs>({
     criteriaMode: "all",
+    mode: "onChange",
   });
   const onSubmit = (data: QuestionInputs) => {
     onAdd(data.question);

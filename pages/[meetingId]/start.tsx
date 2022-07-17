@@ -12,7 +12,6 @@ import { useAuth } from "../../lib/auth";
 import {
   changeMeetingQuestionAnsweredStatus,
   createMeetingQuestion,
-  markQuestionAsAnswered,
   updateAgendaStatus,
   updateMeetingNote,
   updateParticipants,

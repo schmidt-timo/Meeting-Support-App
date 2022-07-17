@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatWithLeadingZeros } from "../../../utils/formatting";
 import {
   calculatePassedTime,
@@ -28,9 +28,13 @@ const MeetingCounter = ({
     onReachingEndTime();
   }
 
-  setInterval(() => {
-    setPassedTime(calculatePassedTime(startDate));
-  }, 1000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPassedTime(calculatePassedTime(startDate));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [startDate]);
 
   return (
     <div className={`flex space-x-1 monospace text-sm ${className}`}>

@@ -53,3 +53,21 @@ select users.id, name, color, accounts.email
 from users
 inner join auth.users as accounts
 on users.id = accounts.id;
+
+-- POLICIES FOR DATA STORAGE
+
+create policy "Read access"
+  on storage.objects for select
+  using ( bucket_id = 'files' );
+
+create policy "Insert access"
+  on storage.objects for insert
+  with check ( bucket_id = 'files' );
+
+create policy "Update access"
+  on storage.objects for update
+  with check ( bucket_id = 'files' );
+
+create policy "Delete access"
+  on storage.objects for delete
+  using ( bucket_id = 'files' );

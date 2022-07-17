@@ -13,6 +13,7 @@ export type MeetingAgendaItem = {
   title: string;
   description?: string;
   duration?: number;
+  fileUrl?: string;
 };
 
 export type MeetingParticipant = {

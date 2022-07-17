@@ -347,3 +347,17 @@ export const changeMeetingQuestionAnsweredStatus = async (
     return data;
   }
 };
+
+export const createPresentationStorage = async () => {
+  const { data, error } = await supabase.storage.createBucket("presentations", {
+    public: false,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
+};

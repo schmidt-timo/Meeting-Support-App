@@ -89,3 +89,8 @@ export function calculatePassedTime(startDate: Date) {
     seconds: Math.floor(totalSeconds % 60),
   };
 }
+
+export function getFileNameFromUrl(url: string) {
+  const splitted = url.split("/");
+  return splitted[splitted.length - 1];
+}

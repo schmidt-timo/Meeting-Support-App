@@ -15,10 +15,12 @@ module.exports = {
         xl: "12rem",
       },
       minHeight: {
+        agenda: "6.5rem",
         150: "150px",
         300: "300px",
       },
       maxHeight: {
+        agenda: "10rem",
         question: "7.5rem",
       },
       height: {

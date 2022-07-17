@@ -10,9 +10,11 @@ type ManageAgendaContentProps = {
   buttonText: string;
   agendaItems: MeetingAgendaItem[];
   onNext: (items: MeetingAgendaItem[]) => void;
-  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
-  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onAddAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onDeleteAgendaItem: (itemId: string) => void;
+  onUpload: (file: File, itemId: string) => void;
+  onRemoveFile: (fileUrl: string, itemId: string) => void;
 };
 
 const ManageAgendaContent = ({
@@ -22,6 +24,7 @@ const ManageAgendaContent = ({
   onAddAgendaItem,
   onUpdateAgendaItem,
   onDeleteAgendaItem,
+  onRemoveFile,
 }: ManageAgendaContentProps) => {
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
   const ref = useRef<HTMLDivElement>(null);
@@ -41,17 +44,19 @@ const ManageAgendaContent = ({
             key={a.id}
             onDelete={onDeleteAgendaItem}
             onChange={onUpdateAgendaItem}
+            onRemoveFile={onRemoveFile}
           />
         ))}
         {!showNewItemButton ? (
           <div ref={ref}>
             <AgendaItemInput
               onAbort={() => setShowNewItemButton(true)}
-              onSave={(item) =>
-                onAddAgendaItem(item).then(() => {
+              onSave={(item, file) =>
+                onAddAgendaItem(item, file).then(() => {
                   setShowNewItemButton(true);
                 })
               }
+              onRemoveFile={onRemoveFile}
             />
           </div>
         ) : (
@@ -78,9 +83,11 @@ type Props = {
   buttonText: string;
   onNext: (items: MeetingAgendaItem[]) => void;
   onClose: () => void;
-  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
-  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onAddAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onDeleteAgendaItem: (itemId: string) => void;
+  onUpload: (file: File, itemId: string) => void;
+  onRemoveFile: (fileUrl: string, itemId: string) => void;
 };
 
 const ManageAgenda = ({
@@ -92,6 +99,8 @@ const ManageAgenda = ({
   onAddAgendaItem,
   onUpdateAgendaItem,
   onDeleteAgendaItem,
+  onUpload,
+  onRemoveFile,
 }: Props) => {
   return (
     <>
@@ -108,6 +117,8 @@ const ManageAgenda = ({
             onAddAgendaItem={onAddAgendaItem}
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
+            onUpload={onUpload}
+            onRemoveFile={onRemoveFile}
           />
         </SubPageLayout>
       ) : (
@@ -119,6 +130,8 @@ const ManageAgenda = ({
             onAddAgendaItem={onAddAgendaItem}
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
+            onUpload={onUpload}
+            onRemoveFile={onRemoveFile}
           />
         </SubPageLayout>
       )}

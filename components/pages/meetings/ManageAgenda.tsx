@@ -15,6 +15,7 @@ type ManageAgendaContentProps = {
   onDeleteAgendaItem: (itemId: string) => void;
   onUpload: (file: File, itemId: string) => void;
   onRemoveFile: (fileUrl: string, itemId: string) => void;
+  isUploading: boolean;
 };
 
 const ManageAgendaContent = ({
@@ -25,6 +26,7 @@ const ManageAgendaContent = ({
   onUpdateAgendaItem,
   onDeleteAgendaItem,
   onRemoveFile,
+  isUploading,
 }: ManageAgendaContentProps) => {
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
   const ref = useRef<HTMLDivElement>(null);
@@ -50,6 +52,7 @@ const ManageAgendaContent = ({
         {!showNewItemButton ? (
           <div ref={ref}>
             <AgendaItemInput
+              isUploading={isUploading}
               onAbort={() => setShowNewItemButton(true)}
               onSave={(item, file) =>
                 onAddAgendaItem(item, file).then(() => {
@@ -88,6 +91,7 @@ type Props = {
   onDeleteAgendaItem: (itemId: string) => void;
   onUpload: (file: File, itemId: string) => void;
   onRemoveFile: (fileUrl: string, itemId: string) => void;
+  isUploading: boolean;
 };
 
 const ManageAgenda = ({
@@ -101,6 +105,7 @@ const ManageAgenda = ({
   onDeleteAgendaItem,
   onUpload,
   onRemoveFile,
+  isUploading,
 }: Props) => {
   return (
     <>
@@ -119,6 +124,7 @@ const ManageAgenda = ({
             onDeleteAgendaItem={onDeleteAgendaItem}
             onUpload={onUpload}
             onRemoveFile={onRemoveFile}
+            isUploading={isUploading}
           />
         </SubPageLayout>
       ) : (
@@ -132,6 +138,7 @@ const ManageAgenda = ({
             onDeleteAgendaItem={onDeleteAgendaItem}
             onUpload={onUpload}
             onRemoveFile={onRemoveFile}
+            isUploading={isUploading}
           />
         </SubPageLayout>
       )}

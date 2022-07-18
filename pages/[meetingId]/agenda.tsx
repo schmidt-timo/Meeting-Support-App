@@ -47,8 +47,11 @@ const EditAgenda: NextPage<Props> = ({
   const [agendaItems, setAgendaItems] =
     useState<MeetingAgendaItem[]>(initialAgendaItems);
 
+  const [fileIsUploading, setFileIsUploading] = useState(false);
+
   return (
     <ManageAgenda
+      isUploading={fileIsUploading}
       agendaItems={agendaItems}
       buttonText="Save"
       onNext={async (items) => {
@@ -66,6 +69,7 @@ const EditAgenda: NextPage<Props> = ({
       onAddAgendaItem={async (item, file) => {
         return new Promise((resolve, reject) => {
           if (file) {
+            setFileIsUploading(true);
             uploadFileToAgendaItem(file, item.id, meetingId).then(
               (uploadData) => {
                 if (uploadData) {
@@ -82,6 +86,7 @@ const EditAgenda: NextPage<Props> = ({
                           fileUrl: url,
                         },
                       ]);
+                      setFileIsUploading(false);
                       resolve();
                     }
                   });
@@ -97,6 +102,7 @@ const EditAgenda: NextPage<Props> = ({
       onUpdateAgendaItem={async (item, file) => {
         return new Promise((resolve, reject) => {
           if (file) {
+            setFileIsUploading(true);
             uploadFileToAgendaItem(file, item.id, meetingId).then(
               (uploadData) => {
                 if (uploadData) {
@@ -115,6 +121,7 @@ const EditAgenda: NextPage<Props> = ({
                           newItem,
                           ...agendaItems.slice(index + 1, agendaItems.length),
                         ]);
+                        setFileIsUploading(false);
                         resolve();
                       }
                     })

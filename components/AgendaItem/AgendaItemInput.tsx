@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdCheck, MdClose, MdUpload } from "react-icons/md";
+import { MdCheck, MdClose, MdSwapVert, MdUpload } from "react-icons/md";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import { generateRandomID } from "../../utils/functions";
 import { validateNumberRegex } from "../../utils/regex";
@@ -20,6 +20,7 @@ type Props = {
   onSave: (item: MeetingAgendaItem, file?: File) => void;
   onAbort: () => void;
   onRemoveFile: (fileUrl: string, itemId: string) => void;
+  isUploading?: boolean;
 };
 
 const AgendaItemInput = ({
@@ -27,6 +28,7 @@ const AgendaItemInput = ({
   onSave,
   onAbort,
   onRemoveFile,
+  isUploading = false,
 }: Props) => {
   const [file, setFile] = useState<File>();
 
@@ -95,19 +97,44 @@ const AgendaItemInput = ({
         <div className="space-x-2 flex justify-between pt-2">
           <span style={{ maxWidth: "70%" }}>
             {!agendaItem?.fileUrl && (
-              <label
-                aria-label="Upload Button"
-                className="flex justify-center items-center flex-shrink-0 cursor-pointer text-sm pl-2 pr-3 rounded-xl font-medium bg-gray-200 p-1 space-x-1"
-              >
-                <MdUpload className="w-4 h-4" />
-                <p>Upload PDF</p>
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={(event) => setFile(event.target.files![0])}
-                  className="hidden"
-                />
-              </label>
+              <div className="flex space-x-2 items-center">
+                <label
+                  aria-label="Upload Button"
+                  className={`flex justify-center items-center flex-shrink-0 cursor-pointer text-sm pl-2 pr-3 rounded-xl font-medium p-1 space-x-1 ${
+                    isUploading
+                      ? "bg-gray-800 text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {isUploading && (
+                    <>
+                      <MdSwapVert className="animate-spin h-4 w-4" />
+                      <p>Uploading ...</p>
+                    </>
+                  )}
+                  {!isUploading && file && (
+                    <>
+                      <MdUpload className="w-4 h-4" />
+                      <p>Change PDF</p>
+                    </>
+                  )}
+
+                  {!isUploading && !file && (
+                    <>
+                      <MdUpload className="w-4 h-4" />
+                      <p>Upload PDF</p>
+                    </>
+                  )}
+                  <input
+                    disabled={isUploading}
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(event) => setFile(event.target.files![0])}
+                    className="hidden"
+                  />
+                </label>
+                {!isUploading && <p className="text-extrasmall">(max. 50MB)</p>}
+              </div>
             )}
           </span>
           <span className="flex space-x-2">

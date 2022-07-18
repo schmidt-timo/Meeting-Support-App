@@ -118,6 +118,19 @@ const MeetingView: NextPage<Props> = ({
               startedAt: new Date(),
             });
           }}
+          onPresentationPageChange={async (pageNumber) => {
+            console.log("CHANGE");
+            updateAgendaStatus(meeting.id, {
+              currentItemIndex: agendaStatus.currentItemIndex,
+              startedAt: agendaStatus.startedAt,
+              currentPresentationPage: pageNumber,
+            });
+
+            // updateAgendaStatus(meeting.id, {
+            //   ...agendaStatus,
+            //   currentPresentationPage: pageNumber,
+            // });
+          }}
           onMeetingNoteChange={async (newText) => {
             return updateMeetingNote(meetingNote.id, newText);
           }}

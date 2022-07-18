@@ -195,6 +195,7 @@ export const updateAgendaStatus = async (
       agendaStatus: {
         currentItemIndex: newStatus.currentItemIndex,
         startedAt: newStatus.startedAt,
+        currentPresentationPage: newStatus.currentPresentationPage,
       },
     })
     .eq("id", meetingId)

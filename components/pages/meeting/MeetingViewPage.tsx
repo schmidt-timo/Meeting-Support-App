@@ -23,6 +23,7 @@ type MeetingViewPageProps = {
   agendaStatus: MeetingAgendaStatus;
   onShowFullAgenda: () => void;
   onAgendaItemChange: (newIndex: number) => Promise<void>;
+  onPresentationPageChange: (pageNumber: number) => Promise<void>;
   onMeetingNoteChange: (newText: string) => Promise<MeetingNote>;
   meetingNote: MeetingNote;
   databaseStatus: DatabaseSyncStatus;
@@ -38,6 +39,7 @@ const MeetingViewPage = ({
   agendaStatus,
   onShowFullAgenda,
   onAgendaItemChange,
+  onPresentationPageChange,
   onMeetingNoteChange,
   meetingNote,
   databaseStatus,
@@ -46,7 +48,7 @@ const MeetingViewPage = ({
   onManageQuestions,
 }: MeetingViewPageProps) => {
   return (
-    <>
+    <div className="h-meetingview">
       <div className="w-full p-4 flex items-center justify-between bg-white sticky top-0 z-20">
         <span className="w-full truncate pr-2">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
@@ -75,62 +77,64 @@ const MeetingViewPage = ({
         </span>
       </div>
 
-      <div className="px-4 space-y-3 overflow-y-scroll pb-24">
-        {!!meeting.agenda.length && (
-          <PresentationView
-            currentAgendaIndex={agendaStatus.currentItemIndex}
-            agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
-            agendaTimerStartDate={agendaStatus.startedAt}
-            meetingTimer={{
-              start: meeting.startDate,
-              end: meeting.endDate,
-            }}
-          />
-        )}
-        {!!meeting.agenda.length ? (
-          <AgendaController
-            agendaStatus={agendaStatus!}
-            agendaItems={meeting.agenda}
-            onShowFullAgenda={onShowFullAgenda}
-            onAgendaItemChange={onAgendaItemChange}
-          />
-        ) : (
-          <NotificationLabel variant="yellow">
-            No agenda available for this meeting.
-          </NotificationLabel>
-        )}
-        <div className="space-y-2">
-          <Label>Your Notes (only visible for you)</Label>
-          <MeetingNotes
-            meetingNote={meetingNote}
-            onChangeNote={onMeetingNoteChange}
-            databaseStatus={databaseStatus}
-            setDatabaseStatus={setDatabaseStatus}
-          />
+      <div className="flex flex-col justify-between h-full">
+        <div className="px-4 space-y-3 overflow-y-scroll">
+          {!!meeting.agenda.length && (
+            <PresentationView
+              agendaStatus={agendaStatus}
+              agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
+              meetingTimer={{
+                start: meeting.startDate,
+                end: meeting.endDate,
+              }}
+              onPresentationPageChange={onPresentationPageChange}
+            />
+          )}
+          {!!meeting.agenda.length ? (
+            <AgendaController
+              agendaStatus={agendaStatus!}
+              agendaItems={meeting.agenda}
+              onShowFullAgenda={onShowFullAgenda}
+              onAgendaItemChange={onAgendaItemChange}
+            />
+          ) : (
+            <NotificationLabel variant="yellow">
+              No agenda available for this meeting.
+            </NotificationLabel>
+          )}
+          <div className="space-y-2">
+            <Label>Your Notes (only visible for you)</Label>
+            <MeetingNotes
+              meetingNote={meetingNote}
+              onChangeNote={onMeetingNoteChange}
+              databaseStatus={databaseStatus}
+              setDatabaseStatus={setDatabaseStatus}
+            />
+          </div>
+        </div>
+
+        <div className="w-full text-xs flex justify-between p-4 space-x-2">
+          <button
+            onClick={onManageParticipants}
+            className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+          >
+            <MdPeople className="w-4 h-4" />
+            <p>Participants</p>
+          </button>
+          <button
+            onClick={onManageQuestions}
+            className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+          >
+            <MdQuestionAnswer className="w-4 h-4" />
+            <p>Questions</p>
+          </button>
+          <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
+            <MdQuestionAnswer className="w-4 h-4" />
+            <p>Shared Notes</p>
+          </button>
         </div>
       </div>
-
-      <div className="w-full text-xs flex justify-between fixed bottom-0 left-0 p-4 bg-white space-x-2">
-        <button
-          onClick={onManageParticipants}
-          className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
-        >
-          <MdPeople className="w-4 h-4" />
-          <p>Participants</p>
-        </button>
-        <button
-          onClick={onManageQuestions}
-          className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
-        >
-          <MdQuestionAnswer className="w-4 h-4" />
-          <p>Questions</p>
-        </button>
-        <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
-          <MdQuestionAnswer className="w-4 h-4" />
-          <p>Shared Notes</p>
-        </button>
-      </div>
-    </>
+    </div>
   );
 };
 

@@ -62,6 +62,7 @@ export type MeetingQuestion = {
 export type MeetingAgendaStatus = {
   currentItemIndex: number;
   startedAt?: Date;
+  currentPresentationPage?: number;
 };
 
 // FOR DATABASE

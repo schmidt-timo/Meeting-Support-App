@@ -13,6 +13,7 @@ module.exports = {
       maxWidth: {
         lg: "8rem",
         xl: "12rem",
+        80: "80rem",
       },
       minHeight: {
         agenda: "6.5rem",
@@ -25,6 +26,7 @@ module.exports = {
       },
       height: {
         input: "2.5rem",
+        meetingview: "calc(100vh - 4.75rem)",
       },
       screens: {
         mobileXS: "345px",

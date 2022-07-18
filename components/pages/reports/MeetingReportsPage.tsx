@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
   MEETING_CATEGORY_LABELS,
   NAVIGATION_IDS,
@@ -20,6 +21,8 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
   const ownMeetings = filterMeetingsCreatedByUserId(meetings, userId);
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
 
+  const router = useRouter();
+
   return (
     <PageLayout
       header={{
@@ -33,7 +36,12 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
             title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
           >
             {ownMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
+              <MeetingInfoBox
+                meeting={m}
+                key={m.id}
+                userId={userId}
+                onViewReport={() => router.push(`${m.id}/report`)}
+              />
             ))}
           </Accordion>
         )}
@@ -42,7 +50,12 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
             title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
           >
             {otherMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
+              <MeetingInfoBox
+                meeting={m}
+                key={m.id}
+                userId={userId}
+                onViewReport={() => router.push(`${m.id}/report`)}
+              />
             ))}
           </Accordion>
         )}

@@ -1,13 +1,5 @@
 import { Meeting, MeetingQuestion } from "./types";
 
-export function filterPendingMeetings(meetings: Meeting[]) {
-  return meetings.filter((m) => !m.completed);
-}
-
-export function filterCompletedMeetings(meetings: Meeting[]) {
-  return meetings.filter((m) => m.completed);
-}
-
 export function filterMeetingsCreatedByUserId(
   meetings: Meeting[],
   userId: string

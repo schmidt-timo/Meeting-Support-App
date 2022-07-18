@@ -1,16 +1,36 @@
-import type { NextPage } from "next";
-import { exampleMeetings } from "../utils/exampleData";
+import type { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import MeetingReportsPage from "../components/pages/reports/MeetingReportsPage";
-import { filterCompletedMeetings } from "../utils/filtering";
+import { useAuth } from "../lib/auth";
+import {
+  fetchAllMeetings,
+  fetchCompletedMeetings,
+} from "../lib/supabase/meetings";
+import { Meeting } from "../utils/types";
 
-// TODO: REPLACE: Get userId and load meetings
-const meetings = exampleMeetings;
-const userId = "timoschmidt";
+export const getStaticProps: GetStaticProps = async () => {
+  const { data: meetings, error } = await fetchCompletedMeetings();
 
-const Reports: NextPage = () => {
-  const filteredMeetings = filterCompletedMeetings(meetings);
+  if (error) {
+    throw error;
+  }
 
-  return <MeetingReportsPage userId={userId} meetings={filteredMeetings} />;
+  return {
+    props: {
+      meetings,
+    },
+  };
+};
+
+type Props = {
+  meetings: Meeting[];
+};
+
+const Reports: NextPage<Props> = ({ meetings }) => {
+  const router = useRouter();
+  const { user } = useAuth();
+
+  return <MeetingReportsPage userId={user!.id} meetings={meetings} />;
 };
 
 export default Reports;

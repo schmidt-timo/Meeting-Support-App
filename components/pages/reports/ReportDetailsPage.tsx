@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useMeeting } from "../../../lib/supabase/meeting";
 import { getParticipantInfoIfEmailIsRegistered } from "../../../lib/supabase/users";
 import {
   formatMeetingDate,
@@ -8,9 +9,11 @@ import { isTheSameDay } from "../../../utils/functions";
 import { Meeting, MeetingParticipant } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
 import AgendaItemView from "../../AgendaItem/AgendaItemView";
+import Button from "../../formElements/Button";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 import DetailsLine from "../../MeetingDetails/DetailsLine";
 import DetailsParticipantItem from "../../MeetingDetails/DetailsParticipantItem";
+import QuestionViewItem from "../../QuestionItem/QuestionViewItem";
 import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
@@ -20,7 +23,7 @@ type Props = {
   onClose: () => void;
 };
 
-const ViewDetailsPage = ({
+const ReportDetailsPage = ({
   meeting: initialMeeting,
   onClose,
   meetingCreator,
@@ -32,38 +35,10 @@ const ViewDetailsPage = ({
     endDate: new Date(initialMeeting.endDate),
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [participants, setParticipants] = useState<MeetingParticipant[]>(
-    meeting.participants
-  );
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    async function checkParticipants(): Promise<MeetingParticipant[]> {
-      return new Promise(async (resolve, reject) => {
-        let temp: MeetingParticipant[] = [];
-        for (const p of meeting.participants) {
-          const { data, error } = await getParticipantInfoIfEmailIsRegistered(
-            p.email
-          );
-
-          if (error) {
-            temp = [...temp, p];
-          }
-
-          if (data) {
-            temp = [...temp, data];
-          }
-        }
-        resolve(temp);
-      });
-    }
-
-    // check if participants are already registered
-    checkParticipants().then((p) => {
-      setParticipants(p);
-      setIsLoading(false);
-    });
-  }, []);
+  const { meetingNote, sharedNotes, meetingQuestions, participants } =
+    useMeeting(meeting);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -133,7 +108,7 @@ const ViewDetailsPage = ({
             </div>
           </Accordion>
         )}
-        <Accordion title="Participants">
+        <Accordion title={`Participants (${participants.length})`}>
           <div className="space-y-1.5">
             {participants.map((p) => (
               <DetailsParticipantItem participant={p} key={p.id} />
@@ -149,9 +124,37 @@ const ViewDetailsPage = ({
             </div>
           </Accordion>
         )}
+        {meetingNote?.content && (
+          <Accordion title="Your notes">
+            <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
+              <p>{meetingNote?.content}</p>
+            </div>
+          </Accordion>
+        )}
+        {sharedNotes?.content && (
+          <Accordion title="Shared notes">
+            <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
+              <p>{sharedNotes?.content}</p>
+            </div>
+          </Accordion>
+        )}
+        {meetingQuestions && (
+          <Accordion title="Questions">
+            <div className="space-y-1.5">
+              {meetingQuestions.map((question) => (
+                <QuestionViewItem
+                  meetingQuestion={question}
+                  key={question.id}
+                />
+              ))}
+            </div>
+          </Accordion>
+        )}
+        <Button variant="highlighted">Share report</Button>
+        {/* //TODO: Share */}
       </div>
     </SubPageLayout>
   );
 };
 
-export default ViewDetailsPage;
+export default ReportDetailsPage;

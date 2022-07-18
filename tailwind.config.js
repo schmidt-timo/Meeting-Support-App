@@ -9,7 +9,6 @@ module.exports = {
       minWidth: {
         xs: "4rem",
         sm: "6rem",
-        lg: "6.5rem",
       },
       maxWidth: {
         lg: "8rem",

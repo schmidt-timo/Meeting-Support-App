@@ -1,10 +1,10 @@
 import { useState } from "react";
 import {
   MdOutlineClose,
-  MdOutlineEditNote,
   MdPeople,
   MdQrCodeScanner,
   MdQuestionAnswer,
+  MdStickyNote2,
 } from "react-icons/md";
 import {
   Meeting,
@@ -159,7 +159,7 @@ const MeetingViewPage = ({
             onClick={() => setShowSharedNotes(!showSharedNotes)}
             className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
           >
-            <MdOutlineEditNote className="w-4 h-4" />
+            <MdStickyNote2 className="w-4 h-4" />
             {showSharedNotes ? <p>Your Notes</p> : <p>Shared Notes</p>}
           </button>
         </div>

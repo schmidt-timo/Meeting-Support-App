@@ -52,7 +52,7 @@ const MeetingCounter = ({
             <span>{formatWithLeadingZeros(passedTime.seconds)}</span>
           </>
         ) : (
-          <span>00:00:00</span>
+          <span>Not started yet</span>
         )}
       </div>
       <p>/</p>

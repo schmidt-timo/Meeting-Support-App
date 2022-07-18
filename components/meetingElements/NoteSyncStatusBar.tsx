@@ -1,4 +1,4 @@
-import { MdCheck } from "react-icons/md";
+import { MdCheck, MdError } from "react-icons/md";
 
 export type DatabaseSyncStatus = "SAVING" | "SAVED" | "NONE" | "NOT_SAVED";
 
@@ -24,11 +24,11 @@ const NoteSyncStatusBar = ({
       <button
         disabled={databaseStatus === "SAVED"}
         onClick={onSave}
-        className={`text-white text-xs px-3 py-1 rounded-xl disabled:bg-transparent min-w-lg
+        className={`text-white text-xs px-3 py-1 rounded-xl disabled:bg-transparent min-w-sm
         ${databaseStatus === "NOT_SAVED" && "bg-red-500"}
         `}
       >
-        {variant === "SHARED" ? "Save changes" : "Save changes manually"}
+        {variant === "SHARED" ? "Save notes" : "Save changes manually"}
       </button>
       <div className="text-xs font-medium pr-2">
         {databaseStatus === "SAVING" && (
@@ -37,16 +37,19 @@ const NoteSyncStatusBar = ({
         {databaseStatus === "SAVED" && (
           <div className="text-green-500 flex items-center space-x-1">
             <MdCheck className="w-4 h-4 flex-shrink-0" />
-            <p>Saved to database</p>
+            <p>Saved</p>
           </div>
         )}
         {databaseStatus === "NOT_SAVED" && variant === "PERSONAL" && (
           <div className="text-red-500">Not saved yet</div>
         )}
         {databaseStatus === "NOT_SAVED" && variant === "SHARED" && (
-          <div className="text-red-500" style={{ lineHeight: "1.1" }}>
-            Shared Notes are not saved automatically.{" "}
-            <b>Don't forget to save!</b>
+          <div
+            className="flex items-center justify-center space-x-1 text-red-500"
+            style={{ lineHeight: "1.1" }}
+          >
+            <MdError className="w-5 h-5 flex-shrink-0" />
+            <p>Shared Notes are not saved automatically.</p>
           </div>
         )}
       </div>

@@ -125,9 +125,6 @@ export const useMeeting = (meeting: Meeting) => {
     const noteSubscription = supabaseServer
       .from("meeting_notes")
       .on("UPDATE", (payload) => {
-        console.log("Change detected");
-        console.log(payload);
-
         if (payload.new.createdBy === "shared") {
           setSharedNotes(payload.new);
         } else {

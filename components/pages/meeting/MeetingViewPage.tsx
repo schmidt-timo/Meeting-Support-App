@@ -14,11 +14,11 @@ import {
 import Label from "../../formElements/Label";
 import NotificationLabel from "../../formElements/NotificationLabel";
 import { DatabaseSyncStatus } from "../../meetingElements/NoteSyncStatusBar";
-import AgendaController from "./AgendaController";
-import MeetingCounter from "./MeetingCounter";
-import MeetingNotes from "./MeetingNotes";
+import AgendaController from "../../meetingElements/AgendaController";
+import MeetingCounter from "../../meetingElements/MeetingCounter";
+import MeetingNotes from "../../meetingElements/MeetingNotes";
 import PresentationView from "./PresentationView";
-import SharedNotes from "./SharesNotes";
+import SharedNotes from "../../meetingElements/SharedNotes";
 
 type MeetingViewPageProps = {
   meeting: Meeting;

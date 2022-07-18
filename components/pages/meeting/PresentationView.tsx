@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 import { Document, Page, pdfjs } from "react-pdf";
 import { MeetingAgendaItem, MeetingAgendaStatus } from "../../../utils/types";
-import MeetingCounter from "./MeetingCounter";
+import MeetingCounter from "../../meetingElements/MeetingCounter";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 type Props = {

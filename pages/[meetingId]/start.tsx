@@ -100,7 +100,13 @@ const MeetingView: NextPage<Props> = ({
         />
       )}
 
-      {view === "AGENDA" && <FullAgenda onClose={() => setView("MEETING")} />}
+      {view === "AGENDA" && (
+        <FullAgenda
+          agendaItems={meeting.agenda}
+          onClose={() => setView("MEETING")}
+          onEditAgenda={() => router.push(`/${meeting.id}/agenda`)}
+        />
+      )}
 
       {view === "MEETING" && (
         <MeetingViewPage

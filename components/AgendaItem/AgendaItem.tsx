@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MdDelete,
   MdInsertDriveFile,
@@ -23,6 +23,27 @@ const AgendaItem = ({
   onRemoveFile,
 }: Props) => {
   const [isInEditMode, setIsInEditMode] = useState<Boolean>(false);
+  const [hasScrollBars, setHasScrollBars] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  const handleScroll = (event: any) => {
+    const el = event.target;
+
+    if (el.scrollHeight - el.scrollTop > el.clientHeight) {
+      setHasScrollBars(true);
+    } else {
+      setHasScrollBars(false);
+    }
+  };
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      const el = descriptionRef.current;
+      if (el.scrollHeight - el.scrollTop > el.clientHeight) {
+        setHasScrollBars(true);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -53,7 +74,19 @@ const AgendaItem = ({
             )}
           </div>
           {agendaItem.description && (
-            <p className="text-xs pb-2">{agendaItem.description}</p>
+            <div className="relative">
+              <p
+                ref={descriptionRef}
+                id="agendaDescription"
+                onScroll={handleScroll}
+                className="text-xs pb-2 max-h-28 overflow-y-scroll"
+              >
+                {agendaItem.description}
+              </p>
+              {hasScrollBars && (
+                <div className="w-full h-14 absolute bg-gradient-to-t from-white bottom-0 right-0 z-20" />
+              )}
+            </div>
           )}
           {agendaItem.fileUrl && (
             <div className="w-full flex flex-col flex-shrink-0 text-sm pl-2 pr-3 rounded-xl bg-gray-200 p-2 space-x-1 space-y-2 truncate">

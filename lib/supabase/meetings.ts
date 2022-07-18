@@ -73,13 +73,6 @@ export const updateParticipants = async (
     .match({ id: meetingId });
 };
 
-export const markMeetingAsComplete = async (meetingId: string) => {
-  return await supabase
-    .from("meetings")
-    .update({ completed: true })
-    .eq("id", meetingId);
-};
-
 export const uploadFileToAgendaItem = async (
   file: File,
   agendaItemId: string,

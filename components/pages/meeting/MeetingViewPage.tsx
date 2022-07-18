@@ -118,7 +118,7 @@ const MeetingViewPage = ({
           )}
           {showSharedNotes && (
             <div className="space-y-2">
-              <Label icon="note">Shared Notes (visible to anybody)</Label>
+              <Label icon="note">Shared Notes (visible to everyone)</Label>
               <SharedNotes
                 meetingNote={sharedNotes}
                 onChangeNote={onSharedNotesChange}

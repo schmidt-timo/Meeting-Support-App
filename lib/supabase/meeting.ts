@@ -404,3 +404,18 @@ export const createPresentationStorage = async () => {
     return data;
   }
 };
+
+export const markMeetingAsComplete = async (meetingId: string) => {
+  const { data, error } = await supabase
+    .from("meetings")
+    .update({ completed: true })
+    .eq("id", meetingId);
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
+};

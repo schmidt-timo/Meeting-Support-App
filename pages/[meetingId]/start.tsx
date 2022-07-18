@@ -2,7 +2,10 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
+import Button from "../../components/formElements/Button";
+import NotificationLabel from "../../components/formElements/NotificationLabel";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+import Modal from "../../components/Modal/Modal";
 import FullAgenda from "../../components/pages/meeting/FullAgenda";
 import ManageQuestions from "../../components/pages/meeting/ManageQuestions";
 import MeetingInfo from "../../components/pages/meeting/MeetingInfo";
@@ -12,6 +15,7 @@ import { useAuth } from "../../lib/auth";
 import {
   changeMeetingQuestionAnsweredStatus,
   createMeetingQuestion,
+  markMeetingAsComplete,
   updateAgendaStatus,
   updateMeetingNote,
   updateParticipants,
@@ -67,6 +71,8 @@ const MeetingView: NextPage<Props> = ({
 }) => {
   const router = useRouter();
   const [view, setView] = useState<Views>("MEETING");
+  const [showExitModal, setShowExitModal] = useState(false);
+
   const { user } = useAuth();
 
   const {
@@ -93,8 +99,39 @@ const MeetingView: NextPage<Props> = ({
     endDate: new Date(initialMeeting.endDate),
   };
 
+  const endMeeting = async () => {
+    markMeetingAsComplete(meeting.id)
+      .then((data) => {
+        if (data) {
+          router.push("/");
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   return (
     <>
+      {showExitModal && (
+        <Modal title="Leaving Meeting" onClose={() => setShowExitModal(false)}>
+          <div className="space-y-5">
+            <NotificationLabel variant="yellow">
+              After the meeting has ended for all participants, it cannot be
+              resumed.
+            </NotificationLabel>
+            <div className="space-y-2">
+              <Button onClick={() => router.push("/")} variant="highlighted">
+                Leave meeting
+              </Button>
+              <Button onClick={endMeeting} variant="red">
+                End meeting for all participants
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
       {view === "INFO" && (
         <MeetingInfo
           meeting={meeting}
@@ -115,10 +152,7 @@ const MeetingView: NextPage<Props> = ({
         <MeetingViewPage
           meeting={meeting}
           onShowInfo={() => setView("INFO")}
-          onExitMeeting={() => {
-            // TODO: Ask before leaving
-            router.push("/");
-          }}
+          onExitMeeting={() => setShowExitModal(true)}
           agendaStatus={agendaStatus}
           onShowFullAgenda={() => setView("AGENDA")}
           onAgendaItemChange={async (newIndex) => {

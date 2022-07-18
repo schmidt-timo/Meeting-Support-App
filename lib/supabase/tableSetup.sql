@@ -11,6 +11,7 @@ create table meetings (
   "agenda" json,
   "participants" json,
   "completed" boolean not null default false,
+  "completedAt" timestamp with time zone,
   "agendaStatus" json not null default ('{}'),
 
   primary key (id)
@@ -62,10 +63,6 @@ create policy "Read access"
 
 create policy "Insert access"
   on storage.objects for insert
-  with check ( bucket_id = 'files' );
-
-create policy "Update access"
-  on storage.objects for update
   with check ( bucket_id = 'files' );
 
 create policy "Delete access"

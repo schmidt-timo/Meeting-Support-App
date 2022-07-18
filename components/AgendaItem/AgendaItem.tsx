@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import {
   MdDelete,
   MdInsertDriveFile,
@@ -23,24 +24,14 @@ const AgendaItem = ({
   onRemoveFile,
 }: Props) => {
   const [isInEditMode, setIsInEditMode] = useState<Boolean>(false);
-  const [hasScrollBars, setHasScrollBars] = useState(false);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-
-  const handleScroll = (event: any) => {
-    const el = event.target;
-
-    if (el.scrollHeight - el.scrollTop > el.clientHeight) {
-      setHasScrollBars(true);
-    } else {
-      setHasScrollBars(false);
-    }
-  };
+  const [isCollapsible, setIsCollapsible] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const descriptionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (descriptionRef.current) {
-      const el = descriptionRef.current;
-      if (el.scrollHeight - el.scrollTop > el.clientHeight) {
-        setHasScrollBars(true);
+      if (descriptionRef.current.clientHeight > 112) {
+        setIsCollapsible(true);
       }
     }
   }, []);
@@ -59,7 +50,16 @@ const AgendaItem = ({
           onRemoveFile={onRemoveFile}
         />
       ) : (
-        <div className="bg-white rounded-xl px-3 pb-3 pt-2.5 space-y-1">
+        <div
+          onClick={() => {
+            if (isCollapsible) {
+              setIsCollapsed(!isCollapsed);
+            }
+          }}
+          className={`bg-white rounded-xl px-3 pb-3 pt-2.5 space-y-1 ${
+            isCollapsible && "cursor-pointer"
+          }`}
+        >
           <div className="flex justify-between space-x-3 pb-1">
             <h1
               className="font-bold truncate-3-lines"
@@ -77,14 +77,19 @@ const AgendaItem = ({
             <div className="relative">
               <p
                 ref={descriptionRef}
-                id="agendaDescription"
-                onScroll={handleScroll}
-                className="text-xs pb-2 max-h-28 overflow-y-scroll"
+                className={`text-xs 
+              ${isCollapsible && isCollapsed && "max-h-28 overflow-hidden"}
+              ${agendaItem.fileUrl && "pb-2"}
+              `}
               >
                 {agendaItem.description}
               </p>
-              {hasScrollBars && (
-                <div className="w-full h-14 absolute bg-gradient-to-t from-white bottom-0 right-0 z-20" />
+              {isCollapsible && isCollapsed && (
+                <div className="w-full h-32 absolute bg-gradient-to-t from-white bottom-0 right-0 z-20 flex items-end justify-center text-xs font-medium text-gray-800 cursor-pointer">
+                  {isMobile
+                    ? "Tap to reveal full description"
+                    : "Click to reveal full description"}
+                </div>
               )}
             </div>
           )}

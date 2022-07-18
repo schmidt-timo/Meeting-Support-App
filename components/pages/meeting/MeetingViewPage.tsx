@@ -1,5 +1,7 @@
+import { useState } from "react";
 import {
   MdOutlineClose,
+  MdOutlineEditNote,
   MdPeople,
   MdQrCodeScanner,
   MdQuestionAnswer,
@@ -11,10 +13,12 @@ import {
 } from "../../../utils/types";
 import Label from "../../formElements/Label";
 import NotificationLabel from "../../formElements/NotificationLabel";
+import { DatabaseSyncStatus } from "../../meetingElements/NoteSyncStatusBar";
 import AgendaController from "./AgendaController";
 import MeetingCounter from "./MeetingCounter";
-import MeetingNotes, { DatabaseSyncStatus } from "./MeetingNotes";
+import MeetingNotes from "./MeetingNotes";
 import PresentationView from "./PresentationView";
+import SharedNotes from "./SharesNotes";
 
 type MeetingViewPageProps = {
   meeting: Meeting;
@@ -25,9 +29,13 @@ type MeetingViewPageProps = {
   onAgendaItemChange: (newIndex: number) => Promise<void>;
   onPresentationPageChange: (pageNumber: number) => Promise<void>;
   onMeetingNoteChange: (newText: string) => Promise<MeetingNote>;
+  onSharedNotesChange: (newText: string) => Promise<MeetingNote>;
   meetingNote: MeetingNote;
+  sharedNotes: MeetingNote;
   databaseStatus: DatabaseSyncStatus;
   setDatabaseStatus: (status: DatabaseSyncStatus) => void;
+  sharedNotesDatabaseStatus: DatabaseSyncStatus;
+  setSharedNotesDatabaseStatus: (status: DatabaseSyncStatus) => void;
   onManageParticipants: () => void;
   onManageQuestions: () => void;
 };
@@ -41,12 +49,18 @@ const MeetingViewPage = ({
   onAgendaItemChange,
   onPresentationPageChange,
   onMeetingNoteChange,
+  onSharedNotesChange,
   meetingNote,
+  sharedNotes,
   databaseStatus,
   setDatabaseStatus,
+  sharedNotesDatabaseStatus,
+  setSharedNotesDatabaseStatus,
   onManageParticipants,
   onManageQuestions,
 }: MeetingViewPageProps) => {
+  const [showSharedNotes, setShowSharedNotes] = useState(false);
+
   return (
     <div className="h-meetingview">
       <div className="w-full p-4 flex items-center justify-between bg-white sticky top-0 z-20">
@@ -102,15 +116,28 @@ const MeetingViewPage = ({
               No agenda available for this meeting.
             </NotificationLabel>
           )}
-          <div className="space-y-2">
-            <Label>Your Notes (only visible for you)</Label>
-            <MeetingNotes
-              meetingNote={meetingNote}
-              onChangeNote={onMeetingNoteChange}
-              databaseStatus={databaseStatus}
-              setDatabaseStatus={setDatabaseStatus}
-            />
-          </div>
+          {showSharedNotes && (
+            <div className="space-y-2">
+              <Label icon="note">Shared Notes (visible to anybody)</Label>
+              <SharedNotes
+                meetingNote={sharedNotes}
+                onChangeNote={onSharedNotesChange}
+                databaseStatus={sharedNotesDatabaseStatus}
+                setDatabaseStatus={setSharedNotesDatabaseStatus}
+              />
+            </div>
+          )}
+          {!showSharedNotes && (
+            <div className="space-y-2">
+              <Label icon="note">Your Notes (only visible to you)</Label>
+              <MeetingNotes
+                meetingNote={meetingNote}
+                onChangeNote={onMeetingNoteChange}
+                databaseStatus={databaseStatus}
+                setDatabaseStatus={setDatabaseStatus}
+              />
+            </div>
+          )}
         </div>
 
         <div className="w-full text-xs flex justify-between p-4 space-x-2">
@@ -128,9 +155,12 @@ const MeetingViewPage = ({
             <MdQuestionAnswer className="w-4 h-4" />
             <p>Questions</p>
           </button>
-          <button className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center">
-            <MdQuestionAnswer className="w-4 h-4" />
-            <p>Shared Notes</p>
+          <button
+            onClick={() => setShowSharedNotes(!showSharedNotes)}
+            className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+          >
+            <MdOutlineEditNote className="w-4 h-4" />
+            {showSharedNotes ? <p>Your Notes</p> : <p>Shared Notes</p>}
           </button>
         </div>
       </div>

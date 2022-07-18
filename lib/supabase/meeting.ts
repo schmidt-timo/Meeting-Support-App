@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DatabaseSyncStatus } from "../../components/pages/meeting/MeetingNotes";
+import { DatabaseSyncStatus } from "../../components/meetingElements/NoteSyncStatusBar";
 import { generateRandomID } from "../../utils/functions";
 import {
   DatabaseParticipant,
@@ -15,7 +15,12 @@ import { getParticipantInfoIfEmailIsRegistered } from "./users";
 
 export const useMeeting = (meeting: Meeting) => {
   const [meetingNote, setMeetingNote] = useState<MeetingNote>();
+  const [sharedNotes, setSharedNotes] = useState<MeetingNote>();
+
   const [databaseStatus, setDatabaseStatus] =
+    useState<DatabaseSyncStatus>("NONE");
+
+  const [sharedNotesDatabaseStatus, setSharedNotesDatabaseStatus] =
     useState<DatabaseSyncStatus>("NONE");
 
   const [meetingQuestions, setMeetingQuestions] = useState<MeetingQuestion[]>(
@@ -48,6 +53,24 @@ export const useMeeting = (meeting: Meeting) => {
     };
   })();
 
+  var createNewMeetingNoteForSharedNotes = (function async() {
+    // make sure note create function only gets called once
+    var executed = false;
+    return function () {
+      if (!executed) {
+        executed = true;
+        createMeetingNote({
+          id: generateRandomID(),
+          meetingId: meeting.id,
+          createdBy: "shared",
+          content: "",
+        }).then((note) => {
+          setSharedNotes(note);
+        });
+      }
+    };
+  })();
+
   const checkParticipantsInfo = async (
     participantsToCheck: MeetingParticipant[]
   ) => {
@@ -64,6 +87,15 @@ export const useMeeting = (meeting: Meeting) => {
         createNewMeetingNote();
       }
     });
+
+    // get shared notes if available
+    fetchMeetingNote(meeting.id, "shared", setSharedNotes).catch((error) => {
+      if (error.code === "PGRST116") {
+        // if does not exist, create empty note
+        createNewMeetingNoteForSharedNotes();
+      }
+    });
+
     fetchAgendaStatus(meeting.id, setAgendaStatus).catch((error) => {
       if (error.message === "isEmpty") {
         updateAgendaStatus(meeting.id, {
@@ -93,7 +125,14 @@ export const useMeeting = (meeting: Meeting) => {
     const noteSubscription = supabaseServer
       .from("meeting_notes")
       .on("UPDATE", (payload) => {
-        setMeetingNote(payload.new);
+        console.log("Change detected");
+        console.log(payload);
+
+        if (payload.new.createdBy === "shared") {
+          setSharedNotes(payload.new);
+        } else {
+          setMeetingNote(payload.new);
+        }
       })
       .subscribe();
 
@@ -114,8 +153,11 @@ export const useMeeting = (meeting: Meeting) => {
 
   return {
     meetingNote,
+    sharedNotes,
     databaseStatus,
     setDatabaseStatus,
+    sharedNotesDatabaseStatus,
+    setSharedNotesDatabaseStatus,
     agendaStatus,
     setAgendaStatus,
     participants,

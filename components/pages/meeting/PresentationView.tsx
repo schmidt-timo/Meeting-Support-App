@@ -98,7 +98,7 @@ const PresentationView = ({
                 className={`text-center ${
                   fullscreenHandler.active
                     ? "font-bold text-3xl"
-                    : "font-medium text-xl"
+                    : "font-medium text-lg"
                 }`}
               >
                 {`${agendaStatus.currentItemIndex + 1}. ${agendaItem.title}`}

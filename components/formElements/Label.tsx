@@ -4,10 +4,11 @@ import {
   MdEmail,
   MdOutlineEast,
   MdPassword,
+  MdStickyNote2,
 } from "react-icons/md";
 
 type Props = {
-  icon?: "arrow" | "email" | "password" | "date" | "time";
+  icon?: "arrow" | "email" | "password" | "date" | "time" | "note";
   children: React.ReactNode;
   required?: boolean;
 };
@@ -25,6 +26,7 @@ const Label = ({ icon = "arrow", children, required }: Props) => {
         {icon === "password" && <MdPassword />}
         {icon === "date" && <MdCalendarToday />}
         {icon === "time" && <MdAccessTime />}
+        {icon === "note" && <MdStickyNote2 />}
         <p>{children}</p>
       </span>
       {required && <p className="text-lg pt-1.5 text-gray-500">*</p>}

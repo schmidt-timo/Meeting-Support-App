@@ -72,14 +72,17 @@ const MeetingView: NextPage<Props> = ({
   const {
     agendaStatus,
     meetingNote,
+    sharedNotes,
     databaseStatus,
     setDatabaseStatus,
+    sharedNotesDatabaseStatus,
+    setSharedNotesDatabaseStatus,
     participants,
     setParticipants,
     meetingQuestions,
   } = useMeeting(initialMeeting);
 
-  if (!agendaStatus || !meetingNote || !initialMeeting) {
+  if (!agendaStatus || !meetingNote || !sharedNotes || !initialMeeting) {
     return <LoadingScreen />;
   }
 
@@ -127,22 +130,22 @@ const MeetingView: NextPage<Props> = ({
           onPresentationPageChange={async (pageNumber) => {
             console.log("CHANGE");
             updateAgendaStatus(meeting.id, {
-              currentItemIndex: agendaStatus.currentItemIndex,
-              startedAt: agendaStatus.startedAt,
+              ...agendaStatus,
               currentPresentationPage: pageNumber,
             });
-
-            // updateAgendaStatus(meeting.id, {
-            //   ...agendaStatus,
-            //   currentPresentationPage: pageNumber,
-            // });
           }}
           onMeetingNoteChange={async (newText) => {
             return updateMeetingNote(meetingNote.id, newText);
           }}
+          onSharedNotesChange={async (newText) => {
+            return updateMeetingNote(sharedNotes.id, newText);
+          }}
           meetingNote={meetingNote}
+          sharedNotes={sharedNotes}
           databaseStatus={databaseStatus}
           setDatabaseStatus={setDatabaseStatus}
+          sharedNotesDatabaseStatus={sharedNotesDatabaseStatus}
+          setSharedNotesDatabaseStatus={setSharedNotesDatabaseStatus}
           onManageParticipants={() => setView("PARTICIPANTS")}
           onManageQuestions={() => setView("QUESTIONS")}
         />

@@ -55,3 +55,28 @@ export function formatParticipantsText(participants: MeetingParticipant[]) {
     ? `${participants.length} Participant`
     : `${participants.length} Participants`;
 }
+
+export function formatWithLeadingZeros(value: number) {
+  return value < 10 ? `0${value}` : value;
+}
+
+export function formatAgendaItemDuration(totalSeconds: number) {
+  const hours = Math.floor((totalSeconds / 3600) % 24);
+  const minutes = Math.floor((totalSeconds / 60) % 60);
+  const seconds = Math.floor(totalSeconds % 60);
+
+  if (hours > 0) {
+    return `${formatWithLeadingZeros(hours)}:${formatWithLeadingZeros(
+      minutes
+    )}:${formatWithLeadingZeros(seconds)}`;
+  } else {
+    return `${formatWithLeadingZeros(minutes)}:${formatWithLeadingZeros(
+      seconds
+    )}`;
+  }
+}
+
+export function formatUpvoteText(upvotes: string[]) {
+  const len = upvotes.length;
+  return len === 1 ? `${len} Upvote` : `${len} Upvotes`;
+}

@@ -1,10 +1,9 @@
-import { supabase } from "./config";
 import {
   DatabaseMeeting,
   DatabaseParticipant,
   MeetingAgendaItem,
-  MeetingParticipant,
 } from "../../utils/types";
+import { supabase } from "./config";
 
 export const fetchAllMeetings = async () => {
   return await supabase
@@ -18,6 +17,14 @@ export const fetchSingleMeeting = async (meetingId: string) => {
     .from("meetings")
     .select("*")
     .eq("id", meetingId)
+    .single();
+};
+
+export const getMeetingCreator = async (creatorId: string) => {
+  return await supabase
+    .from("existing_users")
+    .select("*")
+    .eq("id", creatorId)
     .single();
 };
 
@@ -64,4 +71,54 @@ export const updateParticipants = async (
       participants: newParticipants,
     })
     .match({ id: meetingId });
+};
+
+export const uploadFileToAgendaItem = async (
+  file: File,
+  agendaItemId: string,
+  meetingId: string
+) => {
+  let { data, error: uploadError } = await supabase.storage
+    .from("files")
+    .upload(`${meetingId}/${agendaItemId}/${file.name}`, file);
+
+  if (uploadError) {
+    throw uploadError;
+  }
+
+  if (data) {
+    return data;
+  }
+};
+
+export const getPublicFileUrlForAgendaItem = async (
+  fileName: string,
+  agendaItemId: string,
+  meetingId: string
+) => {
+  const { publicURL, error } = supabase.storage
+    .from("files")
+    .getPublicUrl(`${meetingId}/${agendaItemId}/${fileName}`);
+
+  if (error) {
+    throw error;
+  }
+
+  if (publicURL) {
+    return publicURL;
+  }
+};
+
+export const deleteFileFromAgendaItem = async (filePath: string) => {
+  const { data, error } = await supabase.storage
+    .from("files")
+    .remove([filePath]);
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
 };

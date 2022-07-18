@@ -13,6 +13,7 @@ export type MeetingAgendaItem = {
   title: string;
   description?: string;
   duration?: number;
+  fileUrl?: string;
 };
 
 export type MeetingParticipant = {
@@ -33,12 +34,36 @@ export type Meeting = {
   agenda: MeetingAgendaItem[];
   participants: MeetingParticipant[];
   completed: boolean;
+  completedAt?: Date;
+  agendaStatus?: MeetingAgendaStatus;
 };
 
 export type User = {
   id: string;
   name: string;
   color: string;
+};
+
+export type MeetingNote = {
+  id: string;
+  meetingId: string;
+  createdBy: string;
+  content: string;
+};
+
+export type MeetingQuestion = {
+  id: string;
+  createdAt: Date;
+  meetingId: string;
+  question: string;
+  upvotes: string[];
+  answered: boolean;
+};
+
+export type MeetingAgendaStatus = {
+  currentItemIndex: number;
+  startedAt?: Date;
+  currentPresentationPage?: number;
 };
 
 // FOR DATABASE
@@ -59,4 +84,6 @@ export type DatabaseMeeting = {
   agenda: MeetingAgendaItem[];
   participants: DatabaseParticipant[];
   completed: boolean;
+  completedAt?: Date;
+  currentAgendaItem?: MeetingAgendaStatus;
 };

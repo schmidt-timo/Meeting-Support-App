@@ -137,6 +137,8 @@ const EditParticipants: NextPage<Props> = ({
           if (data) {
             router.push("/");
           }
+        } else {
+          router.push("/");
         }
       }}
       onClose={() => router.push("/")}

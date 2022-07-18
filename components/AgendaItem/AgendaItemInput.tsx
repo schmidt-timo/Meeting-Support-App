@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdCheck, MdClose } from "react-icons/md";
+import { MdCheck, MdClose, MdSwapVert, MdUpload } from "react-icons/md";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import { generateRandomID } from "../../utils/functions";
 import { validateNumberRegex } from "../../utils/regex";
 import { MeetingAgendaItem } from "../../utils/types";
 import ErrorMessage from "../formElements/ErrorMessage";
+import FilePreview from "./FilePreview";
+import LocalFilePreview from "./LocalFilePreview";
 
 type AgendaInputs = {
   agendaItemTitle: string;
@@ -14,16 +17,29 @@ type AgendaInputs = {
 
 type Props = {
   agendaItem?: MeetingAgendaItem;
-  onSave: (item: MeetingAgendaItem) => void;
+  onSave: (item: MeetingAgendaItem, file?: File) => void;
   onAbort: () => void;
+  onRemoveFile: (fileUrl: string, itemId: string) => void;
+  isUploading?: boolean;
 };
 
-const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
+const AgendaItemInput = ({
+  agendaItem,
+  onSave,
+  onAbort,
+  onRemoveFile,
+  isUploading = false,
+}: Props) => {
+  const [file, setFile] = useState<File>();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AgendaInputs>();
+  } = useForm<AgendaInputs>({
+    mode: "onChange",
+  });
+
   const onSubmit = (data: AgendaInputs) => {
     const item: MeetingAgendaItem = {
       id: agendaItem?.id ?? generateRandomID(),
@@ -31,7 +47,7 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
       duration: data.agendaItemDuration,
       description: data.agendaItemDescription,
     };
-    onSave(item);
+    onSave(item, file);
   };
 
   return (
@@ -62,25 +78,79 @@ const AgendaItemInput = ({ agendaItem, onSave, onAbort }: Props) => {
         </div>
         <ErrorMessage errors={errors} fieldName="agendaItemDuration" />
         <textarea
-          className="w-full text-xs border p-0.5"
-          style={{ minHeight: "40px" }}
+          className="w-full text-sm border p-0.5 min-h-agenda max-h-agenda"
           placeholder="Description"
           {...register("agendaItemDescription")}
           defaultValue={agendaItem?.description}
         />
-        <div className="space-x-2 flex justify-end pt-2">
-          <button
-            type="submit"
-            className="bg-green-200 rounded-full w-7 h-7 flex justify-center items-center"
-          >
-            <MdCheck className="text-green-800 h-5 w-5" />
-          </button>
-          <button
-            onClick={() => onAbort()}
-            className="bg-red-200 rounded-full w-7 h-7 flex justify-center items-center"
-          >
-            <MdClose className="text-red-600 h-5 w-5" />
-          </button>
+        <div>
+          {agendaItem?.fileUrl && (
+            <FilePreview
+              fileUrl={agendaItem.fileUrl}
+              onRemove={(fileUrl) => onRemoveFile(fileUrl, agendaItem.id)}
+            />
+          )}
+          {file && (
+            <LocalFilePreview file={file} onRemove={() => setFile(undefined)} />
+          )}
+        </div>
+        <div className="space-x-2 flex justify-between pt-2">
+          <span style={{ maxWidth: "70%" }}>
+            {!agendaItem?.fileUrl && (
+              <div className="flex space-x-2 items-center">
+                <label
+                  aria-label="Upload Button"
+                  className={`flex justify-center items-center flex-shrink-0 cursor-pointer text-sm pl-2 pr-3 rounded-xl font-medium p-1 space-x-1 ${
+                    isUploading
+                      ? "bg-gray-800 text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {isUploading && (
+                    <>
+                      <MdSwapVert className="animate-spin h-4 w-4" />
+                      <p>Uploading ...</p>
+                    </>
+                  )}
+                  {!isUploading && file && (
+                    <>
+                      <MdUpload className="w-4 h-4" />
+                      <p>Change PDF</p>
+                    </>
+                  )}
+
+                  {!isUploading && !file && (
+                    <>
+                      <MdUpload className="w-4 h-4" />
+                      <p>Upload PDF</p>
+                    </>
+                  )}
+                  <input
+                    disabled={isUploading}
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(event) => setFile(event.target.files![0])}
+                    className="hidden"
+                  />
+                </label>
+                {!isUploading && <p className="text-extrasmall">(max. 50MB)</p>}
+              </div>
+            )}
+          </span>
+          <span className="flex space-x-2">
+            <button
+              type="submit"
+              className="bg-green-200 rounded-full w-7 h-7 flex justify-center items-center flex-shrink-0"
+            >
+              <MdCheck className="text-green-800 h-5 w-5" />
+            </button>
+            <button
+              onClick={() => onAbort()}
+              className="bg-red-200 rounded-full w-7 h-7 flex justify-center items-center flex-shrink-0"
+            >
+              <MdClose className="text-red-600 h-5 w-5" />
+            </button>
+          </span>
         </div>
       </div>
     </form>

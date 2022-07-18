@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdAddCircle } from "react-icons/md";
 import { MeetingAgendaItem } from "../../../utils/types";
 import AgendaItem from "../../AgendaItem/AgendaItem";
@@ -10,9 +10,12 @@ type ManageAgendaContentProps = {
   buttonText: string;
   agendaItems: MeetingAgendaItem[];
   onNext: (items: MeetingAgendaItem[]) => void;
-  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
-  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onAddAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onDeleteAgendaItem: (itemId: string) => void;
+  onUpload: (file: File, itemId: string) => void;
+  onRemoveFile: (fileUrl: string, itemId: string) => void;
+  isUploading: boolean;
 };
 
 const ManageAgendaContent = ({
@@ -22,8 +25,17 @@ const ManageAgendaContent = ({
   onAddAgendaItem,
   onUpdateAgendaItem,
   onDeleteAgendaItem,
+  onRemoveFile,
+  isUploading,
 }: ManageAgendaContentProps) => {
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView();
+    }
+  }, [showNewItemButton]);
 
   return (
     <>
@@ -34,17 +46,22 @@ const ManageAgendaContent = ({
             key={a.id}
             onDelete={onDeleteAgendaItem}
             onChange={onUpdateAgendaItem}
+            onRemoveFile={onRemoveFile}
           />
         ))}
         {!showNewItemButton ? (
-          <AgendaItemInput
-            onAbort={() => setShowNewItemButton(true)}
-            onSave={(item) =>
-              onAddAgendaItem(item).then(() => {
-                setShowNewItemButton(true);
-              })
-            }
-          />
+          <div ref={ref}>
+            <AgendaItemInput
+              isUploading={isUploading}
+              onAbort={() => setShowNewItemButton(true)}
+              onSave={(item, file) =>
+                onAddAgendaItem(item, file).then(() => {
+                  setShowNewItemButton(true);
+                })
+              }
+              onRemoveFile={onRemoveFile}
+            />
+          </div>
         ) : (
           <Button
             onClick={() => setShowNewItemButton(false)}
@@ -69,9 +86,12 @@ type Props = {
   buttonText: string;
   onNext: (items: MeetingAgendaItem[]) => void;
   onClose: () => void;
-  onAddAgendaItem: (item: MeetingAgendaItem) => Promise<void>;
-  onUpdateAgendaItem: (item: MeetingAgendaItem) => void;
+  onAddAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
+  onUpdateAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onDeleteAgendaItem: (itemId: string) => void;
+  onUpload: (file: File, itemId: string) => void;
+  onRemoveFile: (fileUrl: string, itemId: string) => void;
+  isUploading: boolean;
 };
 
 const ManageAgenda = ({
@@ -83,6 +103,9 @@ const ManageAgenda = ({
   onAddAgendaItem,
   onUpdateAgendaItem,
   onDeleteAgendaItem,
+  onUpload,
+  onRemoveFile,
+  isUploading,
 }: Props) => {
   return (
     <>
@@ -99,6 +122,9 @@ const ManageAgenda = ({
             onAddAgendaItem={onAddAgendaItem}
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
+            onUpload={onUpload}
+            onRemoveFile={onRemoveFile}
+            isUploading={isUploading}
           />
         </SubPageLayout>
       ) : (
@@ -110,6 +136,9 @@ const ManageAgenda = ({
             onAddAgendaItem={onAddAgendaItem}
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
+            onUpload={onUpload}
+            onRemoveFile={onRemoveFile}
+            isUploading={isUploading}
           />
         </SubPageLayout>
       )}

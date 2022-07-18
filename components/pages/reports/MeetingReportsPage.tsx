@@ -1,28 +1,31 @@
-import { useRouter } from "next/router";
 import {
   MEETING_CATEGORY_LABELS,
   NAVIGATION_IDS,
 } from "../../../utils/constants";
-import {
-  filterMeetingsCreatedByUserId,
-  filterMeetingsNotCreatedByUserId,
-} from "../../../utils/filtering";
 import { Meeting } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
 import MeetingInfoBox from "../../MeetingInfoBox/MeetingInfoBox";
 import PageLayout from "../layouts/PageLayout";
 
 type Props = {
+  ownMeetings: Meeting[];
+  otherMeetings: Meeting[];
   userId: string;
-  meetings: Meeting[];
+  onViewReport: (meetingId: string) => void;
+  onViewFeedback: (meetingId: string) => void;
+  onGiveFeedback: (meetingId: string) => void;
+  submittedFeedback: string[];
 };
 
-const MeetingReportsPage = ({ userId, meetings }: Props) => {
-  const ownMeetings = filterMeetingsCreatedByUserId(meetings, userId);
-  const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
-
-  const router = useRouter();
-
+const MeetingReportsPage = ({
+  ownMeetings,
+  otherMeetings,
+  userId,
+  onViewReport,
+  onViewFeedback,
+  onGiveFeedback,
+  submittedFeedback,
+}: Props) => {
   return (
     <PageLayout
       header={{
@@ -40,7 +43,8 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
                 meeting={m}
                 key={m.id}
                 userId={userId}
-                onViewReport={() => router.push(`${m.id}/report`)}
+                onViewReport={() => onViewReport(m.id)}
+                onViewFeedback={() => onViewFeedback(m.id)}
               />
             ))}
           </Accordion>
@@ -54,7 +58,9 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
                 meeting={m}
                 key={m.id}
                 userId={userId}
-                onViewReport={() => router.push(`${m.id}/report`)}
+                onViewReport={() => onViewReport(m.id)}
+                onGiveFeedback={() => onGiveFeedback(m.id)}
+                showGiveFeedbackButton={!submittedFeedback.includes(m.id)}
               />
             ))}
           </Accordion>

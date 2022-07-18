@@ -2,6 +2,7 @@ import {
   DatabaseMeeting,
   DatabaseParticipant,
   MeetingAgendaItem,
+  MeetingFeedback,
 } from "../../utils/types";
 import { supabase } from "./config";
 
@@ -137,4 +138,25 @@ export const deleteFileFromAgendaItem = async (filePath: string) => {
   if (data) {
     return data;
   }
+};
+
+export const submitFeedback = async (feedback: MeetingFeedback) => {
+  const { data, error } = await supabase
+    .from("meeting_feedback")
+    .insert([feedback]);
+
+  if (error) {
+    throw error;
+  }
+
+  if (data) {
+    return data;
+  }
+};
+
+export const fetchFeedbackForMeeting = async (meetingId: string) => {
+  return await supabase
+    .from("meeting_feedback")
+    .select("*")
+    .eq("meetingId", meetingId);
 };

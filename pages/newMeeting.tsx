@@ -16,8 +16,14 @@ import {
   convertStringsToDate,
   generateMeetingID,
   generateRandomID,
+  getFileNameFromUrl,
 } from "../utils/functions";
-import { createMeeting } from "../lib/supabase/meetings";
+import {
+  createMeeting,
+  deleteFileFromAgendaItem,
+  getSignedUrlForAgendaItemFile,
+  uploadFileToAgendaItem,
+} from "../lib/supabase/meetings";
 import { useAuth } from "../lib/auth";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {
@@ -43,6 +49,9 @@ const NewMeeting: NextPage = () => {
     initialParticipant,
   ]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [fileIsUploading, setFileIsUploading] = useState(false);
+
+  const meetingId = generateMeetingID();
 
   useEffect(() => {
     // retrieve current user data and replace initial participant
@@ -68,6 +77,7 @@ const NewMeeting: NextPage = () => {
       )}
       {currentView === "MANAGE_AGENDA" && (
         <ManageAgenda
+          isUploading={fileIsUploading}
           agendaItems={agendaItems}
           onBack={(items) => {
             setAgendaItems(items);
@@ -79,20 +89,113 @@ const NewMeeting: NextPage = () => {
             setCurrentView("MANAGE_PARTICIPANTS");
           }}
           onClose={() => router.push("/")}
-          onAddAgendaItem={(item) => {
+          onAddAgendaItem={async (item, file) => {
             return new Promise((resolve, reject) => {
-              setAgendaItems([...agendaItems, item]);
-              resolve();
+              if (file) {
+                setFileIsUploading(true);
+                uploadFileToAgendaItem(file, item.id, meetingId).then(
+                  (uploadData) => {
+                    if (uploadData) {
+                      getSignedUrlForAgendaItemFile(
+                        file.name,
+                        item.id,
+                        meetingId
+                      ).then((url) => {
+                        if (url) {
+                          setAgendaItems([
+                            ...agendaItems,
+                            {
+                              ...item,
+                              fileUrl: url,
+                            },
+                          ]);
+                          setFileIsUploading(false);
+                          resolve();
+                        }
+                      });
+                    }
+                  }
+                );
+              } else {
+                setAgendaItems([...agendaItems, item]);
+                resolve();
+              }
             });
           }}
-          onUpdateAgendaItem={(item) => {
-            const index = agendaItems.findIndex((el) => el.id === item.id);
-            const updatedItems = agendaItems;
-            updatedItems[index] = item;
-            setAgendaItems(updatedItems);
+          onUpdateAgendaItem={async (item, file) => {
+            return new Promise((resolve, reject) => {
+              if (file) {
+                setFileIsUploading(true);
+                uploadFileToAgendaItem(file, item.id, meetingId).then(
+                  (uploadData) => {
+                    if (uploadData) {
+                      getSignedUrlForAgendaItemFile(
+                        file.name,
+                        item.id,
+                        meetingId
+                      )
+                        .then((url) => {
+                          if (url) {
+                            const index = agendaItems.findIndex(
+                              (i) => i.id === item.id
+                            );
+                            const newItem = {
+                              ...item,
+                              fileUrl: url,
+                            };
+                            setAgendaItems([
+                              ...agendaItems.slice(0, index),
+                              newItem,
+                              ...agendaItems.slice(
+                                index + 1,
+                                agendaItems.length
+                              ),
+                            ]);
+                            setFileIsUploading(false);
+                            resolve();
+                          }
+                        })
+                        .catch((error) => {
+                          reject();
+                          throw error;
+                        });
+                    }
+                  }
+                );
+              } else {
+                const index = agendaItems.findIndex((i) => i.id === item.id);
+                setAgendaItems([
+                  ...agendaItems.slice(0, index),
+                  item,
+                  ...agendaItems.slice(index + 1, agendaItems.length),
+                ]);
+                resolve();
+              }
+            });
           }}
           onDeleteAgendaItem={(itemId) => {
             setAgendaItems(agendaItems.filter((item) => item.id !== itemId));
+          }}
+          onRemoveFile={async (fileUrl, itemId) => {
+            const fileName = getFileNameFromUrl(fileUrl);
+            deleteFileFromAgendaItem(`${meetingId}/${itemId}/${fileName}`)
+              .then((data) => {
+                const index = agendaItems.findIndex((i) => i.id === itemId);
+
+                const newItem = agendaItems[index];
+                delete newItem.fileUrl;
+
+                const newItems = [
+                  ...agendaItems.slice(0, index),
+                  newItem,
+                  ...agendaItems.slice(index + 1, agendaItems.length),
+                ];
+
+                setAgendaItems(newItems);
+              })
+              .catch((error) => {
+                throw error;
+              });
           }}
         />
       )}
@@ -128,7 +231,7 @@ const NewMeeting: NextPage = () => {
               setLoading(true);
               setParticipants(updatedParticipants);
               const meeting: DatabaseMeeting = {
-                id: generateMeetingID(),
+                id: meetingId,
                 createdBy: user!.id,
                 title: meetingData!!.title,
                 startDate: convertStringsToDate(

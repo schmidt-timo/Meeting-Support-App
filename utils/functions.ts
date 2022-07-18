@@ -1,6 +1,12 @@
 import { customAlphabet } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
-import { DatabaseParticipant, MeetingParticipant } from "./types";
+import { MEETING_FEEDBACK_QUESTIONS } from "./constants";
+import {
+  DatabaseParticipant,
+  MeetingFeedback,
+  MeetingFeedbackResponse,
+  MeetingParticipant,
+} from "./types";
 
 export function getNameInitials(name: string) {
   const nameParts = name.split(" ");
@@ -94,4 +100,59 @@ export function getFileNameFromUrl(url: string) {
   const removeSignedParams = url.split(".pdf")[0];
   const splitted = removeSignedParams.split("/");
   return `${splitted[splitted.length - 1]}.pdf`;
+}
+
+export function mapFeedbackToQuestions(feedback: MeetingFeedback[]) {
+  let question1: MeetingFeedbackResponse[] = [];
+  let question2: MeetingFeedbackResponse[] = [];
+  let question3: MeetingFeedbackResponse[] = [];
+
+  feedback.forEach((f) => {
+    f.responses.forEach((r) => {
+      if (r.question === MEETING_FEEDBACK_QUESTIONS[0]) {
+        question1.push(r);
+      }
+      if (r.question === MEETING_FEEDBACK_QUESTIONS[1]) {
+        question2.push(r);
+      }
+      if (r.question === MEETING_FEEDBACK_QUESTIONS[2]) {
+        question3.push(r);
+      }
+    });
+  });
+
+  return [question1, question2, question3];
+}
+
+export function mapEmojisToResponses(responses: MeetingFeedbackResponse[]) {
+  let good = 0;
+  let neutral = 0;
+  let bad = 0;
+
+  responses.forEach((r) => {
+    if (r.response === "good") good += 1;
+    if (r.response === "neutral") neutral += 1;
+    if (r.response === "bad") bad += 1;
+  });
+
+  return {
+    good,
+    neutral,
+    bad,
+  };
+}
+
+export function mapYesNoToResponses(responses: MeetingFeedbackResponse[]) {
+  let yes = 0;
+  let no = 0;
+
+  responses.forEach((r) => {
+    if (r.response === "yes") yes += 1;
+    if (r.response === "no") no += 1;
+  });
+
+  return {
+    yes,
+    no,
+  };
 }

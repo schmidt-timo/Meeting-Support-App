@@ -146,9 +146,6 @@ const EditAgenda: NextPage<Props> = ({
       onDeleteAgendaItem={(itemId) => {
         setAgendaItems(agendaItems.filter((item) => item.id !== itemId));
       }}
-      onUpload={async (file, itemId) => {
-        uploadFileToAgendaItem(file, itemId, meetingId).then((res) => {});
-      }}
       onRemoveFile={async (fileUrl, itemId) => {
         const fileName = getFileNameFromUrl(fileUrl);
         deleteFileFromAgendaItem(`${meetingId}/${itemId}/${fileName}`)

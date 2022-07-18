@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdCheck, MdClose, MdSwapVert, MdUpload } from "react-icons/md";
+import { MdCheck, MdClose, MdLoop, MdSwapVert, MdUpload } from "react-icons/md";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import { generateRandomID } from "../../utils/functions";
 import { validateNumberRegex } from "../../utils/regex";
@@ -108,7 +108,7 @@ const AgendaItemInput = ({
                 >
                   {isUploading && (
                     <>
-                      <MdSwapVert className="animate-spin h-4 w-4" />
+                      <MdLoop className="animate-spin h-4 w-4" />
                       <p>Uploading ...</p>
                     </>
                   )}

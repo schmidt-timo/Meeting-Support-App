@@ -8,6 +8,9 @@ import {
   MdPeople,
   MdAssignment,
   MdRemoveRedEye,
+  MdFeedback,
+  MdOutlineChatBubble,
+  MdInsertChart,
 } from "react-icons/md";
 import {
   formatAgendaText,
@@ -19,7 +22,13 @@ import { isTheSameDay } from "../../utils/functions";
 import { Meeting } from "../../utils/types";
 
 type MeetingInfoBoxButtonProps = {
-  symbol?: "edit" | "watch" | "agenda" | "participants";
+  symbol?:
+    | "edit"
+    | "watch"
+    | "agenda"
+    | "participants"
+    | "feedback"
+    | "feedback-results";
   color?: "red" | "green";
   className?: string;
   children: React.ReactNode;
@@ -47,6 +56,10 @@ const MeetingInfoBoxButton = ({
       {symbol === "watch" && <MdRemoveRedEye className="w-3.5 h-3.5" />}
       {symbol === "agenda" && <MdAssignment className="w-3.5 h-3.5" />}
       {symbol === "participants" && <MdPeople className="w-3.5 h-3.5" />}
+      {symbol === "feedback" && <MdOutlineChatBubble className="w-3.5 h-3.5" />}
+      {symbol === "feedback-results" && (
+        <MdInsertChart className="w-3.5 h-3.5" />
+      )}
       <p className="font-medium truncate text-xs">{children}</p>
     </button>
   );
@@ -81,6 +94,9 @@ type Props = {
   onViewDetails?: () => void;
   onViewReport?: () => void;
   onStartMeeting?: () => void;
+  onViewFeedback?: () => void;
+  onGiveFeedback?: () => void;
+  showGiveFeedbackButton?: boolean;
 };
 
 const MeetingInfoBox = ({
@@ -92,6 +108,9 @@ const MeetingInfoBox = ({
   onViewDetails,
   onViewReport,
   onStartMeeting,
+  onViewFeedback,
+  onGiveFeedback,
+  showGiveFeedbackButton,
 }: Props) => {
   // Fix dates
   const meeting = {
@@ -179,6 +198,21 @@ const MeetingInfoBox = ({
             View details
           </MeetingInfoBoxButton>
         )}
+        {meeting.completed && meeting.createdBy === userId && (
+          <MeetingInfoBoxButton
+            symbol="feedback-results"
+            onClick={onViewFeedback}
+          >
+            View feedback
+          </MeetingInfoBoxButton>
+        )}
+        {meeting.completed &&
+          meeting.createdBy !== userId &&
+          showGiveFeedbackButton && (
+            <MeetingInfoBoxButton symbol="feedback" onClick={onGiveFeedback}>
+              Give feedback
+            </MeetingInfoBoxButton>
+          )}
         {meeting.completed && (
           <MeetingInfoBoxButton symbol="watch" onClick={onViewReport}>
             View report

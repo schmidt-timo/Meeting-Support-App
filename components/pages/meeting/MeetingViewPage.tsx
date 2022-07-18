@@ -38,6 +38,7 @@ type MeetingViewPageProps = {
   setSharedNotesDatabaseStatus: (status: DatabaseSyncStatus) => void;
   onManageParticipants: () => void;
   onManageQuestions: () => void;
+  onAlarm: () => void;
 };
 
 const MeetingViewPage = ({
@@ -58,6 +59,7 @@ const MeetingViewPage = ({
   setSharedNotesDatabaseStatus,
   onManageParticipants,
   onManageQuestions,
+  onAlarm,
 }: MeetingViewPageProps) => {
   const [showSharedNotes, setShowSharedNotes] = useState(false);
 
@@ -69,10 +71,7 @@ const MeetingViewPage = ({
           <MeetingCounter
             startDate={meeting.startDate}
             endDate={meeting.endDate}
-            onReachingEndTime={() => {
-              console.log("REACHED END");
-              // TODO: Alarm function
-            }}
+            onReachingEndTime={onAlarm}
           />
         </span>
         <span className="space-x-2 flex">

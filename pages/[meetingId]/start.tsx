@@ -2,6 +2,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useState } from "react";
+import { MdNotificationsActive } from "react-icons/md";
 import Button from "../../components/formElements/Button";
 import NotificationLabel from "../../components/formElements/NotificationLabel";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
@@ -72,6 +73,7 @@ const MeetingView: NextPage<Props> = ({
   const router = useRouter();
   const [view, setView] = useState<Views>("MEETING");
   const [showExitModal, setShowExitModal] = useState(false);
+  const [showAlarm, setShowAlarm] = useState(false);
 
   const { user } = useAuth();
 
@@ -113,6 +115,34 @@ const MeetingView: NextPage<Props> = ({
 
   return (
     <>
+      {showAlarm && (
+        <Modal
+          variant="ALARM"
+          title={
+            <div className="flex items-center space-x-2">
+              <MdNotificationsActive className="w-5 h-5" />
+              <p>Alarm: Meeting End</p>
+            </div>
+          }
+          onClose={() => setShowAlarm(false)}
+        >
+          <div className="space-y-5">
+            <p className="text-sm">
+              You have reached your set meeting time. You can continue the
+              meeting or end it now for everyone.
+            </p>
+            <div className="space-y-2">
+              <Button onClick={() => setShowAlarm(false)} variant="highlighted">
+                Continue
+              </Button>
+              <Button onClick={endMeeting} variant="red">
+                End meeting for all participants
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
       {showExitModal && (
         <Modal title="Leaving Meeting" onClose={() => setShowExitModal(false)}>
           <div className="space-y-5">
@@ -150,6 +180,7 @@ const MeetingView: NextPage<Props> = ({
 
       {view === "MEETING" && (
         <MeetingViewPage
+          onAlarm={() => setShowAlarm(true)}
           meeting={meeting}
           onShowInfo={() => setView("INFO")}
           onExitMeeting={() => setShowExitModal(true)}

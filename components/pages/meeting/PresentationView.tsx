@@ -6,6 +6,7 @@ import {
   MdFullscreenExit,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
+  MdNotificationsActive,
 } from "react-icons/md";
 import { Document, Page, pdfjs } from "react-pdf";
 import { MeetingAgendaItem, MeetingAgendaStatus } from "../../../utils/types";
@@ -32,6 +33,7 @@ const PresentationView = ({
   const [numPages, setNumPages] = useState<number | null>(null);
   const [height, setHeight] = useState(0);
   const [showPDF, setShowPDF] = useState(false);
+  const [showAlarm, setShowAlarm] = useState(false);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number | null }) {
     setNumPages(numPages);
@@ -113,15 +115,22 @@ const PresentationView = ({
             </div>
           )}
           {fullscreenHandler.active && (
-            <MeetingCounter
-              startDate={meetingTimer.start}
-              endDate={meetingTimer.end}
-              onReachingEndTime={() => {
-                console.log("REACHED END");
-                // TODO: Alarm function
-              }}
-              className="absolute right-2 top-2 justify-center bg-black p-1 px-3 rounded-xl text-white"
-            />
+            <div className="flex items-center absolute right-2 top-2 justify-center bg-black p-1 px-3 rounded-xl space-x-2">
+              {showAlarm && (
+                <span className="flex space-x-2 items-center">
+                  <MdNotificationsActive className="w-4 h-4 text-red-500 flex-shrink-0" />
+                  <h1 className="font-medium text-sm text-white truncate text-red-500">
+                    Alarm: Meeting End
+                  </h1>
+                </span>
+              )}
+              <MeetingCounter
+                startDate={meetingTimer.start}
+                endDate={meetingTimer.end}
+                onReachingEndTime={() => setShowAlarm(true)}
+                className="text-white"
+              />
+            </div>
           )}
           {fullscreenHandler.active &&
             agendaStatus.startedAt &&

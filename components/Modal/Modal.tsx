@@ -1,14 +1,20 @@
 import { MdOutlineClose } from "react-icons/md";
 
 type Props = {
-  title: string;
+  title: string | React.ReactNode;
   children: React.ReactNode;
   onClose: () => void;
+  variant?: "STANDARD" | "ALARM";
 };
 
-const Modal = ({ title, children, onClose }: Props) => {
+const Modal = ({ title, children, onClose, variant = "STANDARD" }: Props) => {
   return (
-    <div className="absolute top-0 bg-black bg-opacity-80 w-full h-full p-6 flex items-center justify-center z-50">
+    <div
+      className={`absolute top-0 w-full h-full p-6 flex items-center justify-center z-50 
+      ${variant === "STANDARD" && "bg-black bg-opacity-80"}
+      ${variant === "ALARM" && "bg-red-600 bg-opacity-90"}
+      `}
+    >
       <div className="w-full flex flex-col bg-white p-3 rounded-xl">
         <div className="flex justify-between items-center pb-3 truncate space-x-2">
           <h1 className="font-bold truncate">{title}</h1>

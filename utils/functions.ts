@@ -91,6 +91,7 @@ export function calculatePassedTime(startDate: Date) {
 }
 
 export function getFileNameFromUrl(url: string) {
-  const splitted = url.split("/");
-  return splitted[splitted.length - 1];
+  const removeSignedParams = url.split(".pdf")[0];
+  const splitted = removeSignedParams.split("/");
+  return `${splitted[splitted.length - 1]}.pdf`;
 }

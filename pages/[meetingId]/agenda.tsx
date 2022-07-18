@@ -6,7 +6,7 @@ import ManageAgenda from "../../components/pages/meetings/ManageAgenda";
 import {
   deleteFileFromAgendaItem,
   fetchSingleMeeting,
-  getPublicFileUrlForAgendaItem,
+  getSignedUrlForAgendaItemFile,
   updateAgenda,
   uploadFileToAgendaItem,
 } from "../../lib/supabase/meetings";
@@ -73,7 +73,7 @@ const EditAgenda: NextPage<Props> = ({
             uploadFileToAgendaItem(file, item.id, meetingId).then(
               (uploadData) => {
                 if (uploadData) {
-                  getPublicFileUrlForAgendaItem(
+                  getSignedUrlForAgendaItemFile(
                     file.name,
                     item.id,
                     meetingId
@@ -106,7 +106,7 @@ const EditAgenda: NextPage<Props> = ({
             uploadFileToAgendaItem(file, item.id, meetingId).then(
               (uploadData) => {
                 if (uploadData) {
-                  getPublicFileUrlForAgendaItem(file.name, item.id, meetingId)
+                  getSignedUrlForAgendaItemFile(file.name, item.id, meetingId)
                     .then((url) => {
                       if (url) {
                         const index = agendaItems.findIndex(

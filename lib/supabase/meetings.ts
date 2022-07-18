@@ -12,6 +12,22 @@ export const fetchAllMeetings = async () => {
     .order("startDate", { ascending: true });
 };
 
+export const fetchOpenMeetings = async () => {
+  return await supabase
+    .from("meetings")
+    .select("*")
+    .eq("completed", false)
+    .order("startDate", { ascending: true });
+};
+
+export const fetchCompletedMeetings = async () => {
+  return await supabase
+    .from("meetings")
+    .select("*")
+    .eq("completed", true)
+    .order("startDate", { ascending: true });
+};
+
 export const fetchSingleMeeting = async (meetingId: string) => {
   return await supabase
     .from("meetings")
@@ -91,21 +107,21 @@ export const uploadFileToAgendaItem = async (
   }
 };
 
-export const getPublicFileUrlForAgendaItem = async (
+export const getSignedUrlForAgendaItemFile = async (
   fileName: string,
   agendaItemId: string,
   meetingId: string
 ) => {
-  const { publicURL, error } = supabase.storage
+  const { signedURL, error } = await supabase.storage
     .from("files")
-    .getPublicUrl(`${meetingId}/${agendaItemId}/${fileName}`);
+    .createSignedUrl(`${meetingId}/${agendaItemId}/${fileName}`, 31560000); // valid for 1 year
 
   if (error) {
     throw error;
   }
 
-  if (publicURL) {
-    return publicURL;
+  if (signedURL) {
+    return signedURL;
   }
 };
 

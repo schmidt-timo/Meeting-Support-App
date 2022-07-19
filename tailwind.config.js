@@ -29,6 +29,8 @@ module.exports = {
       },
       height: {
         input: "2.5rem",
+        page: "calc(100vh - 8rem)",
+        subpage: "calc(100vh - 4.5rem)",
         meetingview: "calc(100vh - 4.75rem)",
       },
       screens: {

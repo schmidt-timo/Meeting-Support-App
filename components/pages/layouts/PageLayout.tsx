@@ -20,20 +20,11 @@ const PageLayout = ({ header, activeNavItemId, children }: Props) => {
   const [activeNavItem, setActiveNavItem] = React.useState(activeNavItemId);
 
   return (
-    <>
+    <div className="w-full h-screen flex flex-col">
       <Header buttons={header.buttons} showBackArrow={header.showArrows}>
         {header.title}
       </Header>
-
-      <div
-        className="overflow-y-scroll min-h-300"
-        style={{
-          paddingBottom: "calc(64px + 0.8rem)",
-          paddingTop: "64px",
-        }}
-      >
-        {children}
-      </div>
+      <div className="h-page overflow-y-scroll pb-4">{children}</div>
       <MobileNavigation
         activeItemId={activeNavItem}
         onClick={(selectedItemId) => {
@@ -49,7 +40,7 @@ const PageLayout = ({ header, activeNavItemId, children }: Props) => {
           }
         }}
       />
-    </>
+    </div>
   );
 };
 

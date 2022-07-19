@@ -11,7 +11,7 @@ type Props = {
 const SubPageLayout = ({ title, children, onClose, onBack }: Props) => {
   return (
     <div className="w-full h-screen flex flex-col bg-gray-200">
-      <div className="flex px-6 py-5 justify-between items-center space-x-3 truncate flex-shrink-0 fixed top-0 w-full bg-gray-200 z-30">
+      <div className="flex px-6 py-5 justify-between items-center space-x-3 truncate flex-shrink-0 w-full bg-gray-200">
         {onBack && (
           <button
             type="button"
@@ -30,7 +30,7 @@ const SubPageLayout = ({ title, children, onClose, onBack }: Props) => {
           <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
         </button>
       </div>
-      <div className="w-full flex flex-col flex-1 bg-gray-200 pt-18 justify-between px-6 pb-6 overflow-y-scroll overflow-x-hidden">
+      <div className="w-full h-subpage flex flex-col flex-1 bg-gray-200 justify-between px-6 pb-6 overflow-y-scroll">
         {children}
       </div>
     </div>

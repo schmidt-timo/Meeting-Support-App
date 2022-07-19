@@ -155,7 +155,7 @@ const ViewDetailsPage = ({
         </Accordion>
 
         <Accordion title="Questions">
-          <div className="space-y-5 pb-5">
+          <div className="space-y-5">
             <QuestionItemInput onAdd={onAddQuestion} />
             <div className="space-y-2">
               {!!openQuestions.length && (

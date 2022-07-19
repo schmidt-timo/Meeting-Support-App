@@ -64,8 +64,8 @@ const MeetingViewPage = ({
   const [showSharedNotes, setShowSharedNotes] = useState(false);
 
   return (
-    <>
-      <div className="w-full px-4 py-3 flex items-center justify-between bg-white fixed top-0 z-20">
+    <div className="w-full h-screen flex flex-col">
+      <div className="w-full p-4 flex items-center justify-between bg-white z-20 overflow-hidden">
         <span className="w-full truncate pr-2">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
           <MeetingCounter
@@ -90,7 +90,7 @@ const MeetingViewPage = ({
         </span>
       </div>
 
-      <div className="pt-18 pb-4 px-4 space-y-3 overflow-y-scroll">
+      <div className="px-4 space-y-3 h-meetingview overflow-y-scroll pb-4">
         {!!meeting.agenda.length && (
           <PresentationView
             agendaStatus={agendaStatus}
@@ -162,7 +162,7 @@ const MeetingViewPage = ({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

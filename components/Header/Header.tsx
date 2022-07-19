@@ -30,7 +30,7 @@ const Header = ({ children, buttons, showBackArrow: backArrow }: Props) => {
 
   return (
     <div
-      className={`fixed top-0 w-full z-10 w-full flex items-center z-10 bg-white ${
+      className={`w-full z-10 w-full flex items-center bg-white ${
         backArrow ? "px-3" : "pl-1 pr-3"
       }`}
     >

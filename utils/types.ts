@@ -34,7 +34,6 @@ export type Meeting = {
   agenda: MeetingAgendaItem[];
   participants: MeetingParticipant[];
   completed: boolean;
-  completedAt?: Date;
   agendaStatus?: MeetingAgendaStatus;
 };
 
@@ -97,6 +96,5 @@ export type DatabaseMeeting = {
   agenda: MeetingAgendaItem[];
   participants: DatabaseParticipant[];
   completed: boolean;
-  completedAt?: Date;
   currentAgendaItem?: MeetingAgendaStatus;
 };

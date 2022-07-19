@@ -32,6 +32,7 @@ module.exports = {
         mobileXS: "345px",
         mobileSM: "375px",
         mobileXL: "400px",
+        mobile2XL: "420px",
       },
       fontSize: {
         extrasmall: "0.7rem",

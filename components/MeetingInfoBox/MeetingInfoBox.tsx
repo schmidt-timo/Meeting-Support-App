@@ -184,18 +184,32 @@ const MeetingInfoBox = ({
             Edit
           </MeetingInfoBoxButton>
         )}
-        {!meeting.completed && meeting.agenda && meeting.createdBy === userId && (
+        {!meeting.completed && meeting.createdBy !== userId && (
+          <>
+            <MeetingInfoBoxButton
+              className="mobile2XL:hidden"
+              symbol="watch"
+              onClick={onViewDetails}
+            >
+              Details
+            </MeetingInfoBoxButton>
+
+            <MeetingInfoBoxButton
+              className="hidden mobile2XL:inline-flex"
+              symbol="watch"
+              onClick={onViewDetails}
+            >
+              View Details
+            </MeetingInfoBoxButton>
+          </>
+        )}
+        {!meeting.completed && meeting.agenda && (
           <MeetingInfoBoxButton
             symbol="agenda"
             color={agendaIsAvailable ? "green" : "red"}
             onClick={onManageAgenda}
           >
             {formatAgendaText(meeting.agenda)}
-          </MeetingInfoBoxButton>
-        )}
-        {!meeting.completed && meeting.createdBy !== userId && (
-          <MeetingInfoBoxButton symbol="watch" onClick={onViewDetails}>
-            View details
           </MeetingInfoBoxButton>
         )}
         {meeting.completed && meeting.createdBy === userId && (

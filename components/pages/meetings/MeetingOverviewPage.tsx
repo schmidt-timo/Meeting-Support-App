@@ -13,6 +13,10 @@ import InfoTextBox from "../../InfoTextBox/InfoTextBox";
 import Accordion from "../../Accordion/Accordion";
 import MeetingInfoBox from "../../MeetingInfoBox/MeetingInfoBox";
 import PageLayout from "../layouts/PageLayout";
+import { useState } from "react";
+import Modal from "../../Modal/Modal";
+import Button from "../../formElements/Button";
+import { is10MinutesBeforeMeetingOrLater } from "../../../utils/functions";
 
 type Props = {
   userId: string;
@@ -30,6 +34,8 @@ const MeetingOverviewPage = ({
   const router = useRouter();
   const ownMeetings = filterMeetingsCreatedByUserId(meetings, userId);
   const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
+
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <PageLayout
@@ -50,6 +56,23 @@ const MeetingOverviewPage = ({
       }}
       activeNavItemId={NAVIGATION_IDS.meetings}
     >
+      {showModal && (
+        <Modal
+          title="Meeting has not started yet"
+          onClose={() => setShowModal(false)}
+        >
+          <div className="space-y-5">
+            <p className="text-sm">
+              Meetings can be joined at the earliest 10 minutes before the
+              official start time.
+            </p>
+            <Button onClick={() => setShowModal(false)} variant="highlighted">
+              OK
+            </Button>
+          </div>
+        </Modal>
+      )}
+
       <div className="px-3 space-y-3">
         {meetings.length === 0 && (
           <InfoTextBox title="No meetings found">
@@ -84,9 +107,16 @@ const MeetingOverviewPage = ({
                 key={m.id}
                 userId={userId}
                 meeting={m}
+                onManageAgenda={() => router.push(`${m.id}/agenda`)}
                 onManageParticipants={() => router.push(`${m.id}/participants`)}
                 onViewDetails={() => router.push(`${m.id}/details`)}
-                // onStartMeeting={() => router.push(`${m.id}/start`)} TODO:
+                onStartMeeting={() => {
+                  if (is10MinutesBeforeMeetingOrLater(new Date(m.startDate))) {
+                    router.push(`${m.id}/start`);
+                  } else {
+                    setShowModal(true);
+                  }
+                }}
               />
             ))}
           </Accordion>

@@ -156,3 +156,8 @@ export function mapYesNoToResponses(responses: MeetingFeedbackResponse[]) {
     no,
   };
 }
+
+export function is10MinutesBeforeMeetingOrLater(startDate: Date) {
+  const difference = (new Date().getTime() - startDate.getTime()) / 1000 / 60;
+  return Math.round(difference) >= -10;
+}

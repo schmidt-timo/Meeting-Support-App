@@ -34,7 +34,6 @@ export type Meeting = {
   agenda: MeetingAgendaItem[];
   participants: MeetingParticipant[];
   completed: boolean;
-  completedAt?: Date;
   agendaStatus?: MeetingAgendaStatus;
 };
 
@@ -66,6 +65,19 @@ export type MeetingAgendaStatus = {
   currentPresentationPage?: number;
 };
 
+export type MeetingFeedbackResponse = {
+  id: string;
+  question: string;
+  response: string;
+};
+
+export type MeetingFeedback = {
+  id: string;
+  meetingId: string;
+  createdBy: string;
+  responses: MeetingFeedbackResponse[];
+};
+
 // FOR DATABASE
 
 export type DatabaseParticipant = {
@@ -84,6 +96,5 @@ export type DatabaseMeeting = {
   agenda: MeetingAgendaItem[];
   participants: DatabaseParticipant[];
   completed: boolean;
-  completedAt?: Date;
   currentAgendaItem?: MeetingAgendaStatus;
 };

@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { formatWithLeadingZeros } from "../../../utils/formatting";
-import {
-  calculatePassedTime,
-  calculateTotalTime,
-} from "../../../utils/functions";
+import { formatWithLeadingZeros } from "../../utils/formatting";
+import { calculatePassedTime, calculateTotalTime } from "../../utils/functions";
 
 type Props = {
   startDate: Date;

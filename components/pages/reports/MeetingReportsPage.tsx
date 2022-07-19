@@ -2,24 +2,30 @@ import {
   MEETING_CATEGORY_LABELS,
   NAVIGATION_IDS,
 } from "../../../utils/constants";
-import {
-  filterMeetingsCreatedByUserId,
-  filterMeetingsNotCreatedByUserId,
-} from "../../../utils/filtering";
 import { Meeting } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
 import MeetingInfoBox from "../../MeetingInfoBox/MeetingInfoBox";
 import PageLayout from "../layouts/PageLayout";
 
 type Props = {
+  ownMeetings: Meeting[];
+  otherMeetings: Meeting[];
   userId: string;
-  meetings: Meeting[];
+  onViewReport: (meetingId: string) => void;
+  onViewFeedback: (meetingId: string) => void;
+  onGiveFeedback: (meetingId: string) => void;
+  submittedFeedback: string[];
 };
 
-const MeetingReportsPage = ({ userId, meetings }: Props) => {
-  const ownMeetings = filterMeetingsCreatedByUserId(meetings, userId);
-  const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
-
+const MeetingReportsPage = ({
+  ownMeetings,
+  otherMeetings,
+  userId,
+  onViewReport,
+  onViewFeedback,
+  onGiveFeedback,
+  submittedFeedback,
+}: Props) => {
   return (
     <PageLayout
       header={{
@@ -33,7 +39,13 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
             title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}
           >
             {ownMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
+              <MeetingInfoBox
+                meeting={m}
+                key={m.id}
+                userId={userId}
+                onViewReport={() => onViewReport(m.id)}
+                onViewFeedback={() => onViewFeedback(m.id)}
+              />
             ))}
           </Accordion>
         )}
@@ -42,7 +54,14 @@ const MeetingReportsPage = ({ userId, meetings }: Props) => {
             title={`${MEETING_CATEGORY_LABELS.otherMeetings} (${otherMeetings.length})`}
           >
             {otherMeetings.map((m) => (
-              <MeetingInfoBox meeting={m} key={m.id} userId={userId} />
+              <MeetingInfoBox
+                meeting={m}
+                key={m.id}
+                userId={userId}
+                onViewReport={() => onViewReport(m.id)}
+                onGiveFeedback={() => onGiveFeedback(m.id)}
+                showGiveFeedbackButton={!submittedFeedback.includes(m.id)}
+              />
             ))}
           </Accordion>
         )}

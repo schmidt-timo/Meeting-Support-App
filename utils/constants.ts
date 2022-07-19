@@ -48,3 +48,9 @@ export const COLORS = [
   "#577590",
   "#277DA1",
 ];
+
+export const MEETING_FEEDBACK_QUESTIONS = [
+  "How did you like the meeting overall?",
+  "Was your presence required?",
+  "How could the meeting have been improved?",
+];

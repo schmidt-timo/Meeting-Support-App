@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { formatAgendaItemDuration } from "../../../utils/formatting";
-import { MeetingAgendaItem, MeetingAgendaStatus } from "../../../utils/types";
+import { formatAgendaItemDuration } from "../../utils/formatting";
+import { MeetingAgendaItem, MeetingAgendaStatus } from "../../utils/types";
 import MeetingCounter from "./MeetingCounter";
 
 type Props = {

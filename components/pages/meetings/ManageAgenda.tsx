@@ -13,7 +13,6 @@ type ManageAgendaContentProps = {
   onAddAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onUpdateAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onDeleteAgendaItem: (itemId: string) => void;
-  onUpload: (file: File, itemId: string) => void;
   onRemoveFile: (fileUrl: string, itemId: string) => void;
   isUploading: boolean;
 };
@@ -89,7 +88,6 @@ type Props = {
   onAddAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onUpdateAgendaItem: (item: MeetingAgendaItem, file?: File) => Promise<void>;
   onDeleteAgendaItem: (itemId: string) => void;
-  onUpload: (file: File, itemId: string) => void;
   onRemoveFile: (fileUrl: string, itemId: string) => void;
   isUploading: boolean;
 };
@@ -103,7 +101,6 @@ const ManageAgenda = ({
   onAddAgendaItem,
   onUpdateAgendaItem,
   onDeleteAgendaItem,
-  onUpload,
   onRemoveFile,
   isUploading,
 }: Props) => {
@@ -122,7 +119,6 @@ const ManageAgenda = ({
             onAddAgendaItem={onAddAgendaItem}
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
-            onUpload={onUpload}
             onRemoveFile={onRemoveFile}
             isUploading={isUploading}
           />
@@ -136,7 +132,6 @@ const ManageAgenda = ({
             onAddAgendaItem={onAddAgendaItem}
             onUpdateAgendaItem={onUpdateAgendaItem}
             onDeleteAgendaItem={onDeleteAgendaItem}
-            onUpload={onUpload}
             onRemoveFile={onRemoveFile}
             isUploading={isUploading}
           />

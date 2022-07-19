@@ -27,6 +27,7 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
     formState: { errors },
   } = useForm<ParticipantInputs>({
     criteriaMode: "all",
+    reValidateMode: "onSubmit",
   });
   const onSubmit = (data: ParticipantInputs) => {
     const participant: MeetingParticipant = {
@@ -44,14 +45,13 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
           autoFocus
           placeholder="example@domain.com"
           {...register("email", {
-            required: ERROR_MESSAGES.IS_REQUIRED,
             validate: {
               isEmailAddress: (v) =>
                 validateEmailRegex.test(v) || ERROR_MESSAGES.NOT_EMAIL_REGEX,
             },
           })}
         />
-        <ErrorMessage fieldName="email" errors={errors} multipleErrors />
+        <ErrorMessage fieldName="email" errors={errors} />
         {errorMessage && !!errorMessage.length && (
           <NotificationLabel>{errorMessage}</NotificationLabel>
         )}

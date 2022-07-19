@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { MeetingNote } from "../../../utils/types";
-import NoteSyncStatusBar, {
-  DatabaseSyncStatus,
-} from "../../meetingElements/NoteSyncStatusBar";
+import { MeetingNote } from "../../utils/types";
+import NoteSyncStatusBar, { DatabaseSyncStatus } from "./NoteSyncStatusBar";
 
 type Props = {
   meetingNote: MeetingNote;
@@ -11,7 +9,7 @@ type Props = {
   setDatabaseStatus: (status: DatabaseSyncStatus) => void;
 };
 
-const SharedNotes = ({
+const MeetingNotes = ({
   meetingNote,
   onChangeNote,
   databaseStatus,
@@ -19,10 +17,31 @@ const SharedNotes = ({
 }: Props) => {
   const [noteText, setNoteText] = useState(meetingNote.content);
 
+  var updateNote = (function () {
+    // make sure note create function only gets called once
+    var executed = false;
+    return function () {
+      if (!executed) {
+        executed = true;
+        setDatabaseStatus("SAVING");
+        onChangeNote(noteText).then((data) => {
+          if (data) {
+            setDatabaseStatus("SAVED");
+          }
+        });
+      }
+    };
+  })();
+
   useEffect(() => {
-    // listen to updates
-    setNoteText(meetingNote.content);
-  }, [meetingNote]);
+    // upload notes to database every 10 seconds after change
+    const interval = setInterval(() => {
+      if (databaseStatus !== "SAVED") {
+        updateNote();
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [noteText]);
 
   return (
     <div className="flex flex-col relative">
@@ -40,7 +59,6 @@ const SharedNotes = ({
         }}
       />
       <NoteSyncStatusBar
-        variant="SHARED"
         databaseStatus={databaseStatus}
         onSave={() => {
           setDatabaseStatus("SAVING");
@@ -55,4 +73,4 @@ const SharedNotes = ({
   );
 };
 
-export default SharedNotes;
+export default MeetingNotes;

@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react";
-import { getParticipantInfoIfEmailIsRegistered } from "../../../lib/supabase/users";
+import {
+  filterOpenQuestions,
+  filterAnsweredQuestions,
+} from "../../../utils/filtering";
 import {
   formatMeetingDate,
   formatMeetingTime,
 } from "../../../utils/formatting";
 import { isTheSameDay } from "../../../utils/functions";
-import { Meeting, MeetingParticipant } from "../../../utils/types";
+import { Meeting, MeetingNote, MeetingQuestion } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
-import LoadingScreen from "../../LoadingScreen/LoadingScreen";
-import DetailsAgendaItem from "../../MeetingDetails/DetailsAgendaItem";
+import Label from "../../formElements/Label";
 import DetailsLine from "../../MeetingDetails/DetailsLine";
-import DetailsParticipantItem from "../../MeetingDetails/DetailsParticipantItem";
+import MeetingNotes from "../../meetingElements/MeetingNotes";
+import { DatabaseSyncStatus } from "../../meetingElements/NoteSyncStatusBar";
+import SharedNotes from "../../meetingElements/SharedNotes";
+import QuestionItem from "../../QuestionItem/QuestionItem";
+import QuestionItemInput from "../../QuestionItem/QuestionItemInput";
 import SubPageLayout from "../layouts/SubPageLayout";
 
 type Props = {
@@ -18,12 +23,37 @@ type Props = {
   meeting: Meeting;
   meetingCreator: any;
   onClose: () => void;
+  meetingNote: MeetingNote;
+  sharedNotes: MeetingNote;
+  databaseStatus: DatabaseSyncStatus;
+  setDatabaseStatus: (status: DatabaseSyncStatus) => void;
+  sharedNotesDatabaseStatus: DatabaseSyncStatus;
+  setSharedNotesDatabaseStatus: (status: DatabaseSyncStatus) => void;
+  onMeetingNoteChange: (newText: string) => Promise<MeetingNote>;
+  onSharedNotesChange: (newText: string) => Promise<MeetingNote>;
+  meetingQuestions: MeetingQuestion[];
+  onAddQuestion: (question: string) => void;
+  onUpvote: (meetingQuestion: MeetingQuestion) => void;
+  onMarkAsAnswered: (meetingQuestion: MeetingQuestion) => void;
 };
 
 const ViewDetailsPage = ({
+  userId,
   meeting: initialMeeting,
   onClose,
   meetingCreator,
+  meetingNote,
+  sharedNotes,
+  databaseStatus,
+  sharedNotesDatabaseStatus,
+  setDatabaseStatus,
+  setSharedNotesDatabaseStatus,
+  onMeetingNoteChange,
+  onSharedNotesChange,
+  meetingQuestions,
+  onAddQuestion,
+  onUpvote,
+  onMarkAsAnswered,
 }: Props) => {
   // Fix dates
   const meeting = {
@@ -32,42 +62,8 @@ const ViewDetailsPage = ({
     endDate: new Date(initialMeeting.endDate),
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [participants, setParticipants] = useState<MeetingParticipant[]>(
-    meeting.participants
-  );
-
-  useEffect(() => {
-    async function checkParticipants(): Promise<MeetingParticipant[]> {
-      return new Promise(async (resolve, reject) => {
-        let temp: MeetingParticipant[] = [];
-        for (const p of meeting.participants) {
-          const { data, error } = await getParticipantInfoIfEmailIsRegistered(
-            p.email
-          );
-
-          if (error) {
-            temp = [...temp, p];
-          }
-
-          if (data) {
-            temp = [...temp, data];
-          }
-        }
-        resolve(temp);
-      });
-    }
-
-    // check if participants are already registered
-    checkParticipants().then((p) => {
-      setParticipants(p);
-      setIsLoading(false);
-    });
-  }, []);
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  const openQuestions = filterOpenQuestions(meetingQuestions);
+  const answeredQuestions = filterAnsweredQuestions(meetingQuestions);
 
   return (
     <SubPageLayout title={meeting.title} onClose={onClose}>
@@ -126,29 +122,94 @@ const ViewDetailsPage = ({
             </div>
           </Accordion>
         </div>
-        {meeting.description && (
-          <Accordion title="Description">
-            <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs">{meeting.description}</p>
+        <Accordion title="Description">
+          <div className="w-full rounded-xl p-3 bg-white space-y-1">
+            <p className="text-xs">
+              {meeting.description
+                ? meeting.description
+                : "No description available"}
+            </p>
+          </div>
+        </Accordion>
+
+        <Accordion title="Your Notes (only visible to you)">
+          <div className="bg-white rounded-xl">
+            <MeetingNotes
+              meetingNote={meetingNote}
+              onChangeNote={onMeetingNoteChange}
+              databaseStatus={databaseStatus}
+              setDatabaseStatus={setDatabaseStatus}
+            />
+          </div>
+        </Accordion>
+
+        <Accordion title="Shared Notes (visible to everyone)">
+          <div className="bg-white rounded-xl">
+            <SharedNotes
+              meetingNote={sharedNotes}
+              onChangeNote={onSharedNotesChange}
+              databaseStatus={sharedNotesDatabaseStatus}
+              setDatabaseStatus={setSharedNotesDatabaseStatus}
+            />
+          </div>
+        </Accordion>
+
+        <Accordion title="Questions">
+          <div className="space-y-5 pb-5">
+            <QuestionItemInput onAdd={onAddQuestion} />
+            <div className="space-y-2">
+              {!!openQuestions.length && (
+                <>
+                  <Label>{`Open Questions (${openQuestions.length})`}</Label>
+                  {openQuestions.map((q) => (
+                    <QuestionItem
+                      key={q.id}
+                      meetingQuestion={q}
+                      onUpvote={() => onUpvote(q)}
+                      onMarkAsAnswered={() => onMarkAsAnswered(q)}
+                      upvoted={q.upvotes.includes(userId)}
+                    >
+                      {q.question}
+                    </QuestionItem>
+                  ))}
+                </>
+              )}
+              {!!answeredQuestions.length && (
+                <>
+                  <Label>{`Answered Questions (${answeredQuestions.length})`}</Label>
+                  {answeredQuestions.map((q) => (
+                    <QuestionItem
+                      key={q.id}
+                      meetingQuestion={q}
+                      onUpvote={() => onUpvote(q)}
+                      onMarkAsAnswered={() => onMarkAsAnswered(q)}
+                      upvoted={q.upvotes.includes(userId)}
+                    >
+                      {q.question}
+                    </QuestionItem>
+                  ))}
+                </>
+              )}
             </div>
-          </Accordion>
-        )}
-        <Accordion title="Participants">
+          </div>
+        </Accordion>
+
+        {/* <Accordion title="Participants">
           <div className="space-y-1.5">
             {participants.map((p) => (
               <DetailsParticipantItem participant={p} key={p.id} />
             ))}
           </div>
         </Accordion>
-        {meeting.agenda.length < 0 && (
+        {meeting.agenda && (
           <Accordion title="Agenda">
             <div className="space-y-1.5">
-              {meeting.agenda?.map((item) => (
-                <DetailsAgendaItem agendaItem={item} key={item.id} />
+              {meeting.agenda.map((item) => (
+                <AgendaItemView agendaItem={item} key={item.id} />
               ))}
             </div>
           </Accordion>
-        )}
+        )} */}
       </div>
     </SubPageLayout>
   );

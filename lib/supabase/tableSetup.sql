@@ -25,7 +25,7 @@ create table users (
   foreign key (id) references auth.users(id)
 );
 
--- TABLE FOR NOTES AND QUESTIONS
+-- TABLE FOR NOTES, QUESTIONS AND FEEDBACK
 
 create table meeting_notes (
   "id" uuid not null default uuid_generate_v4(),
@@ -43,6 +43,15 @@ create table meeting_questions (
   "question" text not null,
   "upvotes" json not null default ('[]'),
   "answered" boolean not null default false,
+
+  primary key (id)
+)
+
+create table meeting_feedback (
+  "id" uuid not null default uuid_generate_v4(),
+  "meetingId" varchar not null,
+  "createdBy" uuid not null,
+  "responses" json not null default ('[]'),
 
   primary key (id)
 )

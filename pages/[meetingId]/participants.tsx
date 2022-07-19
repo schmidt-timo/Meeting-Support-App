@@ -119,6 +119,7 @@ const EditParticipants: NextPage<Props> = ({
       userId={user!.id}
       participants={participants}
       buttonText="Save"
+      loadingText="Saving ..."
       onCreate={async (p) => {
         if (!arraysAreEqual(initialParticipants, p)) {
           const newParticipants = convertParticipantsForDatabase(p);

@@ -6,12 +6,14 @@ import ParticipantItemInput from "../../ParticipantItem/ParticipantItemInput";
 import ParticipantItem from "../../ParticipantItem/ParticipantItem";
 import SubPageLayout from "../layouts/SubPageLayout";
 import { ERROR_MESSAGES } from "../../../utils/constants";
+import { MdLoop } from "react-icons/md";
 
 type ManageParticipantsContentProps = {
   userId: string;
   participants: MeetingParticipant[];
   buttonText: string;
-  onCreate: (participants: MeetingParticipant[]) => void;
+  loadingText?: string;
+  onCreate: (participants: MeetingParticipant[]) => Promise<void>;
   onAddParticipant: (
     participant: MeetingParticipant
   ) => Promise<MeetingParticipant>;
@@ -22,11 +24,13 @@ const ManageParticipantsContent = ({
   userId,
   participants,
   buttonText,
+  loadingText,
   onCreate,
   onAddParticipant,
   onDeleteParticipant,
 }: ManageParticipantsContentProps) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -61,8 +65,24 @@ const ManageParticipantsContent = ({
           ))}
         </div>
       </div>
-      <Button variant="highlighted" onClick={() => onCreate(participants)}>
-        {buttonText}
+      <Button
+        disabled={isLoading}
+        variant="highlighted"
+        onClick={() => {
+          setIsLoading(true);
+          onCreate(participants).finally(() => {
+            setIsLoading(false);
+          });
+        }}
+      >
+        {isLoading && loadingText ? (
+          <div className="flex items-center justify-center space-x-2">
+            <MdLoop className="animate-spin h-4 w-4" />
+            <p>{loadingText}</p>
+          </div>
+        ) : (
+          buttonText
+        )}
       </Button>
     </>
   );
@@ -72,6 +92,7 @@ type Props = {
   userId: string;
   participants: MeetingParticipant[];
   buttonText: string;
+  loadingText?: string;
   onBack?: (participants: MeetingParticipant[]) => void;
   onCreate: (participants: MeetingParticipant[]) => Promise<void>;
   onClose: () => void;
@@ -86,6 +107,7 @@ const ManageParticipants = ({
   participants,
   onBack,
   buttonText,
+  loadingText,
   onCreate,
   onClose,
   onAddParticipant,
@@ -103,6 +125,7 @@ const ManageParticipants = ({
             userId={userId}
             participants={participants}
             buttonText={buttonText}
+            loadingText={loadingText}
             onCreate={onCreate}
             onAddParticipant={onAddParticipant}
             onDeleteParticipant={onDeleteParticipant}
@@ -114,6 +137,7 @@ const ManageParticipants = ({
             userId={userId}
             participants={participants}
             buttonText={buttonText}
+            loadingText={loadingText}
             onCreate={onCreate}
             onAddParticipant={onAddParticipant}
             onDeleteParticipant={onDeleteParticipant}

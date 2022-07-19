@@ -3,6 +3,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "normal" | "highlighted" | "lightred" | "red";
   className?: string;
   type?: string;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
@@ -11,11 +12,13 @@ const Button = ({
   variant = "normal",
   className,
   type,
+  disabled,
   onClick,
 }: Props) => {
   return (
     <button
       type={type}
+      disabled={disabled}
       className={`w-full rounded-xl text-sm font-medium px-3 h-input outline-0 flex-shrink-0
       ${
         variant === "normal" &&

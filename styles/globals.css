@@ -31,11 +31,11 @@ a {
 }
 
 @supports (-webkit-touch-callout: none) {
-  .h-screen {
+  .h-full,
+  .h-screen,
+  .min-h-screen
+  {
     height: -webkit-fill-available;
-  }
-  .min-h-screen {
-    min-height: -webkit-fill-available;
   }
 }
 

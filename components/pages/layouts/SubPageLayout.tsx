@@ -30,10 +30,8 @@ const SubPageLayout = ({ title, children, onClose, onBack }: Props) => {
           <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
         </button>
       </div>
-      <div className="w-full flex flex-col flex-1 bg-gray-200 pt-20">
-        <div className="flex h-full flex-col justify-between px-6 pb-6 overflow-y-scroll">
-          {children}
-        </div>
+      <div className="w-full flex flex-col flex-1 bg-gray-200 pt-18 justify-between px-6 pb-6 overflow-y-scroll overflow-x-hidden">
+        {children}
       </div>
     </div>
   );

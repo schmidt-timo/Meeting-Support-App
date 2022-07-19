@@ -20,6 +20,7 @@ import { is10MinutesBeforeMeetingOrLater } from "../../../utils/functions";
 
 type Props = {
   userId: string;
+  userEmail: string;
   meetings: Meeting[];
   onAddMeeting: () => void;
   onCreateMeeting: () => void;
@@ -30,10 +31,15 @@ const MeetingOverviewPage = ({
   meetings,
   onAddMeeting,
   onCreateMeeting,
+  userEmail,
 }: Props) => {
   const router = useRouter();
   const ownMeetings = filterMeetingsCreatedByUserId(meetings, userId);
-  const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, userId);
+  const otherMeetings = filterMeetingsNotCreatedByUserId(
+    meetings,
+    userId,
+    userEmail
+  );
 
   const [showModal, setShowModal] = useState(false);
 
@@ -74,13 +80,14 @@ const MeetingOverviewPage = ({
       )}
 
       <div className="px-3 space-y-3">
-        {meetings.length === 0 && (
-          <InfoTextBox title="No meetings found">
-            Add new meetings by using the QR code scanner with the button on the
-            top or add them manually by entering the meeting ID. You can also
-            create your own meetings by using the plus button.
-          </InfoTextBox>
-        )}
+        {!meetings ||
+          (ownMeetings.length < 1 && otherMeetings.length < 1 && (
+            <InfoTextBox title="No meetings found">
+              Add new meetings by using the QR code scanner with the button on
+              the top or add them manually by entering the meeting ID. You can
+              also create your own meetings by using the plus button.
+            </InfoTextBox>
+          ))}
         {!!ownMeetings.length && (
           <Accordion
             title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}

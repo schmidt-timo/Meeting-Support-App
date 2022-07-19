@@ -36,6 +36,7 @@ const MeetingOverview: NextPage<Props> = ({ meetings }) => {
     <MeetingOverviewPage
       meetings={meetings}
       userId={user!.id}
+      userEmail={user!.email!}
       onAddMeeting={
         () => {} // TODO: Add onClick
       }

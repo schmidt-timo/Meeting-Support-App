@@ -39,7 +39,11 @@ const Reports: NextPage<Props> = ({ meetings }) => {
   const [submittedFeedback, setSubmittedFeedback] = useState<string[]>();
 
   const ownMeetings = filterMeetingsCreatedByUserId(meetings, user!.id);
-  const otherMeetings = filterMeetingsNotCreatedByUserId(meetings, user!.id);
+  const otherMeetings = filterMeetingsNotCreatedByUserId(
+    meetings,
+    user!.id,
+    user!.email!
+  );
 
   useEffect(() => {
     async function checkMeetings() {

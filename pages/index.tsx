@@ -37,9 +37,7 @@ const MeetingOverview: NextPage<Props> = ({ meetings }) => {
       meetings={meetings}
       userId={user!.id}
       userEmail={user!.email!}
-      onAddMeeting={
-        () => {} // TODO: Add onClick
-      }
+      onAddMeeting={() => router.push("/addMeeting")}
       onCreateMeeting={() => router.push("/newMeeting")}
     />
   );

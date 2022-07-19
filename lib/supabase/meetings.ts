@@ -78,18 +78,6 @@ export const updateAgenda = async (
     .match({ id: meetingId });
 };
 
-export const updateParticipants = async (
-  meetingId: string,
-  newParticipants: DatabaseParticipant[]
-) => {
-  return await supabase
-    .from("meetings")
-    .update({
-      participants: newParticipants,
-    })
-    .match({ id: meetingId });
-};
-
 export const uploadFileToAgendaItem = async (
   file: File,
   agendaItemId: string,

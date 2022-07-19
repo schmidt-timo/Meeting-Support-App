@@ -12,9 +12,10 @@ type QuestionInputs = {
 
 type Props = {
   onAdd: (question: string) => void;
+  autofocus?: boolean;
 };
 
-const QuestionItemInput = ({ onAdd }: Props) => {
+const QuestionItemInput = ({ onAdd, autofocus }: Props) => {
   const {
     register,
     handleSubmit,
@@ -33,7 +34,7 @@ const QuestionItemInput = ({ onAdd }: Props) => {
       <LabelInputWrapper>
         <Label>Add new question</Label>
         <Input
-          autoFocus
+          autoFocus={autofocus ?? true}
           placeholder="Your question here?"
           {...register("question", {
             required: ERROR_MESSAGES.IS_REQUIRED,

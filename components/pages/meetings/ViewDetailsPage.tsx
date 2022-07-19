@@ -156,7 +156,7 @@ const ViewDetailsPage = ({
 
         <Accordion title="Questions">
           <div className="space-y-5 pb-5">
-            <QuestionItemInput onAdd={onAddQuestion} />
+            <QuestionItemInput onAdd={onAddQuestion} autofocus={false} />
             <div className="space-y-2">
               {!!openQuestions.length && (
                 <>
@@ -193,23 +193,6 @@ const ViewDetailsPage = ({
             </div>
           </div>
         </Accordion>
-
-        {/* <Accordion title="Participants">
-          <div className="space-y-1.5">
-            {participants.map((p) => (
-              <DetailsParticipantItem participant={p} key={p.id} />
-            ))}
-          </div>
-        </Accordion>
-        {meeting.agenda && (
-          <Accordion title="Agenda">
-            <div className="space-y-1.5">
-              {meeting.agenda.map((item) => (
-                <AgendaItemView agendaItem={item} key={item.id} />
-              ))}
-            </div>
-          </Accordion>
-        )} */}
       </div>
     </SubPageLayout>
   );

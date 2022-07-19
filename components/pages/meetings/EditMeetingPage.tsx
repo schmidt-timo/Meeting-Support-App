@@ -64,8 +64,8 @@ const EditMeetingPage = ({ meetingData, onSave, onClose, onDelete }: Props) => {
   return (
     <>
       {showModal && (
-        <Modal title="Are you sure?" onClose={() => setShowModal(false)}>
-          <div className="space-y-5">
+        <Modal title="Delete Meeting" onClose={() => setShowModal(false)}>
+          <div className="space-y-3">
             <NotificationLabel variant="red">
               Be careful! This cannot be undone! Once you delete the meeting, it
               will be removed from your meeting list and that of your

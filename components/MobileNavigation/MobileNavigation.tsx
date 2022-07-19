@@ -39,7 +39,7 @@ const MobileNavigation = ({ activeItemId, onClick }: Props) => {
   const activeItem = activeItemId;
 
   return (
-    <div className="fixed bottom-0 w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10">
+    <div className="w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10">
       <NavItem
         active={activeItem === NAVIGATION_IDS.meetings}
         id={NAVIGATION_IDS.meetings}

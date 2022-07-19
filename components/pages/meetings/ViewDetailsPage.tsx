@@ -105,6 +105,12 @@ const ViewDetailsPage = ({
               {meeting.location && (
                 <DetailsLine symbol="location">{meeting.location}</DetailsLine>
               )}
+              <DetailsLine symbol="meeting">
+                <div className="flex items-center space-x-1">
+                  <p className="text-xs text-gray-500">Meeting ID:</p>
+                  <p>{meeting.id}</p>
+                </div>
+              </DetailsLine>
               <DetailsLine symbol="author">
                 <p>
                   {`Created by ${
@@ -155,8 +161,8 @@ const ViewDetailsPage = ({
         </Accordion>
 
         <Accordion title="Questions">
-          <div className="space-y-5 pb-5">
-            <QuestionItemInput onAdd={onAddQuestion} autofocus={false} />
+          <div className="space-y-5">
+            <QuestionItemInput onAdd={onAddQuestion} />
             <div className="space-y-2">
               {!!openQuestions.length && (
                 <>

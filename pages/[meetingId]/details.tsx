@@ -103,8 +103,6 @@ const EditMeeting: NextPage<Props> = ({ meeting, meetingCreator }) => {
           const removeUpvote = question.upvotes.filter((u) => u !== user!.id);
           upvoteMeetingQuestion(question.id, removeUpvote);
         } else {
-          console.log([...question.upvotes, user!.id]);
-
           const newUpvotes = [...question.upvotes, user!.id];
           upvoteMeetingQuestion(question.id, newUpvotes);
         }

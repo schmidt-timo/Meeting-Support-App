@@ -19,7 +19,7 @@ const UpdateProfilePage = ({ user, onClose, onUpdateProfile }: Props) => {
   const [color, setColor] = useState(user.color);
 
   return (
-    <SubPageLayout title="Update name and color" onClose={onClose}>
+    <SubPageLayout title="Update profile settings" onClose={onClose}>
       <div className="space-y-3 pb-3">
         <LabelInputWrapper>
           <Label>Name</Label>

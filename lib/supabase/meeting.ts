@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DatabaseSyncStatus } from "../../components/meetingElements/NoteSyncStatusBar";
-import { generateRandomID } from "../../utils/functions";
+import { generateRandomID, objectsAreEqual } from "../../utils/functions";
 import {
   DatabaseParticipant,
   Meeting,
@@ -96,14 +96,32 @@ export const useMeeting = (meeting: Meeting) => {
       }
     });
 
-    fetchAgendaStatus(meeting.id, setAgendaStatus).catch((error) => {
-      if (error.message === "isEmpty") {
-        updateAgendaStatus(meeting.id, {
-          currentItemIndex: 0,
-          startedAt: new Date(),
-        });
-      }
-    });
+    fetchAgendaStatus(meeting.id)
+      .then((res) => {
+        if (!res.agendaStatus) {
+        }
+        if (Object.keys(res.agendaStatus).length === 0) {
+          // is empty = was never created
+          updateAgendaStatus(meeting.id, {
+            currentItemIndex: 0,
+            startedAt: new Date(),
+          }).then((data) => {
+            setAgendaStatus(data.agendaStatus);
+          });
+        }
+        if (Object.keys(res.agendaStatus).length > 0) {
+          // was created before
+          setAgendaStatus(res.agendaStatus);
+        }
+      })
+      .catch((error) => {
+        if (error.message === "isNull") {
+          updateAgendaStatus(meeting.id, {
+            currentItemIndex: 0,
+            startedAt: new Date(),
+          });
+        }
+      });
 
     fetchMeetingQuestions(meeting.id, setMeetingQuestions).catch((error) => {
       console.log(error);
@@ -136,7 +154,6 @@ export const useMeeting = (meeting: Meeting) => {
     const questionSubscription = supabaseServer
       .from("meeting_questions")
       .on("*", (payload) => {
-        console.log(payload);
         fetchMeetingQuestions(meeting.id, setMeetingQuestions);
       })
       .subscribe();
@@ -200,10 +217,7 @@ export const createMeetingNote = async (meetingNote: MeetingNote) => {
   }
 };
 
-export const fetchAgendaStatus = async (
-  meetingId: string,
-  setState: (agendaStatus: MeetingAgendaStatus) => void
-) => {
+export const fetchAgendaStatus = async (meetingId: string) => {
   const { data, error } = await supabase
     .from("meetings")
     .select("agendaStatus")
@@ -215,11 +229,6 @@ export const fetchAgendaStatus = async (
   }
 
   if (data) {
-    if (Object.keys(data.agendaStatus).length !== 0) {
-      setState(data.agendaStatus);
-    } else {
-      throw new Error("isEmpty");
-    }
     return data;
   }
 };

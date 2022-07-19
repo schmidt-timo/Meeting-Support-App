@@ -42,7 +42,6 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
       <LabelInputWrapper>
         <Label>Add new participant</Label>
         <Input
-          autoFocus
           placeholder="example@domain.com"
           {...register("email", {
             validate: {

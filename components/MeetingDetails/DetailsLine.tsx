@@ -1,12 +1,13 @@
 import {
-  MdCalendarToday,
   MdAccessTime,
+  MdCalendarToday,
   MdOutlineLocationOn,
   MdPerson,
+  MdQrCode,
 } from "react-icons/md";
 
 type DetailsLineProps = {
-  symbol?: "date" | "time" | "location" | "author";
+  symbol?: "date" | "time" | "location" | "author" | "meeting";
   children: React.ReactNode;
 };
 
@@ -24,6 +25,9 @@ const DetailsLine = ({ symbol, children }: DetailsLineProps) => {
       )}
       {symbol === "author" && (
         <MdPerson className="w-3.5 text-gray-500 flex-shrink-0" />
+      )}
+      {symbol === "meeting" && (
+        <MdQrCode className="w-3.5 text-gray-500 flex-shrink-0" />
       )}
       <span className="text-sm">{children}</span>
     </div>

@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import ManageAgenda from "../components/pages/meetings/ManageAgenda";
 import ManageParticipants from "../components/pages/meetings/ManageParticipants";
 import NewMeetingPage, {
@@ -47,7 +46,6 @@ const NewMeeting: NextPage = () => {
   const [participants, setParticipants] = useState<MeetingParticipant[]>([
     initialParticipant,
   ]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [fileIsUploading, setFileIsUploading] = useState(false);
 
   const meetingId = generateMeetingID();
@@ -61,8 +59,6 @@ const NewMeeting: NextPage = () => {
 
   return (
     <>
-      {loading && <LoadingScreen />}
-
       {currentView === "CREATE_MEETING" && (
         <NewMeetingPage
           meetingData={meetingData}
@@ -203,6 +199,7 @@ const NewMeeting: NextPage = () => {
           userId={user!.id}
           participants={participants}
           buttonText="Create Meeting"
+          loadingText="Creating meeting ..."
           onBack={(updatedParticipants) => {
             setParticipants(updatedParticipants);
             setCurrentView("MANAGE_AGENDA");
@@ -227,7 +224,6 @@ const NewMeeting: NextPage = () => {
           }
           onCreate={async (updatedParticipants) => {
             return new Promise(async (resolve, reject) => {
-              setLoading(true);
               setParticipants(updatedParticipants);
               const meeting: DatabaseMeeting = {
                 id: meetingId,
@@ -252,15 +248,13 @@ const NewMeeting: NextPage = () => {
               const { data, error } = await createMeeting(meeting);
 
               if (error) {
-                setLoading(false);
                 reject();
                 throw error;
               }
 
               if (data) {
-                setLoading(false);
-                resolve();
                 router.push("/");
+                resolve();
               }
             });
           }}

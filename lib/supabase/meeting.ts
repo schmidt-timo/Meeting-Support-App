@@ -136,7 +136,6 @@ export const useMeeting = (meeting: Meeting) => {
     const questionSubscription = supabaseServer
       .from("meeting_questions")
       .on("*", (payload) => {
-        console.log(payload);
         fetchMeetingQuestions(meeting.id, setMeetingQuestions);
       })
       .subscribe();

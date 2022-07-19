@@ -13,12 +13,12 @@ import {
 } from "../../../utils/types";
 import Label from "../../formElements/Label";
 import NotificationLabel from "../../formElements/NotificationLabel";
-import { DatabaseSyncStatus } from "../../meetingElements/NoteSyncStatusBar";
 import AgendaController from "../../meetingElements/AgendaController";
 import MeetingCounter from "../../meetingElements/MeetingCounter";
 import MeetingNotes from "../../meetingElements/MeetingNotes";
-import PresentationView from "./PresentationView";
+import { DatabaseSyncStatus } from "../../meetingElements/NoteSyncStatusBar";
 import SharedNotes from "../../meetingElements/SharedNotes";
+import PresentationView from "./PresentationView";
 
 type MeetingViewPageProps = {
   meeting: Meeting;
@@ -64,8 +64,8 @@ const MeetingViewPage = ({
   const [showSharedNotes, setShowSharedNotes] = useState(false);
 
   return (
-    <div className="h-meetingview">
-      <div className="w-full p-4 flex items-center justify-between bg-white sticky top-0 z-20">
+    <>
+      <div className="w-full px-4 py-3 flex items-center justify-between bg-white fixed top-0 z-20">
         <span className="w-full truncate pr-2">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
           <MeetingCounter
@@ -90,80 +90,79 @@ const MeetingViewPage = ({
         </span>
       </div>
 
-      <div className="flex flex-col justify-between h-full">
-        <div className="px-4 space-y-3 overflow-y-scroll">
-          {!!meeting.agenda.length && (
-            <PresentationView
-              agendaStatus={agendaStatus}
-              agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
-              meetingTimer={{
-                start: meeting.startDate,
-                end: meeting.endDate,
-              }}
-              onPresentationPageChange={onPresentationPageChange}
-            />
-          )}
-          {!!meeting.agenda.length ? (
-            <AgendaController
-              agendaStatus={agendaStatus!}
-              agendaItems={meeting.agenda}
-              onShowFullAgenda={onShowFullAgenda}
-              onAgendaItemChange={onAgendaItemChange}
-            />
-          ) : (
-            <NotificationLabel variant="yellow">
-              No agenda available for this meeting.
-            </NotificationLabel>
-          )}
-          {showSharedNotes && (
-            <div className="space-y-2">
-              <Label icon="note">Shared Notes (visible to everyone)</Label>
-              <SharedNotes
-                meetingNote={sharedNotes}
-                onChangeNote={onSharedNotesChange}
-                databaseStatus={sharedNotesDatabaseStatus}
-                setDatabaseStatus={setSharedNotesDatabaseStatus}
-              />
-            </div>
-          )}
-          {!showSharedNotes && (
-            <div className="space-y-2">
-              <Label icon="note">Your Notes (only visible to you)</Label>
-              <MeetingNotes
-                meetingNote={meetingNote}
-                onChangeNote={onMeetingNoteChange}
-                databaseStatus={databaseStatus}
-                setDatabaseStatus={setDatabaseStatus}
-              />
-            </div>
-          )}
-        </div>
+      <div className="pt-18 pb-4 px-4 space-y-3 overflow-y-scroll">
+        {!!meeting.agenda.length && (
+          <PresentationView
+            agendaStatus={agendaStatus}
+            agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
+            meetingTimer={{
+              start: meeting.startDate,
+              end: meeting.endDate,
+            }}
+            onPresentationPageChange={onPresentationPageChange}
+          />
+        )}
+        {!!meeting.agenda.length ? (
+          <AgendaController
+            agendaStatus={agendaStatus!}
+            agendaItems={meeting.agenda}
+            onShowFullAgenda={onShowFullAgenda}
+            onAgendaItemChange={onAgendaItemChange}
+          />
+        ) : (
+          <NotificationLabel variant="yellow">
+            No agenda available for this meeting.
+          </NotificationLabel>
+        )}
 
-        <div className="w-full text-xs flex justify-between p-4 space-x-2">
+        <div className="w-full text-xs flex justify-between space-x-2">
           <button
-            onClick={onManageParticipants}
-            className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+            onClick={() => setShowSharedNotes(!showSharedNotes)}
+            className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
           >
-            <MdPeople className="w-4 h-4" />
-            <p>Participants</p>
+            <MdStickyNote2 className="w-4 h-4 flex-shrink-0" />
+            {showSharedNotes ? <p>Your Notes</p> : <p>Shared Notes</p>}
           </button>
           <button
             onClick={onManageQuestions}
-            className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+            className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
           >
-            <MdQuestionAnswer className="w-4 h-4" />
+            <MdQuestionAnswer className="w-4 h-4 flex-shrink-0" />
             <p>Questions</p>
           </button>
           <button
-            onClick={() => setShowSharedNotes(!showSharedNotes)}
-            className="w-full py-3 bg-gray-200 rounded-xl flex flex-col items-center justify-center"
+            onClick={onManageParticipants}
+            className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
           >
-            <MdStickyNote2 className="w-4 h-4" />
-            {showSharedNotes ? <p>Your Notes</p> : <p>Shared Notes</p>}
+            <MdPeople className="w-4 h-4 flex-shrink-0" />
+            <p>Participants</p>
           </button>
         </div>
+
+        {showSharedNotes && (
+          <div className="space-y-2">
+            <Label icon="note">Shared Notes (visible to everyone)</Label>
+            <SharedNotes
+              meetingNote={sharedNotes}
+              onChangeNote={onSharedNotesChange}
+              databaseStatus={sharedNotesDatabaseStatus}
+              setDatabaseStatus={setSharedNotesDatabaseStatus}
+            />
+          </div>
+        )}
+        {!showSharedNotes && (
+          <div className="space-y-2">
+            <Label icon="note">Your Notes (only visible to you)</Label>
+            <MeetingNotes
+              meetingNote={meetingNote}
+              onChangeNote={onMeetingNoteChange}
+              databaseStatus={databaseStatus}
+              setDatabaseStatus={setDatabaseStatus}
+            />
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

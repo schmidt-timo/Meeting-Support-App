@@ -113,9 +113,6 @@ const MeetingView: NextPage<Props> = ({
       });
   };
 
-  console.log("meetingCreatedBy", meeting.createdBy);
-  console.log("myUserId", user!.id);
-
   return (
     <>
       {showAlarm && (
@@ -200,7 +197,6 @@ const MeetingView: NextPage<Props> = ({
             });
           }}
           onPresentationPageChange={async (pageNumber) => {
-            console.log("CHANGE");
             updateAgendaStatus(meeting.id, {
               ...agendaStatus,
               currentPresentationPage: pageNumber,
@@ -239,8 +235,6 @@ const MeetingView: NextPage<Props> = ({
               );
               upvoteMeetingQuestion(question.id, removeUpvote);
             } else {
-              console.log([...question.upvotes, user!.id]);
-
               const newUpvotes = [...question.upvotes, user!.id];
               upvoteMeetingQuestion(question.id, newUpvotes);
             }

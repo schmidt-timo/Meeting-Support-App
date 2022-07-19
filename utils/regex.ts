@@ -5,3 +5,5 @@ export const validateEmailRegex = new RegExp(
 export const validateNumberRegex = new RegExp(
   "([1-9]|[0-9][0-9]|[1-9][0-9][0-9])"
 );
+
+export const isMeetingIdRegex = new RegExp("[A-Z0-9]{10}");

@@ -1,35 +1,34 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+import ManageAgenda from "../components/pages/meetings/ManageAgenda";
+import ManageParticipants from "../components/pages/meetings/ManageParticipants";
 import NewMeetingPage, {
   MeetingDataInputs,
 } from "../components/pages/meetings/NewMeetingPage";
-import ManageAgenda from "../components/pages/meetings/ManageAgenda";
-import {
-  DatabaseMeeting,
-  MeetingAgendaItem,
-  MeetingParticipant,
-} from "../utils/types";
-import ManageParticipants from "../components/pages/meetings/ManageParticipants";
-import {
-  convertParticipantsForDatabase,
-  convertStringsToDate,
-  generateMeetingID,
-  generateRandomID,
-  getFileNameFromUrl,
-} from "../utils/functions";
+import { useAuth } from "../lib/auth";
 import {
   createMeeting,
   deleteFileFromAgendaItem,
   getSignedUrlForAgendaItemFile,
   uploadFileToAgendaItem,
 } from "../lib/supabase/meetings";
-import { useAuth } from "../lib/auth";
-import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {
   getParticipantInfo,
   getParticipantInfoIfEmailIsRegistered,
 } from "../lib/supabase/users";
+import {
+  convertParticipantsForDatabase,
+  convertStringsToDate,
+  generateMeetingID,
+  getFileNameFromUrl,
+} from "../utils/functions";
+import {
+  DatabaseMeeting,
+  MeetingAgendaItem,
+  MeetingParticipant,
+} from "../utils/types";
 
 type Views = "CREATE_MEETING" | "MANAGE_AGENDA" | "MANAGE_PARTICIPANTS";
 

@@ -6,10 +6,8 @@ import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import ManageParticipants from "../../components/pages/meetings/ManageParticipants";
 import ViewParticipants from "../../components/pages/meetings/ViewParticipants";
 import { useAuth } from "../../lib/auth";
-import {
-  fetchSingleMeeting,
-  updateParticipants,
-} from "../../lib/supabase/meetings";
+import { updateParticipants } from "../../lib/supabase/meeting";
+import { fetchSingleMeeting } from "../../lib/supabase/meetings";
 import { getParticipantInfoIfEmailIsRegistered } from "../../lib/supabase/users";
 import {
   arraysAreEqual,

@@ -1,6 +1,7 @@
 import { customAlphabet } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 import { MEETING_FEEDBACK_QUESTIONS } from "./constants";
+import { isMeetingIdRegex } from "./regex";
 import {
   DatabaseParticipant,
   MeetingFeedback,
@@ -160,4 +161,8 @@ export function mapYesNoToResponses(responses: MeetingFeedbackResponse[]) {
 export function is10MinutesBeforeMeetingOrLater(startDate: Date) {
   const difference = (new Date().getTime() - startDate.getTime()) / 1000 / 60;
   return Math.round(difference) >= -10;
+}
+
+export function isMeetingId(text: string) {
+  return isMeetingIdRegex.test(text);
 }

@@ -1,6 +1,6 @@
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
-  variant?: "normal" | "highlighted" | "red";
+  variant?: "normal" | "highlighted" | "lightred" | "red";
   className?: string;
   type?: string;
   onClick?: () => void;
@@ -16,16 +16,14 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`w-full rounded-xl text-sm px-3 h-input outline-0 flex-shrink-0
+      className={`w-full rounded-xl text-sm font-medium px-3 h-input outline-0 flex-shrink-0
       ${
         variant === "normal" &&
         "bg-gray-300 hover:bg-gray-400 hover:text-white text-black"
       }
       ${variant === "highlighted" && "bg-gray-700 hover:bg-black text-white"}
-      ${
-        variant === "red" &&
-        "bg-red-200 hover:bg-red-300 text-red-500 font-medium"
-      }
+      ${variant === "lightred" && "bg-red-200 hover:bg-red-300 text-red-500"}
+      ${variant === "red" && "bg-red-600 hover:bg-red-700 text-white"}
       ${className}`}
       onClick={onClick}
     >

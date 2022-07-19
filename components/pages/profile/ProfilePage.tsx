@@ -52,11 +52,11 @@ const ProfilePage = ({
           )}
         </div>
         <div className="space-y-2 w-full flex flex-col items-center">
-          <Button onClick={onUpdateProfile}>Change profile settings</Button>
+          <Button onClick={onUpdateProfile}>Update profile settings</Button>
           <Button onClick={onChangeEmail}>Change email address</Button>
           <Button onClick={onChangePassword}>Change password</Button>
           <Button onClick={onDeleteAccount}>Delete account</Button>
-          <Button onClick={onLogout} variant="red">
+          <Button onClick={onLogout} variant="lightred">
             Log out
           </Button>
         </div>

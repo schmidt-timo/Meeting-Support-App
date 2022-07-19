@@ -113,6 +113,9 @@ const MeetingView: NextPage<Props> = ({
       });
   };
 
+  console.log("meetingCreatedBy", meeting.createdBy);
+  console.log("myUserId", user!.id);
+
   return (
     <>
       {showAlarm && (
@@ -129,15 +132,17 @@ const MeetingView: NextPage<Props> = ({
           <div className="space-y-5">
             <p className="text-sm">
               You have reached your set meeting time. You can continue the
-              meeting or end it now for everyone.
+              meeting or end it now for everyone (if you are the meeting owner).
             </p>
             <div className="space-y-2">
               <Button onClick={() => setShowAlarm(false)} variant="highlighted">
                 Continue
               </Button>
-              <Button onClick={endMeeting} variant="red">
-                End meeting for all participants
-              </Button>
+              {meeting.createdBy === user!.id && (
+                <Button onClick={endMeeting} variant="red">
+                  End meeting for all participants
+                </Button>
+              )}
             </div>
           </div>
         </Modal>
@@ -145,18 +150,20 @@ const MeetingView: NextPage<Props> = ({
 
       {showExitModal && (
         <Modal title="Leaving Meeting" onClose={() => setShowExitModal(false)}>
-          <div className="space-y-5">
-            <NotificationLabel variant="yellow">
-              After the meeting has ended for all participants, it cannot be
-              resumed.
+          <div className="space-y-3">
+            <NotificationLabel variant="red">
+              After the meeting owner has ended the meeting for all
+              participants, it cannot be resumed.
             </NotificationLabel>
             <div className="space-y-2">
               <Button onClick={() => router.push("/")} variant="highlighted">
                 Leave meeting
               </Button>
-              <Button onClick={endMeeting} variant="red">
-                End meeting for all participants
-              </Button>
+              {meeting.createdBy === user!.id && (
+                <Button onClick={endMeeting} variant="red">
+                  End meeting for all participants
+                </Button>
+              )}
             </div>
           </div>
         </Modal>

@@ -12,7 +12,7 @@ const Modal = ({ title, children, onClose, variant = "STANDARD" }: Props) => {
     <div
       className={`absolute top-0 w-full h-full p-6 flex items-center justify-center z-50 
       ${variant === "STANDARD" && "bg-black bg-opacity-80"}
-      ${variant === "ALARM" && "bg-red-600 bg-opacity-90"}
+      ${variant === "ALARM" && "bg-red-400 bg-opacity-90"}
       `}
     >
       <div className="w-full flex flex-col bg-white p-3 rounded-xl">

@@ -77,15 +77,15 @@ const MeetingViewPage = ({
         <span className="space-x-2 flex">
           <button
             onClick={onShowInfo}
-            className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0"
           >
-            <MdQrCodeScanner className="w-5 h-5" />
+            <MdQrCodeScanner className="w-6 h-6" />
           </button>
           <button
-            className="w-9 h-9 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0"
             onClick={onExitMeeting}
           >
-            <MdOutlineClose className="w-7 h-7" />
+            <MdOutlineClose className="w-8 h-8" />
           </button>
         </span>
       </div>

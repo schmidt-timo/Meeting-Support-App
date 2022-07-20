@@ -64,7 +64,7 @@ const ManageAgendaContent = ({
         ) : (
           <Button
             onClick={() => setShowNewItemButton(false)}
-            className="flex items-center justify-center space-x-2 bg-gray-400 hover:bg-gray-500 group"
+            className="flex items-center justify-center space-x-2 bg-gray-400 hover:bg-gray-500 group hover:text-white"
           >
             <MdAddCircle className="w-5 h-5 text-gray-600 group-hover:text-white" />
             <p>Add item</p>

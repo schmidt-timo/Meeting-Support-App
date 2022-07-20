@@ -1,12 +1,11 @@
-import { useRouter } from "next/router";
 import React from "react";
 import {
   MdAccessTime,
   MdAccessTimeFilled,
-  MdInsertChartOutlined,
   MdInsertChart,
-  MdPersonOutline,
+  MdInsertChartOutlined,
   MdPerson,
+  MdPersonOutline,
 } from "react-icons/md";
 import { NAVIGATION_IDS } from "../../utils/constants";
 
@@ -20,7 +19,7 @@ type NavItemProps = {
 const NavItem = ({ id, active, children, onSelect }: NavItemProps) => {
   return (
     <button
-      className={`w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg text-xs ${
+      className={`w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs ${
         active ? "font-medium text-black" : "text-gray-500"
       }`}
       onClick={() => onSelect(id)}

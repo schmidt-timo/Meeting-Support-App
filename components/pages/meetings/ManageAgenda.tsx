@@ -64,16 +64,23 @@ const ManageAgendaContent = ({
         ) : (
           <Button
             onClick={() => setShowNewItemButton(false)}
-            className="flex items-center justify-center space-x-2"
+            className="flex items-center justify-center space-x-2 bg-gray-400 hover:bg-gray-500 group"
           >
-            <MdAddCircle className="w-5 h-5 text-gray-600" />
+            <MdAddCircle className="w-5 h-5 text-gray-600 group-hover:text-white" />
             <p>Add item</p>
           </Button>
         )}
       </div>
 
-      <Button variant="highlighted" onClick={() => onNext(agendaItems)}>
-        {buttonText}
+      <Button
+        disabled={!showNewItemButton}
+        variant="highlighted"
+        onClick={() => onNext(agendaItems)}
+        className="disabled:text-gray-400 disabled:bg-gray-600"
+      >
+        {showNewItemButton
+          ? buttonText
+          : "Save or discard the opened item first!"}
       </Button>
     </>
   );

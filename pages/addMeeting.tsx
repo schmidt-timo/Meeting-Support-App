@@ -100,7 +100,7 @@ const AddMeeting: NextPage = () => {
 
   return (
     <SubPageLayout title="Add meeting" onClose={() => router.push("/")}>
-      <div className="space-y-5">
+      <div className="space-y-5 pb-2">
         <LabelInputWrapper>
           <Label>Add a meeting by scanning the qr code</Label>
           <div className="rounded-xl">

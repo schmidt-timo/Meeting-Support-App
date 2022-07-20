@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdCheck, MdClose, MdLoop, MdSwapVert, MdUpload } from "react-icons/md";
+import { MdCheck, MdClose, MdLoop, MdUpload } from "react-icons/md";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import { generateRandomID } from "../../utils/functions";
 import { validateNumberRegex } from "../../utils/regex";
@@ -103,7 +103,7 @@ const AgendaItemInput = ({
                   className={`flex justify-center items-center flex-shrink-0 cursor-pointer text-sm pl-2 pr-3 rounded-xl font-medium p-1 space-x-1 ${
                     isUploading
                       ? "bg-gray-800 text-white"
-                      : "bg-gray-200 text-black"
+                      : "bg-gray-200 text-black hover:bg-gray-300"
                   }`}
                 >
                   {isUploading && (

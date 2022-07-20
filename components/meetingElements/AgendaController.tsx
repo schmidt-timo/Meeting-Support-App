@@ -26,9 +26,9 @@ const AgendaController = ({
   }, [status]);
 
   return (
-    <div className="border border-black rounded-xl">
+    <div className="border border-gray-800 rounded-xl">
       <div
-        className={`text-white bg-black flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
+        className={`text-white bg-gray-800 flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
           !!remainingItems.length ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
@@ -58,9 +58,9 @@ const AgendaController = ({
           <button
             disabled={!agendaItems[status.currentItemIndex - 1]}
             onClick={() => setCurrentAgendaItem(status.currentItemIndex - 1)}
-            className="py-1 px-4 bg-white text-black text-xs rounded-xl disabled:bg-transparent"
+            className="py-1 px-4 bg-white text-black text-xs rounded-xl disabled:border-gray-800 group"
           >
-            <MdKeyboardArrowLeft className="w-5 h-5" />
+            <MdKeyboardArrowLeft className="w-5 h-5 group-disabled:border-gray-800" />
           </button>
 
           <button
@@ -72,9 +72,9 @@ const AgendaController = ({
           <button
             disabled={!agendaItems[status.currentItemIndex + 1]}
             onClick={() => setCurrentAgendaItem(status.currentItemIndex + 1)}
-            className="py-1 px-4 bg-white text-black text-xs rounded-xl disabled:bg-transparent"
+            className="py-1 px-4 bg-white text-black text-xs rounded-xl disabled:bg-transparent group"
           >
-            <MdKeyboardArrowRight className="w-5 h-5" />
+            <MdKeyboardArrowRight className="w-5 h-5 group-disabled:text-transparent" />
           </button>
         </span>
       </div>

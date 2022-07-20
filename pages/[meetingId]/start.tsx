@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdNotificationsActive } from "react-icons/md";
 import Button from "../../components/formElements/Button";
 import NotificationLabel from "../../components/formElements/NotificationLabel";
@@ -11,6 +11,7 @@ import FullAgenda from "../../components/pages/meeting/FullAgenda";
 import ManageQuestions from "../../components/pages/meeting/ManageQuestions";
 import MeetingInfo from "../../components/pages/meeting/MeetingInfo";
 import MeetingViewPage from "../../components/pages/meeting/MeetingViewPage";
+import MeetingViewPageDesktop from "../../components/pages/meeting/MeetingViewPageDesktop";
 import ManageParticipants from "../../components/pages/meetings/ManageParticipants";
 import { useAuth } from "../../lib/auth";
 import {
@@ -72,10 +73,21 @@ const MeetingView: NextPage<Props> = ({
 }) => {
   const router = useRouter();
   const [view, setView] = useState<Views>("MEETING");
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [showExitModal, setShowExitModal] = useState(false);
   const [showAlarm, setShowAlarm] = useState(false);
 
   const { user } = useAuth();
+
+  useEffect(() => {
+    const handleResizeWindow = () => {
+      setWindowSize(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResizeWindow);
+
+    return () => window.removeEventListener("resize", handleResizeWindow);
+  });
 
   const {
     agendaStatus,
@@ -182,7 +194,7 @@ const MeetingView: NextPage<Props> = ({
         />
       )}
 
-      {view === "MEETING" && (
+      {view === "MEETING" && windowSize < 1000 && (
         <MeetingViewPage
           onAlarm={() => setShowAlarm(true)}
           meeting={meeting}
@@ -216,6 +228,43 @@ const MeetingView: NextPage<Props> = ({
           setSharedNotesDatabaseStatus={setSharedNotesDatabaseStatus}
           onManageParticipants={() => setView("PARTICIPANTS")}
           onManageQuestions={() => setView("QUESTIONS")}
+        />
+      )}
+
+      {view === "MEETING" && windowSize >= 1000 && (
+        <MeetingViewPageDesktop
+          onAlarm={() => setShowAlarm(true)}
+          meeting={meeting}
+          onShowInfo={() => setView("INFO")}
+          onExitMeeting={() => setShowExitModal(true)}
+          agendaStatus={agendaStatus}
+          onShowFullAgenda={() => setView("AGENDA")}
+          onAgendaItemChange={async (newIndex) => {
+            updateAgendaStatus(meeting.id, {
+              currentItemIndex: newIndex,
+              startedAt: new Date(),
+            });
+          }}
+          onPresentationPageChange={async (pageNumber) => {
+            updateAgendaStatus(meeting.id, {
+              ...agendaStatus,
+              currentPresentationPage: pageNumber,
+            });
+          }}
+          onMeetingNoteChange={async (newText) => {
+            return updateMeetingNote(meetingNote.id, newText);
+          }}
+          onSharedNotesChange={async (newText) => {
+            return updateMeetingNote(sharedNotes.id, newText);
+          }}
+          meetingNote={meetingNote}
+          sharedNotes={sharedNotes}
+          databaseStatus={databaseStatus}
+          setDatabaseStatus={setDatabaseStatus}
+          sharedNotesDatabaseStatus={sharedNotesDatabaseStatus}
+          setSharedNotesDatabaseStatus={setSharedNotesDatabaseStatus}
+          onManageParticipants={() => setView("PARTICIPANTS")}
+          meetingQuestions={meetingQuestions}
         />
       )}
 

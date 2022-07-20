@@ -53,7 +53,9 @@ const Reports: NextPage<Props> = ({ meetings }) => {
         const { data } = await fetchFeedbackForMeeting(meeting.id);
 
         if (data) {
-          feedback.push(meeting.id);
+          if (data.length === 1) {
+            feedback.push(meeting.id);
+          }
         }
       }
 

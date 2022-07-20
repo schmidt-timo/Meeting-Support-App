@@ -52,6 +52,7 @@ const SignUpPage = ({
               Email address
             </Label>
             <Input
+              autoFocus
               placeholder="example@domain.com"
               {...register("email", {
                 required: ERROR_MESSAGES.IS_REQUIRED,

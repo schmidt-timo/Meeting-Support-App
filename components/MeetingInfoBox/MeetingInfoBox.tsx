@@ -44,9 +44,10 @@ const MeetingInfoBoxButton = ({
 }: MeetingInfoBoxButtonProps) => {
   return (
     <button
-      className={`rounded-xl px-2.5 py-1 bg-white hover:bg-gray-300 min-w-xs max-w-xl
-      ${color === "green" && "bg-green-300"} 
-      ${color === "red" && "bg-red-300"}
+      className={`rounded-xl px-2.5 py-1 bg-white min-w-xs max-w-xl
+      ${!color && "hover:bg-gray-300"}
+      ${color === "green" && "bg-green-300 hover:bg-green-500"} 
+      ${color === "red" && "bg-red-300 hover:bg-red-400"}
       ${symbol && "flex items-center justify-center space-x-1"}
       ${className}
       `}

@@ -10,7 +10,7 @@ type Props = {
   upvoted: boolean;
 };
 
-const QuestionItem = ({
+const QuestionItemDesktop = ({
   meetingQuestion,
   children,
   onUpvote,
@@ -26,8 +26,8 @@ const QuestionItem = ({
         <div className="flex space-x-2 justify-end pt-3">
           <button
             onClick={onUpvote}
-            className={`flex items-center space-x-1.5 py-1 px-2 font-medium bg-gray-200 rounded-xl text-xs ${
-              upvoted && "bg-gray-800 text-white"
+            className={`flex items-center space-x-1.5 py-1 px-2 font-medium rounded-xl text-extrasmall ${
+              upvoted ? "bg-black text-white" : "bg-gray-200 text-black"
             }`}
           >
             <MdThumbUp className="w-3 h-3 flex-shrink-0" />
@@ -35,7 +35,7 @@ const QuestionItem = ({
           </button>
           <button
             onClick={onMarkAsAnswered}
-            className="flex items-center space-x-1.5 py-1 px-2 font-medium bg-gray-200 rounded-xl text-xs"
+            className="flex items-center space-x-1.5 py-1 px-2 font-medium bg-gray-200 text-black rounded-xl text-extrasmall"
           >
             {meetingQuestion.answered ? (
               <MdOutlineClose className="w-3.5 h-3.5 flex-shrink-0" />
@@ -54,4 +54,4 @@ const QuestionItem = ({
   );
 };
 
-export default QuestionItem;
+export default QuestionItemDesktop;

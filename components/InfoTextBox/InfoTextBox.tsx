@@ -7,7 +7,7 @@ type Props = {
 
 const InfoTextBox = ({ title, children }: Props) => {
   return (
-    <div className="relative p-3 bg-yellow-100 rounded-xl space-y-3">
+    <div className="relative p-3 pb-4 bg-yellow-100 rounded-xl space-y-3">
       <div className="flex items-center space-x-1">
         <MdOutlineError className="w-5 h-5 text-yellow-500" />
         <p className="font-medium truncate text-yellow-500">{title}</p>

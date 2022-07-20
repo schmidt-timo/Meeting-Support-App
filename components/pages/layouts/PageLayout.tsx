@@ -1,6 +1,6 @@
 import React from "react";
 import { HeaderButton } from "../../../utils/types";
-import Header from "../../Header/Header";
+import Header, { DesktopHeader } from "../../Header/Header";
 import MobileNavigation from "../../MobileNavigation/MobileNavigation";
 import { NAVIGATION_IDS } from "../../../utils/constants";
 import { useRouter } from "next/router";
@@ -20,11 +20,16 @@ const PageLayout = ({ header, activeNavItemId, children }: Props) => {
   const [activeNavItem, setActiveNavItem] = React.useState(activeNavItemId);
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col items-center fixed">
       <Header buttons={header.buttons} showBackArrow={header.showArrows}>
         {header.title}
       </Header>
-      <div className="h-page overflow-y-scroll pb-4">{children}</div>
+      <DesktopHeader buttons={header.buttons} showBackArrow={header.showArrows}>
+        {header.title}
+      </DesktopHeader>
+      <div className="w-full h-page overflow-y-scroll pb-4 flex flex-col items-center">
+        {children}
+      </div>
       <MobileNavigation
         activeItemId={activeNavItem}
         onClick={(selectedItemId) => {

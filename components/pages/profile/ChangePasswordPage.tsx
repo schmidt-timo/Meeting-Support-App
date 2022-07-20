@@ -1,7 +1,5 @@
 import { useForm } from "react-hook-form";
 import { ERROR_MESSAGES } from "../../../utils/constants";
-import { validateEmailRegex } from "../../../utils/regex";
-import { User } from "../../../utils/types";
 import Button from "../../formElements/Button";
 import ErrorMessage from "../../formElements/ErrorMessage";
 import Input from "../../formElements/Input";
@@ -38,7 +36,7 @@ const ChangePasswordPage = ({ onClose, onChangePassword }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SubPageLayout title="Change password" onClose={onClose}>
-        <div className="space-y-3">
+        <div className="space-y-3 pb-3">
           <LabelInputWrapper>
             <Label icon="email">New password</Label>
             <Input

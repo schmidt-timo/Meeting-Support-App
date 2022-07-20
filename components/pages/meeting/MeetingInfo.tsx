@@ -25,7 +25,6 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
         </div>
         <div>
           <QRCode value={meeting.id} size={200} bgColor="#E5E7EB" />
-          {/* TODO: Color change? */}
         </div>
         <Accordion title="General info">
           <div className="p-2 space-y-1 bg-white rounded-xl">

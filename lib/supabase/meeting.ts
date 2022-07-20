@@ -414,7 +414,7 @@ export const createPresentationStorage = async () => {
 export const markMeetingAsComplete = async (meetingId: string) => {
   const { data, error } = await supabase
     .from("meetings")
-    .update({ completed: true, completedAt: new Date() })
+    .update({ completed: true })
     .eq("id", meetingId);
 
   if (error) {

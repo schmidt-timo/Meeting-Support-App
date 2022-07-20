@@ -13,7 +13,7 @@ const LocalFilePreview = ({ file, onRemove }: Props) => {
         <p className="text-sm truncate">{file.name}</p>
       </span>
       <div className="flex space-x-2 text-black text-sm font-medium">
-        <a href={URL.createObjectURL(file)} target="_blank">
+        <a href={URL.createObjectURL(file)} target="_blank" rel="noreferrer">
           <button
             type="button"
             className="px-2.5 py-0.5 rounded-xl bg-white flex items-center justify-center space-x-1.5"

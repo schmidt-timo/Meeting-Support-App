@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import EditMeetingPage from "../../components/pages/meetings/EditMeetingPage";
 import {
@@ -10,7 +11,13 @@ import {
 import { convertStringsToDate } from "../../utils/functions";
 import { DatabaseMeeting, Meeting } from "../../utils/types";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+interface Params extends ParsedUrlQuery {
+  meetingId: string;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const params = context.params as Params;
+
   const { data: meeting, error } = await fetchSingleMeeting(params.meetingId);
 
   if (error) {
@@ -24,7 +31,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-const EditMeeting: NextPage = ({ meeting }) => {
+type Props = {
+  meeting: Meeting;
+};
+
+const EditMeeting: NextPage<Props> = ({ meeting }) => {
   const router = useRouter();
 
   if (!meeting) {

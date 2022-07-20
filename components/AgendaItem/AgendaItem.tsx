@@ -102,7 +102,7 @@ const AgendaItem = ({
                 </p>
               </span>
               <div className="flex space-x-2 text-black text-sm font-medium">
-                <a href={agendaItem.fileUrl} target="_blank">
+                <a href={agendaItem.fileUrl} target="_blank" rel="noreferrer">
                   <button className="px-2.5 py-0.5 rounded-xl bg-white flex items-center justify-center space-x-1.5">
                     <MdRemoveRedEye className="h-4 w-4" />
                     <p>View PDF</p>

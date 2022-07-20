@@ -37,7 +37,7 @@ const MeetingReportsPage = ({
       <div className="px-3 space-y-3 w-full max-w-desktop">
         {ownMeetings.length < 1 && otherMeetings.length < 1 && (
           <InfoTextBox title="No completed meetings found">
-            You don't have any completed meetings yet. Meetings you have
+            You do not have any completed meetings yet. Meetings you have
             attended will be displayed here as soon as the meeting owner has
             ended the meeting.
           </InfoTextBox>

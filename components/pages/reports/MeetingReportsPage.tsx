@@ -4,6 +4,7 @@ import {
 } from "../../../utils/constants";
 import { Meeting } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
+import InfoTextBox from "../../InfoTextBox/InfoTextBox";
 import MeetingInfoBox from "../../MeetingInfoBox/MeetingInfoBox";
 import PageLayout from "../layouts/PageLayout";
 
@@ -33,7 +34,14 @@ const MeetingReportsPage = ({
       }}
       activeNavItemId={NAVIGATION_IDS.reports}
     >
-      <div className="px-3 space-y-3">
+      <div className="px-3 space-y-3 w-full max-w-desktop">
+        {ownMeetings.length < 1 && otherMeetings.length < 1 && (
+          <InfoTextBox title="No completed meetings found">
+            You don't have any completed meetings yet. Meetings you have
+            attended will be displayed here as soon as the meeting owner has
+            ended the meeting.
+          </InfoTextBox>
+        )}
         {!!ownMeetings.length && (
           <Accordion
             title={`${MEETING_CATEGORY_LABELS.yourMeetings} (${ownMeetings.length})`}

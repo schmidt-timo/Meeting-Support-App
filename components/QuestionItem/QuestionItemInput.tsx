@@ -12,9 +12,10 @@ type QuestionInputs = {
 
 type Props = {
   onAdd: (question: string) => void;
+  isDesktop?: boolean;
 };
 
-const QuestionItemInput = ({ onAdd }: Props) => {
+const QuestionItemInput = ({ onAdd, isDesktop }: Props) => {
   const {
     register,
     handleSubmit,
@@ -40,7 +41,11 @@ const QuestionItemInput = ({ onAdd }: Props) => {
         />
         <ErrorMessage fieldName="question" errors={errors} />
 
-        <Button type="submit" variant="highlighted">
+        <Button
+          type="submit"
+          variant="highlighted"
+          className={isDesktop ? "bg-gray-500 hover:bg-gray-600" : ""}
+        >
           Add question
         </Button>
       </LabelInputWrapper>

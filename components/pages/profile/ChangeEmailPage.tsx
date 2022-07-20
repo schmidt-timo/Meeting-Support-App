@@ -38,7 +38,7 @@ const ChangeEmailPage = ({ onClose, onChangeEmail }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SubPageLayout title="Change email address" onClose={onClose}>
-        <div className="space-y-3">
+        <div className="space-y-3 pb-3">
           <NotificationLabel variant="yellow">
             After clicking the button you will be logged out automatically and
             receive a confirmation link to your new email address. Only after

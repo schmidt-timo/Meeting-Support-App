@@ -80,7 +80,7 @@ const MeetingOverviewPage = ({
         }}
         activeNavItemId={NAVIGATION_IDS.meetings}
       >
-        <div className="px-3 space-y-3">
+        <div className="w-full px-3 space-y-3 max-w-desktop">
           {!meetings ||
             (ownMeetings.length < 1 && otherMeetings.length < 1 && (
               <InfoTextBox title="No meetings found">

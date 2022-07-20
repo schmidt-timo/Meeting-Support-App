@@ -30,7 +30,7 @@ const ProfilePage = ({
       }}
       activeNavItemId={NAVIGATION_IDS.profile}
     >
-      <div className="flex flex-col items-center space-y-3 p-5">
+      <div className="flex flex-col items-center space-y-3 p-5 w-full max-w-desktop">
         <div
           className="rounded-full w-24 h-24 flex items-center justify-center text-white text-4xl"
           style={{ backgroundColor: user.color }}
@@ -51,7 +51,7 @@ const ProfilePage = ({
             <h1 className="font-medium text-gray-700 truncate">{email}</h1>
           )}
         </div>
-        <div className="space-y-2 w-full flex flex-col items-center">
+        <div className="space-y-2 w-full flex flex-col items-center max-w-buttons">
           <Button onClick={onUpdateProfile}>Update profile settings</Button>
           <Button onClick={onChangeEmail}>Change email address</Button>
           <Button onClick={onChangePassword}>Change password</Button>

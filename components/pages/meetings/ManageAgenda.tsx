@@ -76,7 +76,7 @@ const ManageAgendaContent = ({
         disabled={!showNewItemButton}
         variant="highlighted"
         onClick={() => onNext(agendaItems)}
-        className="disabled:text-gray-600 disabled:bg-gray-400"
+        className="disabled:text-gray-400 disabled:bg-gray-600"
       >
         {showNewItemButton
           ? buttonText

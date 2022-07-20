@@ -37,6 +37,7 @@ a {
   {
     height: -webkit-fill-available;
   }
+  
 }
 
 .spin-animation {
@@ -65,4 +66,32 @@ a {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.text-extrasmall {
+  @apply desktop:text-xs;
+}
+
+.text-xs {
+  @apply desktop:text-sm;
+}
+
+.text-sm {
+  @apply desktop:text-base;
+}
+
+.text-base {
+  @apply desktop:text-lg;
+}
+
+.text-lg {
+  @apply desktop:text-xl;
+}
+
+.text-xl {
+  @apply desktop:text-2xl;
+}
+
+.h-12 {
+  @apply desktop:h-14;
 }

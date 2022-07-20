@@ -25,7 +25,7 @@ const SharedNotes = ({
   return (
     <div className="flex flex-col relative">
       <textarea
-        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none
+        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none border-gray-400
         ${databaseStatus === "NOT_SAVED" && "border-red-500"}
         ${databaseStatus === "SAVED" && "border-green-500"}
         ${databaseStatus === "SAVING" && "border-yellow-500"}

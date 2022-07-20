@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMeeting } from "../../../lib/supabase/meeting";
-import { getParticipantInfoIfEmailIsRegistered } from "../../../lib/supabase/users";
 import {
   formatMeetingDate,
   formatMeetingTime,
 } from "../../../utils/formatting";
 import { isTheSameDay } from "../../../utils/functions";
-import { Meeting, MeetingParticipant } from "../../../utils/types";
+import { Meeting } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
 import AgendaItemView from "../../AgendaItem/AgendaItemView";
-import Button from "../../formElements/Button";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 import DetailsLine from "../../MeetingDetails/DetailsLine";
 import DetailsParticipantItem from "../../MeetingDetails/DetailsParticipantItem";
@@ -101,13 +99,15 @@ const ReportDetailsPage = ({
             </div>
           </Accordion>
         </div>
-        {meeting.description && (
-          <Accordion title="Description">
-            <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs">{meeting.description}</p>
-            </div>
-          </Accordion>
-        )}
+        <Accordion title="Description">
+          <div className="w-full rounded-xl p-3 bg-white space-y-1">
+            <p className="text-xs">
+              {!!meeting.description?.length
+                ? meeting.description
+                : "No description available"}
+            </p>
+          </div>
+        </Accordion>
         <Accordion title={`Participants (${participants.length})`}>
           <div className="space-y-1.5">
             {participants.map((p) => (
@@ -115,15 +115,19 @@ const ReportDetailsPage = ({
             ))}
           </div>
         </Accordion>
-        {meeting.agenda && (
-          <Accordion title="Agenda">
+        <Accordion title="Agenda">
+          {!!meeting.agenda.length ? (
             <div className="space-y-1.5">
               {meeting.agenda.map((item) => (
                 <AgendaItemView agendaItem={item} key={item.id} />
               ))}
             </div>
-          </Accordion>
-        )}
+          ) : (
+            <div className="w-full rounded-xl p-3 bg-white space-y-1">
+              <p className="text-xs">No agenda available</p>
+            </div>
+          )}
+        </Accordion>
         {meetingNote?.content && (
           <Accordion title="Your notes">
             <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
@@ -138,8 +142,8 @@ const ReportDetailsPage = ({
             </div>
           </Accordion>
         )}
-        {meetingQuestions && (
-          <Accordion title="Questions">
+        <Accordion title="Questions">
+          {!!meetingQuestions.length ? (
             <div className="space-y-1.5">
               {meetingQuestions.map((question) => (
                 <QuestionViewItem
@@ -148,10 +152,12 @@ const ReportDetailsPage = ({
                 />
               ))}
             </div>
-          </Accordion>
-        )}
-        <Button variant="highlighted">Share report</Button>
-        {/* //TODO: Share */}
+          ) : (
+            <div className="w-full rounded-xl p-3 bg-white space-y-1">
+              <p className="text-xs">No questions available</p>
+            </div>
+          )}
+        </Accordion>
       </div>
     </SubPageLayout>
   );

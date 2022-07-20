@@ -7,7 +7,7 @@ type Props = {
 
 const DetailsParticipantItem = ({ participant }: Props) => {
   return (
-    <div className="flex p-2 bg-white rounded-xl items-center justify-between h-11">
+    <div className="flex p-2 bg-white rounded-xl items-center justify-between h-12">
       <div className="flex space-x-2 items-center truncate">
         <span
           className="rounded-full w-8 h-8 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold"

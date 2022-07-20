@@ -37,7 +37,7 @@ const DeleteAccountPage = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SubPageLayout title="Delete Account" onClose={onClose}>
-        <div className="space-y-3">
+        <div className="space-y-3 pb-3">
           <NotificationLabel variant="red">
             Be careful! This cannot be undone! Once you delete your account, you
             will lose all access to the meetings you have already created.

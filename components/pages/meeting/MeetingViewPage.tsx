@@ -1,17 +1,15 @@
 import { useState } from "react";
 import {
+  MdInfo,
   MdOutlineClose,
   MdPeople,
-  MdQrCodeScanner,
   MdQuestionAnswer,
-  MdStickyNote2,
 } from "react-icons/md";
 import {
   Meeting,
   MeetingAgendaStatus,
   MeetingNote,
 } from "../../../utils/types";
-import Label from "../../formElements/Label";
 import NotificationLabel from "../../formElements/NotificationLabel";
 import AgendaController from "../../meetingElements/AgendaController";
 import MeetingCounter from "../../meetingElements/MeetingCounter";
@@ -76,12 +74,6 @@ const MeetingViewPage = ({
         </span>
         <span className="space-x-2 flex">
           <button
-            onClick={onShowInfo}
-            className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0"
-          >
-            <MdQrCodeScanner className="w-6 h-6" />
-          </button>
-          <button
             className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0"
             onClick={onExitMeeting}
           >
@@ -117,11 +109,11 @@ const MeetingViewPage = ({
 
         <div className="w-full text-xs flex justify-between space-x-2">
           <button
-            onClick={() => setShowSharedNotes(!showSharedNotes)}
+            onClick={onManageParticipants}
             className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
           >
-            <MdStickyNote2 className="w-4 h-4 flex-shrink-0" />
-            {showSharedNotes ? <p>Your Notes</p> : <p>Shared Notes</p>}
+            <MdPeople className="w-4 h-4 flex-shrink-0" />
+            <p>Participants</p>
           </button>
           <button
             onClick={onManageQuestions}
@@ -131,35 +123,50 @@ const MeetingViewPage = ({
             <p>Questions</p>
           </button>
           <button
-            onClick={onManageParticipants}
+            onClick={onShowInfo}
             className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
           >
-            <MdPeople className="w-4 h-4 flex-shrink-0" />
-            <p>Participants</p>
+            <MdInfo className="w-4 h-4 flex-shrink-0" />
+            <p>Info/QR Code</p>
           </button>
         </div>
-
-        {showSharedNotes && (
-          <div className="space-y-2">
-            <Label icon="note">Shared Notes (visible to everyone)</Label>
-            <SharedNotes
-              meetingNote={sharedNotes}
-              onChangeNote={onSharedNotesChange}
-              databaseStatus={sharedNotesDatabaseStatus}
-              setDatabaseStatus={setSharedNotesDatabaseStatus}
-            />
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center justify-between space-x-1">
+            <button
+              onClick={() => setShowSharedNotes(false)}
+              className={`rounded-l-xl w-full py-1 flex flex-col items-center space-x-1.5 justify-center text-xs ${
+                !showSharedNotes ? "bg-gray-800 text-white" : "bg-gray-200"
+              }`}
+            >
+              <p className="text-xs font-medium">Your Notes</p>
+              <p className="text-extrasmall">(only visible to you)</p>
+            </button>
+            <button
+              onClick={() => setShowSharedNotes(true)}
+              className={`rounded-r-xl w-full py-1 flex flex-col items-center space-x-1.5 justify-center text-xs ${
+                showSharedNotes ? "bg-gray-800 text-white" : "bg-gray-200"
+              }`}
+            >
+              <p className="text-xs font-medium">Shared Notes</p>
+              <p className="text-extrasmall">(visible to everyone)</p>
+            </button>
           </div>
+        </div>
+        {showSharedNotes && (
+          <SharedNotes
+            meetingNote={sharedNotes}
+            onChangeNote={onSharedNotesChange}
+            databaseStatus={sharedNotesDatabaseStatus}
+            setDatabaseStatus={setSharedNotesDatabaseStatus}
+          />
         )}
         {!showSharedNotes && (
-          <div className="space-y-2">
-            <Label icon="note">Your Notes (only visible to you)</Label>
-            <MeetingNotes
-              meetingNote={meetingNote}
-              onChangeNote={onMeetingNoteChange}
-              databaseStatus={databaseStatus}
-              setDatabaseStatus={setDatabaseStatus}
-            />
-          </div>
+          <MeetingNotes
+            meetingNote={meetingNote}
+            onChangeNote={onMeetingNoteChange}
+            databaseStatus={databaseStatus}
+            setDatabaseStatus={setDatabaseStatus}
+          />
         )}
       </div>
     </div>

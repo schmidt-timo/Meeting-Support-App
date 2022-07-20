@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { isMobileOnly, isMobileSafari } from "react-device-detect";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import {
+  MdAdd,
   MdFullscreen,
   MdFullscreenExit,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdNotificationsActive,
+  MdRemove,
 } from "react-icons/md";
 import { Document, Page, pdfjs } from "react-pdf";
 import { MeetingAgendaItem, MeetingAgendaStatus } from "../../../utils/types";
@@ -14,6 +16,7 @@ import MeetingCounter from "../../meetingElements/MeetingCounter";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 type Props = {
+  isDesktop?: boolean;
   agendaStatus: MeetingAgendaStatus;
   agendaItem: MeetingAgendaItem;
   meetingTimer: {
@@ -24,6 +27,7 @@ type Props = {
 };
 
 const PresentationView = ({
+  isDesktop,
   agendaItem,
   agendaStatus,
   meetingTimer,
@@ -32,6 +36,8 @@ const PresentationView = ({
   const fullscreenHandler = useFullScreenHandle();
   const [numPages, setNumPages] = useState<number | null>(null);
   const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [scale, setScale] = useState(1.0);
   const [showPDF, setShowPDF] = useState(false);
   const [showAlarm, setShowAlarm] = useState(false);
 
@@ -45,6 +51,7 @@ const PresentationView = ({
   useEffect(() => {
     if (ref.current) {
       setHeight(ref.current.clientHeight);
+      setWidth(ref.current.clientWidth);
     }
   }, []);
 
@@ -52,6 +59,7 @@ const PresentationView = ({
     const handleResizeWindow = () => {
       if (ref.current) {
         setHeight(ref.current.clientHeight);
+        setWidth(ref.current.clientWidth);
       }
     };
 
@@ -72,24 +80,48 @@ const PresentationView = ({
     <div>
       <div
         ref={ref}
-        className={`w-full h-full border border-gray-500 overflow-hidden aspect-video relative z-10 ${
+        className={`w-full h-full border border-gray-500 overflow-hidden aspect-video relative z-10 desktop:aspect-auto desktop:h-presentationDesktop ${
           agendaItem.fileUrl ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
         <FullScreen
           handle={fullscreenHandler}
-          className="w-full h-full bg-gray-300 flex flex-col items-center justify-center"
+          className="w-full h-full bg-gray-200 flex flex-col items-center justify-center"
         >
           {showPDF ? (
-            <Document
-              loading={
-                <p className="text-sm font-medium">PDF is loading ...</p>
-              }
-              file={agendaItem.fileUrl}
-              onLoadSuccess={onDocumentLoadSuccess}
-            >
-              <Page pageNumber={pageNumber} height={height + 2} />
-            </Document>
+            <>
+              <div className="desktop:hidden">
+                <Document
+                  loading={
+                    <p className="text-sm font-medium">PDF is loading ...</p>
+                  }
+                  file={agendaItem.fileUrl}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    height={height + 2}
+                    scale={scale}
+                  />
+                </Document>
+              </div>
+
+              <div className="hidden desktop:block">
+                <Document
+                  loading={
+                    <p className="text-sm font-medium">PDF is loading ...</p>
+                  }
+                  file={agendaItem.fileUrl}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    width={width + 2}
+                    scale={scale}
+                  />
+                </Document>
+              </div>
+            </>
           ) : (
             <div
               className={`overflow-y-scroll p-5 space-y-3 ${
@@ -107,7 +139,9 @@ const PresentationView = ({
               </h1>
               <p
                 className={
-                  fullscreenHandler.active ? "text-xl pt-10" : "text-sm"
+                  fullscreenHandler.active
+                    ? "text-xl pt-10"
+                    : "text-sm desktop:max-w-desktopXL"
                 }
               >
                 {agendaItem.description}
@@ -115,7 +149,7 @@ const PresentationView = ({
             </div>
           )}
           {fullscreenHandler.active && (
-            <div className="flex items-center absolute right-2 top-2 justify-center bg-black p-1 px-3 rounded-xl space-x-2">
+            <div className="flex items-center absolute right-2 top-2 justify-center bg-gray-800 p-1 px-3 rounded-xl space-x-2">
               {showAlarm && (
                 <span className="flex space-x-2 items-center">
                   <MdNotificationsActive className="w-4 h-4 text-red-500 flex-shrink-0" />
@@ -135,7 +169,7 @@ const PresentationView = ({
           {fullscreenHandler.active &&
             agendaStatus.startedAt &&
             agendaItem.duration && (
-              <div className="flex items-center absolute left-2 top-2 justify-center bg-black p-1 px-3 rounded-xl space-x-2">
+              <div className="flex items-center absolute left-2 top-2 justify-center bg-gray-800 p-1 px-3 rounded-xl space-x-2">
                 <span className="truncate max-w-xl">
                   <h1 className="font-medium text-sm text-white truncate">
                     {`${agendaStatus.currentItemIndex + 1}. ${
@@ -157,7 +191,7 @@ const PresentationView = ({
               </div>
             )}
           {fullscreenHandler.active && agendaItem.fileUrl && (
-            <div className="flex items-center justify-center space-x-2 absolute left-2 bottom-2 flex-shrink-0 bg-black rounded-xl px-1">
+            <div className="flex items-center justify-center space-x-2 absolute left-2 bottom-2 flex-shrink-0 bg-gray-800 rounded-xl px-1">
               <button
                 onClick={() => onPresentationPageChange(pageNumber - 1)}
                 className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-black"
@@ -188,38 +222,64 @@ const PresentationView = ({
                 ? fullscreenHandler.enter
                 : fullscreenHandler.exit
             }
-            className="flex items-center justify-center rounded-full w-8 h-8 bg-black text-white flex-shrink-0 absolute bottom-2 right-2 disabled:hidden"
+            className={`flex items-center justify-center rounded-full bg-gray-800 text-white flex-shrink-0 absolute bottom-2 right-2 disabled:hidden
+            ${!isDesktop && !fullscreenHandler.active && "w-8 h-8"}
+            ${isDesktop && fullscreenHandler.active && "w-10 h-10"}
+            ${isDesktop && !fullscreenHandler.active && "w-10 h-10"}
+            `}
           >
-            {!fullscreenHandler.active ? (
+            {!fullscreenHandler.active && isDesktop && (
+              <MdFullscreen className="w-7 h-7" />
+            )}
+            {!fullscreenHandler.active && !isDesktop && (
               <MdFullscreen className="w-5 h-5" />
-            ) : (
-              <MdFullscreenExit className="w-5 h-5" />
+            )}
+            {fullscreenHandler.active && (
+              <MdFullscreenExit className="w-7 h-7" />
             )}
           </button>
         </FullScreen>
       </div>
       {agendaItem.fileUrl && (
-        <div className="flex py-0.5 px-2 w-full bg-black rounded-b-xl justify-between">
+        <div className="flex py-0.5 w-full bg-gray-800 rounded-b-xl justify-between">
           <button
-            className="text-sm text-white px-2.5"
+            className="text-xs mobileSM:text-sm text-white px-2.5"
             onClick={() => setShowPDF(!showPDF)}
           >
             {showPDF ? "Show description" : "Show presentation"}
           </button>
 
-          <span className="flex space-x-2">
+          <div className="disabled:hidden flex space-x-2">
+            <button
+              disabled={fullscreenHandler.active}
+              className="flex items-center justify-center text-white"
+              onClick={() => setScale(scale + 0.1)}
+            >
+              <MdAdd className="w-5 h-5 flex-shrink-0" />
+            </button>
+
+            <button
+              disabled={fullscreenHandler.active}
+              className="flex items-center justify-center text-white"
+              onClick={() => setScale(scale - 0.1)}
+            >
+              <MdRemove className="w-5 h-5 flex-shrink-0" />
+            </button>
+          </div>
+
+          <span className="flex mobileSM:space-x-2">
             <button
               onClick={() => onPresentationPageChange(pageNumber - 1)}
-              className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-black"
+              className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-gray-800"
               disabled={pageNumber <= 1}
             >
               <MdKeyboardArrowLeft className="w-6 h-6" />
             </button>
-            <div className="flex items-center justify-center text-sm text-white">{`${pageNumber} / ${numPages}`}</div>
+            <div className="flex items-center justify-center text-xs mobileSM:text-sm text-white">{`${pageNumber} / ${numPages}`}</div>
             <button
               disabled={pageNumber >= numPages!}
               onClick={() => onPresentationPageChange(pageNumber + 1)}
-              className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-black"
+              className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-gray-800"
             >
               <MdKeyboardArrowRight className="w-6 h-6" />
             </button>

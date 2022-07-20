@@ -11,7 +11,6 @@ create table meetings (
   "agenda" json,
   "participants" json,
   "completed" boolean not null default false,
-  "completedAt" timestamp with time zone,
   "agendaStatus" json not null default ('{}'),
 
   primary key (id)

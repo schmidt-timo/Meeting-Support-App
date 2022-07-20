@@ -8,5 +8,5 @@ export const supabase = createClient(
 export const getServiceSupabase = () =>
   createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_KEY || "" // TODO: Only works server-side, needs to be added to deployment env variables
+    process.env.SUPABASE_SERVICE_ROLE_KEY || ""
   );

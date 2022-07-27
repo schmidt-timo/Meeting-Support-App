@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
@@ -14,7 +14,7 @@ import {
 } from "../utils/filtering";
 import { Meeting } from "../utils/types";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const { data: meetings, error } = await fetchCompletedMeetings();
 
   if (error) {

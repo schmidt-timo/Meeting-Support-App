@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import MeetingOverviewPage from "../components/pages/meetings/MeetingOverviewPage";
@@ -6,7 +6,7 @@ import { useAuth } from "../lib/auth";
 import { fetchOpenMeetings } from "../lib/supabase/meetings";
 import { Meeting } from "../utils/types";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const { data: meetings, error } = await fetchOpenMeetings();
 
   if (error) {

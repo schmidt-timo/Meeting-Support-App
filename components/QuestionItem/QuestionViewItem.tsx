@@ -28,7 +28,7 @@ const QuestionViewItem = ({ meetingQuestion }: Props) => {
             {meetingQuestion.answered ? (
               <p className="text-green-500">was marked as answered</p>
             ) : (
-              <p className="text-red-500">was not marked as answered</p>
+              <p className="text-red-500">was marked as unanswered</p>
             )}
           </button>
         </div>

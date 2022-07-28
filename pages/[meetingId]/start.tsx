@@ -31,6 +31,7 @@ import {
 import { getParticipantInfoIfEmailIsRegistered } from "../../lib/supabase/users";
 import { convertParticipantsForDatabase } from "../../utils/functions";
 import { Meeting, MeetingParticipant } from "../../utils/types";
+import EditParticipants from "./participants";
 
 interface Params extends ParsedUrlQuery {
   meetingId: string;
@@ -98,7 +99,6 @@ const MeetingView: NextPage<Props> = ({
     sharedNotesDatabaseStatus,
     setSharedNotesDatabaseStatus,
     participants,
-    setParticipants,
     meetingQuestions,
   } = useMeeting(initialMeeting);
 
@@ -124,6 +124,17 @@ const MeetingView: NextPage<Props> = ({
         throw error;
       });
   };
+
+  if (view === "PARTICIPANTS") {
+    return (
+      <EditParticipants
+        meetingId={meeting.id}
+        createdBy={meetingCreator.id}
+        participants={participants}
+        onClose={() => setView("MEETING")}
+      />
+    );
+  }
 
   return (
     <>
@@ -293,50 +304,6 @@ const MeetingView: NextPage<Props> = ({
               question.id,
               !question.answered
             );
-          }}
-        />
-      )}
-
-      {view === "PARTICIPANTS" && (
-        <ManageParticipants
-          participants={participants}
-          userId={user!.id}
-          buttonText="Save"
-          onClose={() => setView("MEETING")}
-          onAddParticipant={async (participantToAdd) => {
-            const { data, error } = await getParticipantInfoIfEmailIsRegistered(
-              participantToAdd.email
-            );
-
-            if (data) {
-              setParticipants([...participants, data]);
-              return data;
-            }
-
-            if (error) {
-              setParticipants([...participants, participantToAdd]);
-              return participantToAdd;
-            }
-          }}
-          onDeleteParticipant={(participantId) => {
-            setParticipants(participants.filter((p) => p.id !== participantId));
-          }}
-          onCreate={async (updatedParticipants) => {
-            const newParticipants =
-              convertParticipantsForDatabase(updatedParticipants);
-
-            const { data, error } = await updateParticipants(
-              meeting.id,
-              newParticipants
-            );
-
-            if (error) {
-              throw error;
-            }
-
-            if (data) {
-              setView("MEETING");
-            }
           }}
         />
       )}

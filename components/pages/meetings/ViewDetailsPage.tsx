@@ -130,7 +130,7 @@ const ViewDetailsPage = ({
         </div>
         <Accordion title="Description">
           <div className="w-full rounded-xl p-3 bg-white space-y-1">
-            <p className="text-xs">
+            <p className="text-xs whitespace-pre-wrap">
               {meeting.description
                 ? meeting.description
                 : "No description available"}

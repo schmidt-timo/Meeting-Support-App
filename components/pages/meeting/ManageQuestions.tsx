@@ -5,7 +5,6 @@ import {
 } from "../../../utils/filtering";
 import { MeetingQuestion } from "../../../utils/types";
 import Label from "../../formElements/Label";
-import LabelInputWrapper from "../../formElements/LabelInputWrapper";
 import QuestionItem from "../../QuestionItem/QuestionItem";
 import QuestionItemInput from "../../QuestionItem/QuestionItemInput";
 import SubPageLayout from "../layouts/SubPageLayout";

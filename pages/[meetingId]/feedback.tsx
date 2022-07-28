@@ -17,6 +17,7 @@ import {
 } from "../../lib/supabase/meetings";
 import { MEETING_FEEDBACK_QUESTIONS } from "../../utils/constants";
 import {
+  mapNotEmptyResponses,
   mapEmojisToResponses,
   mapFeedbackToQuestions,
   mapYesNoToResponses,
@@ -66,6 +67,7 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
   const mappedFeedback = mapFeedbackToQuestions(feedback);
   const emojis = mapEmojisToResponses(mappedFeedback[0]);
   const yesNo = mapYesNoToResponses(mappedFeedback[1]);
+  const comments = mapNotEmptyResponses(mappedFeedback[2]);
 
   return (
     <SubPageLayout
@@ -103,16 +105,22 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
             </div>
           </FeedbackViewItem>
           <FeedbackViewItem question={MEETING_FEEDBACK_QUESTIONS[2]}>
-            <span className="space-y-2">
-              {mappedFeedback[2].map((response) => (
-                <div
-                  key={response.id}
-                  className="p-3 bg-white rounded-xl text-sm"
-                >
-                  <p>{response.response}</p>
-                </div>
-              ))}
-            </span>
+            {!!comments.length ? (
+              <span className="space-y-2">
+                {comments.map((response) => (
+                  <div
+                    key={response.id}
+                    className="p-3 bg-white rounded-xl text-sm"
+                  >
+                    <p className="whitespace-pre-wrap">{response.response}</p>
+                  </div>
+                ))}
+              </span>
+            ) : (
+              <div className="p-3 bg-white rounded-xl text-sm w-full">
+                No comments available
+              </div>
+            )}
           </FeedbackViewItem>
         </div>
       ) : (

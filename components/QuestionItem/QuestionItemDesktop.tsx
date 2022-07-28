@@ -25,6 +25,7 @@ const QuestionItemDesktop = ({
       <div>
         <div className="flex space-x-2 justify-end pt-3">
           <button
+            type="button"
             onClick={onUpvote}
             className={`flex items-center space-x-1.5 py-1 px-2 font-medium rounded-xl text-extrasmall ${
               upvoted ? "bg-black text-white" : "bg-gray-200 text-black"
@@ -34,6 +35,7 @@ const QuestionItemDesktop = ({
             <p>{formatUpvoteText(meetingQuestion.upvotes)}</p>
           </button>
           <button
+            type="button"
             onClick={onMarkAsAnswered}
             className="flex items-center space-x-1.5 py-1 px-2 font-medium bg-gray-200 text-black rounded-xl text-extrasmall"
           >

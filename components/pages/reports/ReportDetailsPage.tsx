@@ -1,5 +1,8 @@
-import { useState } from "react";
 import { useMeeting } from "../../../lib/supabase/meeting";
+import {
+  filterAnsweredQuestions,
+  filterOpenQuestions,
+} from "../../../utils/filtering";
 import {
   formatMeetingDate,
   formatMeetingTime,
@@ -33,14 +36,15 @@ const ReportDetailsPage = ({
     endDate: new Date(initialMeeting.endDate),
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const { meetingNote, sharedNotes, meetingQuestions, participants } =
     useMeeting(meeting);
 
-  if (isLoading) {
+  if (!meetingNote || !sharedNotes || !meetingQuestions || !participants) {
     return <LoadingScreen />;
   }
+
+  const openQuestions = filterOpenQuestions(meetingQuestions);
+  const answeredQuestions = filterAnsweredQuestions(meetingQuestions);
 
   return (
     <SubPageLayout title={meeting.title} onClose={onClose}>
@@ -101,7 +105,7 @@ const ReportDetailsPage = ({
         </div>
         <Accordion title="Description">
           <div className="w-full rounded-xl p-3 bg-white space-y-1">
-            <p className="text-xs">
+            <p className="text-xs whitespace-pre-wrap">
               {!!meeting.description?.length
                 ? meeting.description
                 : "No description available"}
@@ -131,21 +135,29 @@ const ReportDetailsPage = ({
         {meetingNote?.content && (
           <Accordion title="Your notes">
             <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
-              <p>{meetingNote?.content}</p>
+              <p className="whitespace-pre-wrap">{meetingNote?.content}</p>
             </div>
           </Accordion>
         )}
         {sharedNotes?.content && (
           <Accordion title="Shared notes">
             <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
-              <p>{sharedNotes?.content}</p>
+              <p className="whitespace-pre-wrap">
+                {sharedNotes?.content as string}
+              </p>
             </div>
           </Accordion>
         )}
         <Accordion title="Questions">
           {!!meetingQuestions.length ? (
             <div className="space-y-1.5">
-              {meetingQuestions.map((question) => (
+              {openQuestions.map((question) => (
+                <QuestionViewItem
+                  meetingQuestion={question}
+                  key={question.id}
+                />
+              ))}
+              {answeredQuestions.map((question) => (
                 <QuestionViewItem
                   meetingQuestion={question}
                   key={question.id}

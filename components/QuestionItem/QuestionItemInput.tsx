@@ -22,8 +22,8 @@ const QuestionItemInput = ({ onAdd, isDesktop }: Props) => {
     reset,
     formState: { errors },
   } = useForm<QuestionInputs>({
-    criteriaMode: "all",
-    mode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
   const onSubmit = (data: QuestionInputs) => {
     onAdd(data.question);

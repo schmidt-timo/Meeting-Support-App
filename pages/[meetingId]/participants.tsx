@@ -41,12 +41,14 @@ type Props = {
   meetingId: string;
   createdBy: string;
   participants: MeetingParticipant[];
+  onClose?: () => void;
 };
 
 const EditParticipants: NextPage<Props> = ({
   meetingId,
   createdBy,
   participants: initialParticipants,
+  onClose,
 }) => {
   const { user } = useAuth();
   const router = useRouter();
@@ -91,7 +93,13 @@ const EditParticipants: NextPage<Props> = ({
       <ViewParticipants
         userId={user!.id}
         participants={participants}
-        onClose={() => router.push("/")}
+        onClose={() => {
+          if (onClose) {
+            onClose();
+          } else {
+            router.push("/");
+          }
+        }}
         onDeclineMeeting={async () => {
           const newParticipants = convertParticipantsForDatabase(
             participants.filter((p) => p.id !== user!.id)
@@ -107,7 +115,11 @@ const EditParticipants: NextPage<Props> = ({
           }
 
           if (data) {
-            router.push("/");
+            if (onClose) {
+              onClose();
+            } else {
+              router.push("/");
+            }
           }
         }}
       />
@@ -134,13 +146,27 @@ const EditParticipants: NextPage<Props> = ({
           }
 
           if (data) {
+            if (onClose) {
+              onClose();
+            } else {
+              router.push("/");
+            }
+          }
+        } else {
+          if (onClose) {
+            onClose();
+          } else {
             router.push("/");
           }
+        }
+      }}
+      onClose={() => {
+        if (onClose) {
+          onClose();
         } else {
           router.push("/");
         }
       }}
-      onClose={() => router.push("/")}
       onAddParticipant={async (participantToAdd) => {
         const { data, error } = await getParticipantInfoIfEmailIsRegistered(
           participantToAdd.email

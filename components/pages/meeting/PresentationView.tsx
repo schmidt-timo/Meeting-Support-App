@@ -138,11 +138,12 @@ const PresentationView = ({
                 {`${agendaStatus.currentItemIndex + 1}. ${agendaItem.title}`}
               </h1>
               <p
-                className={
-                  fullscreenHandler.active
-                    ? "text-xl pt-10"
-                    : "text-sm desktop:max-w-desktopXL"
-                }
+                className={`whitespace-pre-wrap
+                    ${
+                      fullscreenHandler.active
+                        ? "text-xl pt-10"
+                        : "text-sm desktop:max-w-desktopXL"
+                    }`}
               >
                 {agendaItem.description}
               </p>

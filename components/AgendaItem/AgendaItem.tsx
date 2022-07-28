@@ -77,7 +77,7 @@ const AgendaItem = ({
             <div className="relative">
               <p
                 ref={descriptionRef}
-                className={`text-xs 
+                className={`text-xs whitespace-pre-wrap
               ${isCollapsible && isCollapsed && "max-h-28 overflow-hidden"}
               ${agendaItem.fileUrl && "pb-2"}
               `}

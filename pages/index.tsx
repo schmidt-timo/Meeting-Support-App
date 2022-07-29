@@ -1,8 +1,10 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import MeetingOverviewPage from "../components/pages/meetings/MeetingOverviewPage";
 import { useAuth } from "../lib/auth";
+import { getServiceSupabase } from "../lib/supabase/config";
 import { fetchOpenMeetings } from "../lib/supabase/meetings";
 import { Meeting } from "../utils/types";
 
@@ -27,6 +29,20 @@ type Props = {
 const MeetingOverview: NextPage<Props> = ({ meetings }) => {
   const router = useRouter();
   const { user } = useAuth();
+
+  useEffect(() => {
+    const supabaseServer = getServiceSupabase();
+    const meetingSubscription = supabaseServer
+      .from("meetings")
+      .on("*", (payload) => {
+        router.replace(router.asPath);
+      })
+      .subscribe();
+
+    return () => {
+      meetingSubscription.unsubscribe();
+    };
+  }, []);
 
   if (!meetings) {
     return <LoadingScreen />;

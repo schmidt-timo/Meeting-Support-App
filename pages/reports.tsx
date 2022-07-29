@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import MeetingReportsPage from "../components/pages/reports/MeetingReportsPage";
 import { useAuth } from "../lib/auth";
+import { getServiceSupabase } from "../lib/supabase/config";
 import {
   fetchCompletedMeetings,
   fetchFeedbackForMeeting,
@@ -44,6 +45,20 @@ const Reports: NextPage<Props> = ({ meetings }) => {
     user!.id,
     user!.email!
   );
+
+  useEffect(() => {
+    const supabaseServer = getServiceSupabase();
+    const meetingSubscription = supabaseServer
+      .from("meetings")
+      .on("*", (payload) => {
+        router.replace(router.asPath);
+      })
+      .subscribe();
+
+    return () => {
+      meetingSubscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     async function checkMeetings() {

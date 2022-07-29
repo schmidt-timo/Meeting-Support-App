@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DatabaseSyncStatus } from "../../components/meetingElements/NoteSyncStatusBar";
-import { generateRandomID, objectsAreEqual } from "../../utils/functions";
+import { generateRandomID } from "../../utils/functions";
 import {
   DatabaseParticipant,
   Meeting,
@@ -25,6 +25,10 @@ export const useMeeting = (meeting: Meeting) => {
 
   const [meetingQuestions, setMeetingQuestions] = useState<MeetingQuestion[]>(
     []
+  );
+
+  const [meetingIsCompleted, setMeetingIsCompleted] = useState(
+    meeting.completed
   );
 
   const [agendaStatus, setAgendaStatus] = useState<MeetingAgendaStatus>();
@@ -137,6 +141,10 @@ export const useMeeting = (meeting: Meeting) => {
         setAgendaStatus(payload.new.agendaStatus);
         setParticipants(payload.new.participants);
         checkParticipantsInfo(payload.new.participants);
+
+        if (payload.new.completed) {
+          setMeetingIsCompleted(true);
+        }
       })
       .subscribe();
 
@@ -176,6 +184,7 @@ export const useMeeting = (meeting: Meeting) => {
     setAgendaStatus,
     participants,
     setParticipants,
+    meetingIsCompleted,
     meetingQuestions,
   };
 };

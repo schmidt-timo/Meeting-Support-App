@@ -12,7 +12,6 @@ import ManageQuestions from "../../components/pages/meeting/ManageQuestions";
 import MeetingInfo from "../../components/pages/meeting/MeetingInfo";
 import MeetingViewPage from "../../components/pages/meeting/MeetingViewPage";
 import MeetingViewPageDesktop from "../../components/pages/meeting/MeetingViewPageDesktop";
-import ManageParticipants from "../../components/pages/meetings/ManageParticipants";
 import { useAuth } from "../../lib/auth";
 import {
   changeMeetingQuestionAnsweredStatus,
@@ -20,7 +19,6 @@ import {
   markMeetingAsComplete,
   updateAgendaStatus,
   updateMeetingNote,
-  updateParticipants,
   upvoteMeetingQuestion,
   useMeeting,
 } from "../../lib/supabase/meeting";
@@ -28,8 +26,6 @@ import {
   fetchSingleMeeting,
   getMeetingCreator,
 } from "../../lib/supabase/meetings";
-import { getParticipantInfoIfEmailIsRegistered } from "../../lib/supabase/users";
-import { convertParticipantsForDatabase } from "../../utils/functions";
 import { Meeting, MeetingParticipant } from "../../utils/types";
 import EditParticipants from "./participants";
 
@@ -100,6 +96,7 @@ const MeetingView: NextPage<Props> = ({
     setSharedNotesDatabaseStatus,
     participants,
     meetingQuestions,
+    meetingIsCompleted,
   } = useMeeting(initialMeeting);
 
   if (!agendaStatus || !meetingNote || !sharedNotes || !initialMeeting) {
@@ -184,6 +181,21 @@ const MeetingView: NextPage<Props> = ({
                   End meeting for all participants
                 </Button>
               )}
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {meetingIsCompleted && (
+        <Modal title="Meeting has ended" onClose={() => router.push("/")}>
+          <div className="space-y-3">
+            <p className="text-sm">
+              The meeting was ended for all participants.
+            </p>
+            <div className="space-y-2">
+              <Button onClick={() => router.push("/")} variant="highlighted">
+                Leave meeting
+              </Button>
             </div>
           </div>
         </Modal>

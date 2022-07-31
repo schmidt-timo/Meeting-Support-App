@@ -42,6 +42,7 @@ type Props = {
   createdBy: string;
   participants: MeetingParticipant[];
   onClose?: () => void;
+  viewOnly?: boolean;
 };
 
 const EditParticipants: NextPage<Props> = ({
@@ -49,6 +50,7 @@ const EditParticipants: NextPage<Props> = ({
   createdBy,
   participants: initialParticipants,
   onClose,
+  viewOnly,
 }) => {
   const { user } = useAuth();
   const router = useRouter();
@@ -91,6 +93,7 @@ const EditParticipants: NextPage<Props> = ({
   if (createdBy !== user!.id) {
     return (
       <ViewParticipants
+        viewOnly={viewOnly}
         userId={user!.id}
         participants={participants}
         onClose={() => {

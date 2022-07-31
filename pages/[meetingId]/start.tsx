@@ -131,6 +131,7 @@ const MeetingView: NextPage<Props> = ({
   if (view === "PARTICIPANTS") {
     return (
       <EditParticipants
+        viewOnly
         meetingId={meeting.id}
         createdBy={meetingCreator.id}
         participants={participants}

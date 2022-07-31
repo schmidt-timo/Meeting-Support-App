@@ -9,6 +9,7 @@ type Props = {
   participants: MeetingParticipant[];
   onClose: () => void;
   onDeclineMeeting: () => void;
+  viewOnly?: boolean;
 };
 
 const ViewParticipants = ({
@@ -16,11 +17,12 @@ const ViewParticipants = ({
   participants,
   onClose,
   onDeclineMeeting,
+  viewOnly,
 }: Props) => {
   return (
     <SubPageLayout title="View participants" onClose={onClose}>
-      <div className="space-y-5">
-        <div className="space-y-2">
+      <div className={viewOnly ? "" : "space-y-5"}>
+        <div className={`space-y-2 ${viewOnly && "hidden"}`}>
           <Label>Your participation</Label>
           <Button variant="red" onClick={onDeclineMeeting}>
             Decline participation

@@ -73,6 +73,19 @@ export function convertParticipantsForDatabase(
   return databaseParticipants;
 }
 
+export function calculateRemainingTime(
+  countdownStart: Date,
+  countDownEnd: Date
+) {
+  const timeLeft = countDownEnd.getTime() - countdownStart.getTime();
+
+  return {
+    hours: Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    minutes: Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((timeLeft % (1000 * 60)) / 1000),
+  };
+}
+
 export function calculateTotalTime(startDate: Date, endDate: Date) {
   const totalSeconds =
     Math.floor(endDate.getTime() - startDate.getTime()) / 1000;
@@ -173,6 +186,10 @@ export function mapNotEmptyResponses(responses: MeetingFeedbackResponse[]) {
 export function is10MinutesBeforeMeetingOrLater(startDate: Date) {
   const difference = (new Date().getTime() - startDate.getTime()) / 1000 / 60;
   return Math.round(difference) >= -10;
+}
+
+export function meetingHasStarted(startDate: Date) {
+  return new Date() >= startDate;
 }
 
 export function isMeetingId(text: string) {

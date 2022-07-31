@@ -31,8 +31,6 @@ export const useMeeting = (meeting: Meeting) => {
     meeting.completed
   );
 
-  const [agendaStatus, setAgendaStatus] = useState<MeetingAgendaStatus>();
-
   const [participants, setParticipants] = useState<MeetingParticipant[]>(
     meeting.participants
   );
@@ -100,33 +98,6 @@ export const useMeeting = (meeting: Meeting) => {
       }
     });
 
-    fetchAgendaStatus(meeting.id)
-      .then((res) => {
-        if (!res.agendaStatus) {
-        }
-        if (Object.keys(res.agendaStatus).length === 0) {
-          // is empty = was never created
-          updateAgendaStatus(meeting.id, {
-            currentItemIndex: 0,
-            startedAt: new Date(),
-          }).then((data) => {
-            setAgendaStatus(data.agendaStatus);
-          });
-        }
-        if (Object.keys(res.agendaStatus).length > 0) {
-          // was created before
-          setAgendaStatus(res.agendaStatus);
-        }
-      })
-      .catch((error) => {
-        if (error.message === "isNull") {
-          updateAgendaStatus(meeting.id, {
-            currentItemIndex: 0,
-            startedAt: new Date(),
-          });
-        }
-      });
-
     fetchMeetingQuestions(meeting.id, setMeetingQuestions).catch((error) => {
       console.log(error);
     });
@@ -138,7 +109,6 @@ export const useMeeting = (meeting: Meeting) => {
     const meetingSubscription = supabaseServer
       .from("meetings")
       .on("*", (payload) => {
-        setAgendaStatus(payload.new.agendaStatus);
         setParticipants(payload.new.participants);
         checkParticipantsInfo(payload.new.participants);
 
@@ -180,8 +150,6 @@ export const useMeeting = (meeting: Meeting) => {
     setDatabaseStatus,
     sharedNotesDatabaseStatus,
     setSharedNotesDatabaseStatus,
-    agendaStatus,
-    setAgendaStatus,
     participants,
     setParticipants,
     meetingIsCompleted,
@@ -215,47 +183,6 @@ export const createMeetingNote = async (meetingNote: MeetingNote) => {
   const { data, error } = await supabase
     .from("meeting_notes")
     .insert([meetingNote])
-    .single();
-
-  if (error) {
-    throw error;
-  }
-
-  if (data) {
-    return data;
-  }
-};
-
-export const fetchAgendaStatus = async (meetingId: string) => {
-  const { data, error } = await supabase
-    .from("meetings")
-    .select("agendaStatus")
-    .eq("id", meetingId)
-    .single();
-
-  if (error) {
-    throw error;
-  }
-
-  if (data) {
-    return data;
-  }
-};
-
-export const updateAgendaStatus = async (
-  meetingId: string,
-  newStatus: MeetingAgendaStatus
-) => {
-  const { data, error } = await supabase
-    .from("meetings")
-    .update({
-      agendaStatus: {
-        currentItemIndex: newStatus.currentItemIndex,
-        startedAt: newStatus.startedAt,
-        currentPresentationPage: newStatus.currentPresentationPage,
-      },
-    })
-    .eq("id", meetingId)
     .single();
 
   if (error) {
@@ -421,16 +348,31 @@ export const createPresentationStorage = async () => {
 };
 
 export const markMeetingAsComplete = async (meetingId: string) => {
-  const { data, error } = await supabase
+  // change end date to timestamp when meeting was ended
+  const { data: updateData, error: updateError } = await supabase
     .from("meetings")
-    .update({ completed: true })
-    .eq("id", meetingId);
+    .update({
+      endDate: new Date(),
+    })
+    .match({ id: meetingId });
 
-  if (error) {
-    throw error;
+  if (updateError) {
+    throw updateError;
   }
 
-  if (data) {
-    return data;
+  if (updateData) {
+    // mark meeting as completed
+    const { data, error } = await supabase
+      .from("meetings")
+      .update({ completed: true })
+      .eq("id", meetingId);
+
+    if (error) {
+      throw error;
+    }
+
+    if (data) {
+      return data;
+    }
   }
 };

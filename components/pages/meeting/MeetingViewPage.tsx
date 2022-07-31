@@ -106,30 +106,6 @@ const MeetingViewPage = ({
             No agenda available for this meeting.
           </NotificationLabel>
         )}
-
-        <div className="w-full text-xs flex justify-between space-x-2">
-          <button
-            onClick={onManageParticipants}
-            className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
-          >
-            <MdPeople className="w-4 h-4 flex-shrink-0" />
-            <p>Participants</p>
-          </button>
-          <button
-            onClick={onManageQuestions}
-            className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
-          >
-            <MdQuestionAnswer className="w-4 h-4 flex-shrink-0" />
-            <p>Questions</p>
-          </button>
-          <button
-            onClick={onShowInfo}
-            className="w-full flex flex-col items-center justify-center space-y-1 bg-gray-200 rounded-xl py-2"
-          >
-            <MdInfo className="w-4 h-4 flex-shrink-0" />
-            <p>Info/QR Code</p>
-          </button>
-        </div>
         <div className="flex flex-col space-y-2">
           <div className="flex items-center justify-between space-x-1">
             <button
@@ -168,6 +144,29 @@ const MeetingViewPage = ({
             setDatabaseStatus={setDatabaseStatus}
           />
         )}
+      </div>
+      <div className="w-full bg-gray-800 flex justify-between drop-shadow mobileXL:justify-center z-10 border-t border-gray-500">
+        <button
+          onClick={onManageParticipants}
+          className="w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs text-white"
+        >
+          <MdPeople className="w-4 h-4 text-white flex-shrink-0" />
+          <p>Participants</p>
+        </button>
+        <button
+          onClick={onManageQuestions}
+          className="w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs text-white"
+        >
+          <MdQuestionAnswer className="w-4 h-4 text-white flex-shrink-0" />
+          <p>Questions</p>
+        </button>
+        <button
+          onClick={onShowInfo}
+          className="w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs text-white"
+        >
+          <MdInfo className="w-4 h-4 text-white flex-shrink-0" />
+          <p>Info/QR Code</p>
+        </button>
       </div>
     </div>
   );

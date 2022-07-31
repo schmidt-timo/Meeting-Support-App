@@ -37,11 +37,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 type Props = {
   meetingId: string;
   agendaItems: MeetingAgendaItem[];
+  onClose?: () => void;
 };
 
 const EditAgenda: NextPage<Props> = ({
   meetingId,
   agendaItems: initialAgendaItems,
+  onClose,
 }) => {
   const router = useRouter();
   const [agendaItems, setAgendaItems] =
@@ -62,10 +64,20 @@ const EditAgenda: NextPage<Props> = ({
         }
 
         if (data) {
+          if (onClose) {
+            onClose();
+          } else {
+            router.push("/");
+          }
+        }
+      }}
+      onClose={() => {
+        if (onClose) {
+          onClose();
+        } else {
           router.push("/");
         }
       }}
-      onClose={() => router.push("/")}
       onAddAgendaItem={async (item, file) => {
         return new Promise((resolve, reject) => {
           if (file) {

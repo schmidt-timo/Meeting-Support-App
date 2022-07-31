@@ -8,7 +8,6 @@ import NotificationLabel from "../../components/formElements/NotificationLabel";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import StartCountdown from "../../components/meetingElements/StartCountdown";
 import Modal from "../../components/Modal/Modal";
-import FullAgenda from "../../components/pages/meeting/FullAgenda";
 import ManageQuestions from "../../components/pages/meeting/ManageQuestions";
 import MeetingInfo from "../../components/pages/meeting/MeetingInfo";
 import MeetingViewPage from "../../components/pages/meeting/MeetingViewPage";
@@ -31,6 +30,7 @@ import {
   useMeetingStatus,
 } from "../../lib/supabase/status";
 import { Meeting, MeetingParticipant } from "../../utils/types";
+import EditAgenda from "./agenda";
 import EditParticipants from "./participants";
 
 interface Params extends ParsedUrlQuery {
@@ -134,6 +134,16 @@ const MeetingView: NextPage<Props> = ({
         meetingId={meeting.id}
         createdBy={meetingCreator.id}
         participants={participants}
+        onClose={() => setView("MEETING")}
+      />
+    );
+  }
+
+  if (view === "AGENDA") {
+    return (
+      <EditAgenda
+        meetingId={meeting.id}
+        agendaItems={meeting.agenda}
         onClose={() => setView("MEETING")}
       />
     );
@@ -262,14 +272,6 @@ const MeetingView: NextPage<Props> = ({
           meeting={meeting}
           onClose={() => setView("MEETING")}
           meetingCreator={meetingCreator}
-        />
-      )}
-
-      {view === "AGENDA" && (
-        <FullAgenda
-          agendaItems={meeting.agenda}
-          onClose={() => setView("MEETING")}
-          onEditAgenda={() => router.push(`/${meeting.id}/agenda`)}
         />
       )}
 

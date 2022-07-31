@@ -6,6 +6,7 @@ import { MdNotificationsActive } from "react-icons/md";
 import Button from "../../components/formElements/Button";
 import NotificationLabel from "../../components/formElements/NotificationLabel";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+import StartCountdown from "../../components/meetingElements/StartCountdown";
 import Modal from "../../components/Modal/Modal";
 import FullAgenda from "../../components/pages/meeting/FullAgenda";
 import ManageQuestions from "../../components/pages/meeting/ManageQuestions";
@@ -17,7 +18,6 @@ import {
   changeMeetingQuestionAnsweredStatus,
   createMeetingQuestion,
   markMeetingAsComplete,
-  updateAgendaStatus,
   updateMeetingNote,
   upvoteMeetingQuestion,
   useMeeting,
@@ -26,6 +26,10 @@ import {
   fetchSingleMeeting,
   getMeetingCreator,
 } from "../../lib/supabase/meetings";
+import {
+  updateAgendaStatus,
+  useMeetingStatus,
+} from "../../lib/supabase/status";
 import { Meeting, MeetingParticipant } from "../../utils/types";
 import EditParticipants from "./participants";
 
@@ -68,6 +72,13 @@ const MeetingView: NextPage<Props> = ({
   meeting: initialMeeting,
   meetingCreator,
 }) => {
+  // fix dates
+  const meeting = {
+    ...initialMeeting,
+    startDate: new Date(initialMeeting.startDate),
+    endDate: new Date(initialMeeting.endDate),
+  };
+
   const router = useRouter();
   const [view, setView] = useState<Views>("MEETING");
   const [windowSize, setWindowSize] = useState(window.innerWidth);
@@ -87,7 +98,6 @@ const MeetingView: NextPage<Props> = ({
   });
 
   const {
-    agendaStatus,
     meetingNote,
     sharedNotes,
     databaseStatus,
@@ -97,18 +107,14 @@ const MeetingView: NextPage<Props> = ({
     participants,
     meetingQuestions,
     meetingIsCompleted,
-  } = useMeeting(initialMeeting);
+  } = useMeeting(meeting);
 
-  if (!agendaStatus || !meetingNote || !sharedNotes || !initialMeeting) {
+  const { agendaStatus, isLoading, notStartedYet, startMeetingNow } =
+    useMeetingStatus(meeting);
+
+  if (!agendaStatus || !meetingNote || !sharedNotes || !meeting || isLoading) {
     return <LoadingScreen />;
   }
-
-  // fix dates
-  const meeting = {
-    ...initialMeeting,
-    startDate: new Date(initialMeeting.startDate),
-    endDate: new Date(initialMeeting.endDate),
-  };
 
   const endMeeting = async () => {
     markMeetingAsComplete(meeting.id)
@@ -135,6 +141,56 @@ const MeetingView: NextPage<Props> = ({
 
   return (
     <>
+      {notStartedYet && (
+        <Modal
+          title={
+            <div className="flex space-x-1 items-center">
+              <p>Meeting starts in</p>
+              <StartCountdown countDownEndDate={meeting.startDate} />
+            </div>
+          }
+          onClose={() => router.push("/")}
+        >
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <p className="text-sm">
+                The meeting has not started yet. Please wait until the start
+                time has been reached or the meeting owner has started the
+                meeting manually.
+              </p>
+              <NotificationLabel variant="yellow">
+                This window will be closed automatically as soon as the meeting
+                starts.
+              </NotificationLabel>
+              {user!.id === meeting.createdBy && (
+                <NotificationLabel variant="green">
+                  As the meeting owner, you can already start the meeting now.
+                  In this case, the additional minutes will be added to the
+                  total time of the meeting.
+                </NotificationLabel>
+              )}
+            </div>
+            <div className="space-y-2">
+              {meeting.createdBy === user!.id && (
+                <Button
+                  onClick={() => {
+                    startMeetingNow().then(() => {
+                      router.reload();
+                    });
+                  }}
+                  variant="highlighted"
+                >
+                  Start meeting now
+                </Button>
+              )}
+              <Button onClick={() => router.push("/")} variant="red">
+                Go back
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
       {showAlarm && (
         <Modal
           variant="ALARM"
@@ -186,8 +242,8 @@ const MeetingView: NextPage<Props> = ({
         </Modal>
       )}
 
-      {meetingIsCompleted && (
-        <Modal title="Meeting has ended" onClose={() => router.push("/")}>
+      {meetingIsCompleted && user!.id !== meeting.createdBy && (
+        <Modal title="Meeting was ended" onClose={() => router.push("/")}>
           <div className="space-y-3">
             <p className="text-sm">
               The meeting was ended for all participants.

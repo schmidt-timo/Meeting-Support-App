@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { formatWithLeadingZeros } from "../../utils/formatting";
 import { calculateRemainingTime } from "../../utils/functions";
 

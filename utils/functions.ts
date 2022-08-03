@@ -80,6 +80,7 @@ export function calculateRemainingTime(
   const timeLeft = countDownEnd.getTime() - countdownStart.getTime();
 
   return {
+    days: Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
     hours: Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
     minutes: Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)),
     seconds: Math.floor((timeLeft % (1000 * 60)) / 1000),
@@ -181,11 +182,6 @@ export function mapNotEmptyResponses(responses: MeetingFeedbackResponse[]) {
   });
 
   return results;
-}
-
-export function is10MinutesBeforeMeetingOrLater(startDate: Date) {
-  const difference = (new Date().getTime() - startDate.getTime()) / 1000 / 60;
-  return Math.round(difference) >= -10;
 }
 
 export function meetingHasStarted(startDate: Date) {

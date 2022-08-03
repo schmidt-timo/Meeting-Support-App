@@ -4,7 +4,6 @@ import { generateRandomID } from "../../utils/functions";
 import {
   DatabaseParticipant,
   Meeting,
-  MeetingAgendaStatus,
   MeetingNote,
   MeetingParticipant,
   MeetingQuestion,

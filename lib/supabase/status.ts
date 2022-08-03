@@ -87,9 +87,13 @@ export const useMeetingStatus = (meeting: Meeting) => {
 
   const startMeetingNow = async () => {
     const now = new Date();
+    const durationInMilliseconds = Math.abs(
+      meeting.startDate.getTime() - meeting.endDate.getTime()
+    );
     const newMeeting: DatabaseMeeting = {
       ...meeting,
       startDate: now,
+      endDate: new Date(now.getTime() + durationInMilliseconds),
     };
 
     const { data, error } = await updateMeetingDetails(newMeeting);

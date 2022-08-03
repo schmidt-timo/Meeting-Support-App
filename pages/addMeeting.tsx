@@ -14,8 +14,8 @@ import { fetchSingleMeeting } from "../lib/supabase/meetings";
 import {
   convertParticipantsForDatabase,
   generateRandomID,
-  is10MinutesBeforeMeetingOrLater,
   isMeetingId,
+  meetingHasStarted,
 } from "../utils/functions";
 import { Meeting, MeetingParticipant } from "../utils/types";
 
@@ -61,7 +61,7 @@ const AddMeeting: NextPage = () => {
           await updateParticipants(meetingId, convertedParticipants);
         if (updateData) {
           // if meeting is taking place right now, redirect to it
-          if (is10MinutesBeforeMeetingOrLater(new Date(meeting.startDate))) {
+          if (meetingHasStarted(new Date(meeting.startDate))) {
             router.push(`${meetingId}/start`);
           }
           // or else show message and redirect to overview page

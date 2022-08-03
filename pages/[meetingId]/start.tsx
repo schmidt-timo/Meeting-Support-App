@@ -29,6 +29,7 @@ import {
   updateAgendaStatus,
   useMeetingStatus,
 } from "../../lib/supabase/status";
+import { calculateRemainingTime } from "../../utils/functions";
 import { Meeting, MeetingParticipant } from "../../utils/types";
 import EditAgenda from "./agenda";
 import EditParticipants from "./participants";
@@ -156,8 +157,25 @@ const MeetingView: NextPage<Props> = ({
         <Modal
           title={
             <div className="flex space-x-1 items-center">
-              <p>Meeting starts in</p>
-              <StartCountdown countDownEndDate={meeting.startDate} />
+              {calculateRemainingTime(new Date(), meeting.startDate).days >
+              0 ? (
+                <p>{`Meeting is scheduled for ${meeting.startDate.toLocaleDateString(
+                  "de-DE",
+                  {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  }
+                )} at ${meeting.startDate.toLocaleTimeString("de-DE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}`}</p>
+              ) : (
+                <>
+                  <p>Meeting starts in</p>
+                  <StartCountdown countDownEndDate={meeting.startDate} />
+                </>
+              )}
             </div>
           }
           onClose={() => router.push("/")}
@@ -176,8 +194,8 @@ const MeetingView: NextPage<Props> = ({
               {user!.id === meeting.createdBy && (
                 <NotificationLabel variant="green">
                   As the meeting owner, you can already start the meeting now.
-                  In this case, the additional minutes will be added to the
-                  total time of the meeting.
+                  In this case, however, the start and end times are changed so
+                  that the planned meeting duration remains the same.
                 </NotificationLabel>
               )}
             </div>

@@ -8,6 +8,7 @@ import {
   fetchSingleMeeting,
   updateMeetingDetails,
 } from "../../lib/supabase/meetings";
+import { updateAgendaStatus } from "../../lib/supabase/status";
 import { convertStringsToDate } from "../../utils/functions";
 import { DatabaseMeeting, Meeting } from "../../utils/types";
 
@@ -46,13 +47,15 @@ const EditMeeting: NextPage<Props> = ({ meeting }) => {
     <EditMeetingPage
       meetingData={meeting}
       onSave={async (updatedMeeting) => {
+        const newStartDate = convertStringsToDate(
+          updatedMeeting!!.startDate,
+          updatedMeeting!!.startTime
+        );
+
         const newMeeting: DatabaseMeeting = {
           ...meeting,
           title: updatedMeeting!!.title,
-          startDate: convertStringsToDate(
-            updatedMeeting!!.startDate,
-            updatedMeeting!!.startTime
-          ),
+          startDate: newStartDate,
           endDate: convertStringsToDate(
             updatedMeeting!!.endDate,
             updatedMeeting!!.endTime
@@ -60,6 +63,17 @@ const EditMeeting: NextPage<Props> = ({ meeting }) => {
           location: updatedMeeting?.location,
           description: updatedMeeting?.description,
         };
+
+        // change agenda status
+        if (
+          meeting.agendaStatus?.currentItemIndex === 0 &&
+          meeting.agendaStatus.startedAt !== newStartDate
+        ) {
+          updateAgendaStatus(meeting.id, {
+            currentItemIndex: 0,
+            startedAt: newStartDate,
+          });
+        }
 
         const { data, error } = await updateMeetingDetails(newMeeting);
 

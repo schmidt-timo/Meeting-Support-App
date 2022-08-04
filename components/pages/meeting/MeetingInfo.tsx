@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { MdCheck, MdContentCopy } from "react-icons/md";
 import QRCode from "react-qr-code";
 import {
   formatMeetingDate,
@@ -6,6 +8,7 @@ import {
 import { isTheSameDay } from "../../../utils/functions";
 import { Meeting, MeetingParticipant } from "../../../utils/types";
 import Accordion from "../../Accordion/Accordion";
+import Button from "../../formElements/Button";
 import DetailsLine from "../../MeetingDetails/DetailsLine";
 import SubPageLayout from "../layouts/SubPageLayout";
 
@@ -16,6 +19,8 @@ type Props = {
 };
 
 const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
+  const [wasCopiedToClipboard, setWasCopiedToClipboard] = useState(false);
+
   return (
     <SubPageLayout title={meeting.title} onClose={onClose}>
       <div className="space-y-4">
@@ -86,6 +91,31 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
           </Accordion>
         )}
       </div>
+      <Button
+        disabled={wasCopiedToClipboard}
+        variant="highlighted"
+        onClick={() => {
+          navigator.clipboard.writeText(meeting.id);
+          setWasCopiedToClipboard(true);
+          setTimeout(() => {
+            setWasCopiedToClipboard(false);
+          }, 2000);
+        }}
+      >
+        <div className="flex items-center justify-center space-x-2">
+          {wasCopiedToClipboard ? (
+            <>
+              <MdCheck className="w-3.5 h-3.5 flex-shrink-0" />
+              <p>Copied to clipboard</p>
+            </>
+          ) : (
+            <>
+              <MdContentCopy className="w-3.5 h-3.5 flex-shrink-0" />
+              <p>Copy Meeting ID to clipboard</p>
+            </>
+          )}
+        </div>
+      </Button>
     </SubPageLayout>
   );
 };

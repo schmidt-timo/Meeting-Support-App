@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import ReportDetailsPage from "../../components/pages/reports/ReportDetailsPage";
-import { useAuth } from "../../lib/auth";
 import {
   fetchSingleMeeting,
   getMeetingCreator,
@@ -45,7 +44,6 @@ type Props = {
 
 const MeetingReport: NextPage<Props> = ({ meeting, meetingCreator }) => {
   const router = useRouter();
-  const { user } = useAuth();
 
   if (!meeting || !meetingCreator) {
     return <LoadingScreen />;
@@ -53,7 +51,6 @@ const MeetingReport: NextPage<Props> = ({ meeting, meetingCreator }) => {
 
   return (
     <ReportDetailsPage
-      userId={user!.id}
       meetingCreator={meetingCreator}
       meeting={meeting}
       onClose={() => router.push("/reports")}

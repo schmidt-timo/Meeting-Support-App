@@ -191,3 +191,11 @@ export function meetingHasStarted(startDate: Date) {
 export function isMeetingId(text: string) {
   return isMeetingIdRegex.test(text);
 }
+
+export function getDomain() {
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:3000";
+  } else {
+    return "https://meeting-support-app.vercel.app";
+  }
+}

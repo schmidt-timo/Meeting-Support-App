@@ -9,6 +9,7 @@ import {
 } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import LoginScreen from "../pages/login";
+import PublicMeetingReport from "../pages/share-report/[meetingId]";
 import { supabase } from "./supabase/config";
 
 type AuthContextType = {
@@ -64,6 +65,7 @@ export const AuthProvider = ({ children }: Props) => {
         logout,
       }}
     >
+      {router.asPath.startsWith("/share-report/") && <></>}
       {loading && <LoadingScreen />}
       {!session && !loading && <LoginScreen />}
       {session && !loading && children}

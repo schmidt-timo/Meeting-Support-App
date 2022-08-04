@@ -4,7 +4,7 @@ import { MdOutlineClose, MdKeyboardBackspace } from "react-icons/md";
 type Props = {
   title: string;
   children: React.ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
   onBack?: () => void;
 };
 
@@ -22,13 +22,15 @@ const SubPageLayout = ({ title, children, onClose, onBack }: Props) => {
           </button>
         )}
         <h1 className="font-bold text-xl truncate">{title}</h1>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-full p-1 bg-black hover:bg-black group"
-        >
-          <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
-        </button>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full p-1 bg-black hover:bg-black group"
+          >
+            <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
+          </button>
+        )}
       </div>
       <div className="w-full h-subpage flex flex-col flex-1 bg-gray-200 justify-between desktop:justify-start px-6 pb-6 overflow-y-scroll max-w-desktop">
         {children}

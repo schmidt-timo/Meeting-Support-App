@@ -86,6 +86,12 @@ const ReportDetailsPage = ({
               {meeting.location && (
                 <DetailsLine symbol="location">{meeting.location}</DetailsLine>
               )}
+              <DetailsLine symbol="meeting">
+                <div className="flex items-center space-x-1">
+                  <p className="text-xs text-gray-500">Meeting ID:</p>
+                  <p>{meeting.id}</p>
+                </div>
+              </DetailsLine>
               <DetailsLine symbol="author">
                 <p>
                   {`Created by ${

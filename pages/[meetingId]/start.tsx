@@ -253,7 +253,7 @@ const MeetingView: NextPage<Props> = ({
       {showExitModal && (
         <Modal title="Leaving Meeting" onClose={() => setShowExitModal(false)}>
           <div className="space-y-3">
-            <NotificationLabel variant="red">
+            <NotificationLabel variant="yellow">
               After the meeting owner has ended the meeting for all
               participants, it cannot be resumed.
             </NotificationLabel>

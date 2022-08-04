@@ -21,7 +21,7 @@ const StartCountdown = ({ countDownEndDate, className }: Props) => {
   }, [countDownEndDate]);
 
   return (
-    <div className={`flex space-x-1 monospace text-sm font-bold ${className}`}>
+    <div className={`flex space-x-1 monospace ${className}`}>
       <div>
         {remainingTime.hours > 0 && (
           <>

@@ -96,17 +96,17 @@ export const useMeetingStatus = (meeting: Meeting) => {
       endDate: new Date(now.getTime() + durationInMilliseconds),
     };
 
+    updateAgendaStatus(meeting.id, {
+      currentItemIndex: 0,
+      startedAt: now,
+    }).catch((error) => {
+      console.log(error);
+    });
+
     const { data, error } = await updateMeetingDetails(newMeeting);
 
     if (error) {
       throw error;
-    }
-
-    if (data) {
-      updateAgendaStatus(meeting.id, {
-        currentItemIndex: 0,
-        startedAt: now,
-      });
     }
   };
 

@@ -9,6 +9,7 @@ import {
 } from "react";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import LoginScreen from "../pages/login";
+import PublicMeetingReport from "../pages/share-report/[meetingId]";
 import { supabase } from "./supabase/config";
 
 type AuthContextType = {
@@ -54,6 +55,10 @@ export const AuthProvider = ({ children }: Props) => {
     setUser(null);
     router.push("/");
   };
+
+  if (router.asPath.startsWith("/share-report/")) {
+    return <>{children}</>;
+  }
 
   return (
     <AuthContext.Provider

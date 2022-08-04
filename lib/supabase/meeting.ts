@@ -216,7 +216,7 @@ export const updateMeetingNote = async (
   }
 };
 
-const checkParticipants = async (participants: MeetingParticipant[]) => {
+export const checkParticipants = async (participants: MeetingParticipant[]) => {
   let temp: MeetingParticipant[] = [];
   for (const p of participants) {
     const { data, error } = await getParticipantInfoIfEmailIsRegistered(

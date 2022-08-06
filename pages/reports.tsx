@@ -7,7 +7,7 @@ import { useAuth } from "../lib/auth";
 import { getServiceSupabase } from "../lib/supabase/config";
 import {
   fetchCompletedMeetings,
-  fetchFeedbackForMeeting,
+  fetchSubmittedFeedback,
 } from "../lib/supabase/meetings";
 import {
   filterMeetingsCreatedByUserId,
@@ -62,19 +62,17 @@ const Reports: NextPage<Props> = ({ meetings }) => {
 
   useEffect(() => {
     async function checkMeetings() {
-      let feedback: string[] = [];
+      const { data } = await fetchSubmittedFeedback(user!.id);
 
-      for (const meeting of otherMeetings) {
-        const { data } = await fetchFeedbackForMeeting(meeting.id);
-
-        if (data) {
-          if (data.length === 1) {
-            feedback.push(meeting.id);
+      if (data) {
+        let allFeedback: string[] = [];
+        if (data.length > 0) {
+          for (const feedback of data) {
+            allFeedback.push(feedback.meetingId);
           }
         }
+        setSubmittedFeedback(allFeedback);
       }
-
-      setSubmittedFeedback(feedback);
     }
 
     checkMeetings();

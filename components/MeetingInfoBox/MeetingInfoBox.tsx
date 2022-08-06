@@ -1,16 +1,15 @@
 import React from "react";
 import {
-  MdCalendarToday,
   MdAccessTime,
-  MdOutlineLocationOn,
-  MdPlayArrow,
-  MdMode,
-  MdPeople,
   MdAssignment,
-  MdRemoveRedEye,
-  MdFeedback,
-  MdOutlineChatBubble,
+  MdCalendarToday,
   MdInsertChart,
+  MdMode,
+  MdOutlineChatBubble,
+  MdOutlineLocationOn,
+  MdPeople,
+  MdPlayArrow,
+  MdRemoveRedEye,
 } from "react-icons/md";
 import {
   formatAgendaText,
@@ -224,7 +223,11 @@ const MeetingInfoBox = ({
         {meeting.completed &&
           meeting.createdBy !== userId &&
           showGiveFeedbackButton && (
-            <MeetingInfoBoxButton symbol="feedback" onClick={onGiveFeedback}>
+            <MeetingInfoBoxButton
+              color="red"
+              symbol="feedback"
+              onClick={onGiveFeedback}
+            >
               Give feedback
             </MeetingInfoBoxButton>
           )}

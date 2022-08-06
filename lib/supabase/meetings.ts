@@ -1,8 +1,6 @@
 import {
-  DatabaseMeeting,
-  DatabaseParticipant,
-  MeetingAgendaItem,
-  MeetingFeedback,
+  DatabaseMeeting, MeetingAgendaItem,
+  MeetingFeedback
 } from "../../utils/types";
 import { supabase } from "./config";
 
@@ -147,4 +145,11 @@ export const fetchFeedbackForMeeting = async (meetingId: string) => {
     .from("meeting_feedback")
     .select("*")
     .eq("meetingId", meetingId);
-};
+}
+
+export const fetchSubmittedFeedback = async (userId: string) => {
+  return await supabase
+    .from("meeting_feedback")
+    .select("*")
+    .eq("createdBy", userId)
+}

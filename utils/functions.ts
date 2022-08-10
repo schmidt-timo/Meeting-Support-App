@@ -199,3 +199,14 @@ export function getDomain() {
     return "https://meeting-support-app.vercel.app";
   }
 }
+
+export function compareStringsAndGetDifference(A: string, B: string) {
+  const a = A.split(/\s+/);
+  const b = B.split(/\s+/);
+
+  for (let i = 0; i < b.length; i++) {
+    if (a[i] !== b[i]) {
+      return B.split(/\s+/).slice(i).join(" ");
+    }
+  }
+}

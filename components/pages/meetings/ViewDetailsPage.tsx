@@ -107,7 +107,9 @@ const ViewDetailsPage = ({
               )}
               <DetailsLine symbol="meeting">
                 <div className="flex items-center space-x-1">
-                  <p className="text-xs text-gray-500">Meeting ID:</p>
+                  <p className="text-xs text-mblue-500 text-opacity-60">
+                    Meeting ID:
+                  </p>
                   <p>{meeting.id}</p>
                 </div>
               </DetailsLine>
@@ -120,7 +122,7 @@ const ViewDetailsPage = ({
                   }`}
                 </p>
                 {meetingCreator.name && (
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-mblue-500 text-opacity-60">
                     ({meetingCreator.email})
                   </p>
                 )}
@@ -130,7 +132,7 @@ const ViewDetailsPage = ({
         </div>
         <Accordion title="Description">
           <div className="w-full rounded-xl p-3 bg-white space-y-1">
-            <p className="text-xs whitespace-pre-wrap">
+            <p className="text-xs whitespace-pre-wrap text-mblue-600">
               {meeting.description
                 ? meeting.description
                 : "No description available"}
@@ -174,9 +176,7 @@ const ViewDetailsPage = ({
                       onUpvote={() => onUpvote(q)}
                       onMarkAsAnswered={() => onMarkAsAnswered(q)}
                       upvoted={q.upvotes.includes(userId)}
-                    >
-                      {q.question}
-                    </QuestionItem>
+                    />
                   ))}
                 </>
               )}
@@ -190,9 +190,7 @@ const ViewDetailsPage = ({
                       onUpvote={() => onUpvote(q)}
                       onMarkAsAnswered={() => onMarkAsAnswered(q)}
                       upvoted={q.upvotes.includes(userId)}
-                    >
-                      {q.question}
-                    </QuestionItem>
+                    />
                   ))}
                 </>
               )}

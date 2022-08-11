@@ -43,7 +43,12 @@ const LoginPage = ({
     <AuthPageLayout
       title="Login"
       secondaryChildren={
-        <Button onClick={onSignUpNewAccount}>Sign up for new account</Button>
+        <Button
+          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-500       hover:bg-opacity-30"
+          onClick={onSignUpNewAccount}
+        >
+          Sign up for new account
+        </Button>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +88,7 @@ const LoginPage = ({
           </Button>
           <button
             onClick={onForgotPassword}
-            className="w-full text-sm text-gray-500"
+            className="w-full text-sm text-mblue-500"
           >
             Forgot your password?
           </button>

@@ -45,9 +45,7 @@ const ManageQuestions = ({
                   onUpvote={() => onUpvote(q)}
                   onMarkAsAnswered={() => onMarkAsAnswered(q)}
                   upvoted={q.upvotes.includes(user!.id)}
-                >
-                  {q.question}
-                </QuestionItem>
+                />
               ))}
             </>
           )}
@@ -61,9 +59,7 @@ const ManageQuestions = ({
                   onUpvote={() => onUpvote(q)}
                   onMarkAsAnswered={() => onMarkAsAnswered(q)}
                   upvoted={q.upvotes.includes(user!.id)}
-                >
-                  {q.question}
-                </QuestionItem>
+                />
               ))}
             </>
           )}

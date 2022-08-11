@@ -12,7 +12,7 @@ const InfoTextBox = ({ title, children }: Props) => {
         <MdOutlineError className="w-5 h-5 text-yellow-500" />
         <p className="font-medium truncate text-yellow-500">{title}</p>
       </div>
-      <p className="text-xs text-gray-600">{children}</p>
+      <p className="text-xs text-mblue-600">{children}</p>
     </div>
   );
 };

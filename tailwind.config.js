@@ -57,6 +57,16 @@ module.exports = {
       fontSize: {
         extrasmall: "0.7rem",
       },
+      colors: {
+        mblue: {
+          100: "#e6eef7",
+          200: "#b6d9f7",
+          300: "#91c5f3",
+          400: "#146bb8",
+          500: "#0d4576",
+          600: "#0c406e",
+        }
+      }
     },
   },
   variants: {

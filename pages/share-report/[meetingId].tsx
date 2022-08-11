@@ -77,24 +77,28 @@ const PublicMeetingReport: NextPage<Props> = ({
                 </>
               ) : (
                 <>
-                  <DetailsLine symbol="date">
-                    {`from ${formatMeetingDate(meeting.startDate)}`}
-                  </DetailsLine>
-                  <DetailsLine symbol="time">
-                    {meeting.startDate.toLocaleTimeString("de-DE", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </DetailsLine>
-                  <DetailsLine symbol="date">
-                    {`to ${formatMeetingDate(meeting.endDate)}`}
-                  </DetailsLine>
-                  <DetailsLine symbol="time">
-                    {meeting.endDate.toLocaleTimeString("de-DE", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </DetailsLine>
+                  <div className="flex items-center space-x-2">
+                    <DetailsLine symbol="date">
+                      {`from ${formatMeetingDate(meeting.startDate)}`}
+                    </DetailsLine>
+                    <DetailsLine symbol="time">
+                      {meeting.startDate.toLocaleTimeString("de-DE", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </DetailsLine>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <DetailsLine symbol="date">
+                      {`to ${formatMeetingDate(meeting.endDate)}`}
+                    </DetailsLine>
+                    <DetailsLine symbol="time">
+                      {meeting.endDate.toLocaleTimeString("de-DE", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </DetailsLine>
+                  </div>
                 </>
               )}
               {meeting.location && (
@@ -102,7 +106,9 @@ const PublicMeetingReport: NextPage<Props> = ({
               )}
               <DetailsLine symbol="meeting">
                 <div className="flex items-center space-x-1">
-                  <p className="text-xs text-gray-500">Meeting ID:</p>
+                  <p className="text-xs text-mblue-500 text-opacity-60">
+                    Meeting ID:
+                  </p>
                   <p>{meeting.id}</p>
                 </div>
               </DetailsLine>
@@ -135,7 +141,7 @@ const PublicMeetingReport: NextPage<Props> = ({
             </div>
           ) : (
             <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs">No agenda available</p>
+              <p className="text-xs text-mblue-600">No agenda available</p>
             </div>
           )}
         </Accordion>
@@ -166,7 +172,7 @@ const PublicMeetingReport: NextPage<Props> = ({
             </div>
           ) : (
             <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs">No questions available</p>
+              <p className="text-xs text-mblue-600">No questions available</p>
             </div>
           )}
         </Accordion>

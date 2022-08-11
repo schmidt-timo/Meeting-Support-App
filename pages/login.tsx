@@ -126,7 +126,7 @@ const LoginScreen: NextPage = () => {
         password: newPassword,
       })
       .then(() => {
-        setView("LOGIN");
+        router.reload();
       })
       .catch((error) => {
         setNewPasswordErrorMessage(error.message);

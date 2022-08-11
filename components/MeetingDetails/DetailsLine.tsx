@@ -14,24 +14,24 @@ type DetailsLineProps = {
 
 const DetailsLine = ({ symbol, children }: DetailsLineProps) => {
   return (
-    <div className="flex items-center space-x-2 w-full">
+    <div className="flex items-center space-x-2 text-mblue-600">
       {symbol === "date" && (
-        <MdCalendarToday className="w-3.5 text-gray-500 flex-shrink-0" />
+        <MdCalendarToday className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}
       {symbol === "time" && (
-        <MdAccessTime className="w-3.5 text-gray-500 flex-shrink-0" />
+        <MdAccessTime className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}
       {symbol === "location" && (
-        <MdOutlineLocationOn className="w-3.5 text-gray-500 flex-shrink-0" />
+        <MdOutlineLocationOn className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}
       {symbol === "author" && (
-        <MdPerson className="w-3.5 text-gray-500 flex-shrink-0" />
+        <MdPerson className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}
       {symbol === "meeting" && (
-        <MdQrCode className="w-3.5 text-gray-500 flex-shrink-0" />
+        <MdQrCode className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}
       {symbol === "participants" && (
-        <MdPeople className="w-3.5 text-gray-500 flex-shrink-0" />
+        <MdPeople className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}
       <span className="text-sm">{children}</span>
     </div>

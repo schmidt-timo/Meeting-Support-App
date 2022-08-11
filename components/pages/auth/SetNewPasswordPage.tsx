@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../lib/auth";
 import { ERROR_MESSAGES } from "../../../utils/constants";
 import Button from "../../formElements/Button";
 import ErrorMessage from "../../formElements/ErrorMessage";
@@ -24,8 +23,6 @@ const SetNewPasswordPage = ({
   onSetNewPassword,
   errorMessage,
 }: Props) => {
-  const { session } = useAuth();
-
   const {
     register,
     handleSubmit,
@@ -41,7 +38,14 @@ const SetNewPasswordPage = ({
   return (
     <AuthPageLayout
       title="Set new password"
-      secondaryChildren={<Button onClick={onLogin}>Back to login</Button>}
+      secondaryChildren={
+        <Button
+          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-500       hover:bg-opacity-30"
+          onClick={onLogin}
+        >
+          Back To Login
+        </Button>
+      }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-3 p-5">

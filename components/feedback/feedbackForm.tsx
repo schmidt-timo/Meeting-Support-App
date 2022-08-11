@@ -43,9 +43,9 @@ const FeedbackForm = ({ onSubmitFeedback }: Props) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="h-full flex flex-col justify-between space-y-3"
+      className="h-full flex flex-col justify-between desktop:justify-start space-y-3"
     >
-      <div className="space-y-3 h-full">
+      <div className="space-y-3">
         <FeedbackQuestion
           currentValue={question1}
           question={`${MEETING_FEEDBACK_QUESTIONS[0]} *`}
@@ -75,7 +75,9 @@ const FeedbackForm = ({ onSubmitFeedback }: Props) => {
           register={{ ...register("question3") }}
         />
       </div>
-      <Button variant="highlighted">Submit feedback</Button>
+      <Button type="submit" variant="highlighted">
+        Submit feedback
+      </Button>
     </form>
   );
 };
@@ -96,11 +98,11 @@ const FeedbackQuestion = ({
   register,
 }: FeedbackQuestionProps) => {
   return (
-    <div className="bg-white rounded-xl p-3 font-medium text-center">
+    <div className="bg-white rounded-xl p-3 font-medium text-center text-mblue-600">
       <p>{question}</p>
       {responseType === "emojis" && (
         <div className="w-full pt-3">
-          <fieldset className="flex space-x-5 items-center justify-center">
+          <fieldset className="flex space-x-5 items-center justify-center text-mblue-600">
             <label>
               <MdOutlineSentimentSatisfied
                 className={`w-14 h-14 cursor-pointer ${
@@ -144,7 +146,7 @@ const FeedbackQuestion = ({
         </div>
       )}
       {responseType === "yesNo" && (
-        <div className="w-full flex items-center justify-center space-x-5 pt-3">
+        <div className="w-full flex items-center justify-center space-x-5 pt-3 text-mblue-600">
           <label>
             <MdThumbUpOffAlt
               className={`w-14 h-14 cursor-pointer ${

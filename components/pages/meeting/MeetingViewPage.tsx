@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import {
   Meeting,
+  MeetingAgendaItem,
   MeetingAgendaStatus,
   MeetingNote,
   MeetingParticipant,
@@ -24,6 +25,7 @@ type MeetingViewPageProps = {
   meeting: Meeting;
   onShowInfo: () => void;
   onExitMeeting: () => void;
+  agendaItems: MeetingAgendaItem[];
   agendaStatus: MeetingAgendaStatus;
   onShowFullAgenda: () => void;
   onAgendaItemChange: (newIndex: number) => Promise<void>;
@@ -47,6 +49,7 @@ const MeetingViewPage = ({
   meeting,
   onShowInfo,
   onExitMeeting,
+  agendaItems,
   agendaStatus,
   onShowFullAgenda,
   onAgendaItemChange,
@@ -89,10 +92,10 @@ const MeetingViewPage = ({
       </div>
 
       <div className="px-4 space-y-3 h-meetingview overflow-y-scroll pb-4">
-        {!!meeting.agenda.length && (
+        {!!agendaItems.length && (
           <PresentationView
             agendaStatus={agendaStatus}
-            agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
+            agendaItem={agendaItems[agendaStatus.currentItemIndex]}
             meetingTimer={{
               start: meeting.startDate,
               end: meeting.endDate,
@@ -100,10 +103,10 @@ const MeetingViewPage = ({
             onPresentationPageChange={onPresentationPageChange}
           />
         )}
-        {!!meeting.agenda.length ? (
+        {!!agendaItems.length ? (
           <AgendaController
             agendaStatus={agendaStatus!}
-            agendaItems={meeting.agenda}
+            agendaItems={agendaItems}
             onShowFullAgenda={onShowFullAgenda}
             onAgendaItemChange={onAgendaItemChange}
           />

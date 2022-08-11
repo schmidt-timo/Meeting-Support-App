@@ -23,7 +23,7 @@ const AgendaController = ({
     setRemainingItems(
       agendaItems.slice(status.currentItemIndex + 1, agendaItems.length)
     );
-  }, [status]);
+  }, [status, agendaItems]);
 
   return (
     <div className="border border-mblue-600 rounded-xl">

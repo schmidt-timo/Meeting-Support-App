@@ -4,9 +4,10 @@ import { generateRandomID } from "../../utils/functions";
 import {
   DatabaseParticipant,
   Meeting,
+  MeetingAgendaItem,
   MeetingNote,
   MeetingParticipant,
-  MeetingQuestion,
+  MeetingQuestion
 } from "../../utils/types";
 import { useAuth } from "../auth";
 import { getServiceSupabase, supabase } from "./config";
@@ -15,6 +16,7 @@ import { getParticipantInfoIfEmailIsRegistered } from "./users";
 export const useMeeting = (meeting: Meeting) => {
   const [meetingNote, setMeetingNote] = useState<MeetingNote>();
   const [sharedNotes, setSharedNotes] = useState<MeetingNote>();
+  const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>(meeting.agenda)
 
   const [databaseStatus, setDatabaseStatus] =
     useState<DatabaseSyncStatus>("NONE");
@@ -109,8 +111,8 @@ export const useMeeting = (meeting: Meeting) => {
       .from("meetings")
       .on("*", (payload) => {
         setParticipants(payload.new.participants);
+        setAgendaItems(payload.new.agenda);     
         checkParticipantsInfo(payload.new.participants);
-
         if (payload.new.completed) {
           setMeetingIsCompleted(true);
         }
@@ -153,6 +155,7 @@ export const useMeeting = (meeting: Meeting) => {
     setParticipants,
     meetingIsCompleted,
     meetingQuestions,
+    agendaItems
   };
 };
 

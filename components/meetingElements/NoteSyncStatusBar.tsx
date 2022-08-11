@@ -15,7 +15,7 @@ const NoteSyncStatusBar = ({
 }: Props) => {
   return (
     <div
-      className={`flex w-full items-center justify-between p-2 border-l border-r border-b rounded-b-xl space-x-2 border-gray-400
+      className={`flex w-full items-center justify-between p-2 border-l border-r border-b rounded-b-xl space-x-2 border-mblue-200
         ${databaseStatus === "NOT_SAVED" && "border-red-500"}
         ${databaseStatus === "SAVED" && "border-green-500"}
         ${databaseStatus === "SAVING" && "border-yellow-500"}

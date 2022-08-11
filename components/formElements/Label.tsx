@@ -16,7 +16,7 @@ type Props = {
 const Label = ({ icon = "arrow", children, required }: Props) => {
   return (
     <div
-      className={`px-0.5 flex items-center justify-between space-x-1 text-xs text-gray-500 uppercase ${
+      className={`px-0.5 flex items-center justify-between space-x-1 text-xs text-mblue-500 text-opacity-70 uppercase ${
         required && "h-4"
       }`}
     >
@@ -29,7 +29,9 @@ const Label = ({ icon = "arrow", children, required }: Props) => {
         {icon === "note" && <MdStickyNote2 />}
         <p>{children}</p>
       </span>
-      {required && <p className="text-lg pt-1.5 text-gray-500">*</p>}
+      {required && (
+        <p className="text-lg pt-1.5 text-mblue-500 text-opacity-70">*</p>
+      )}
     </div>
   );
 };

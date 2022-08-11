@@ -171,10 +171,10 @@ const MeetingView: NextPage<Props> = ({
                   minute: "2-digit",
                 })}`}</p>
               ) : (
-                <>
+                <div className="flex space-x-1 pt-1">
                   <p>Meeting starts in</p>
                   <StartCountdown countDownEndDate={meeting.startDate} />
-                </>
+                </div>
               )}
             </div>
           }
@@ -328,6 +328,8 @@ const MeetingView: NextPage<Props> = ({
           setSharedNotesDatabaseStatus={setSharedNotesDatabaseStatus}
           onManageParticipants={() => setView("PARTICIPANTS")}
           onManageQuestions={() => setView("QUESTIONS")}
+          participants={participants}
+          questions={meetingQuestions}
         />
       )}
 
@@ -365,6 +367,7 @@ const MeetingView: NextPage<Props> = ({
           setSharedNotesDatabaseStatus={setSharedNotesDatabaseStatus}
           onManageParticipants={() => setView("PARTICIPANTS")}
           meetingQuestions={meetingQuestions}
+          participants={participants}
         />
       )}
 

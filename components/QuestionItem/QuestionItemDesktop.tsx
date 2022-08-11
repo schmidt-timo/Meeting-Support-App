@@ -4,7 +4,6 @@ import { MeetingQuestion } from "../../utils/types";
 
 type Props = {
   meetingQuestion: MeetingQuestion;
-  children: React.ReactNode;
   onUpvote: () => void;
   onMarkAsAnswered: () => void;
   upvoted: boolean;
@@ -12,7 +11,6 @@ type Props = {
 
 const QuestionItemDesktop = ({
   meetingQuestion,
-  children,
   onUpvote,
   onMarkAsAnswered,
   upvoted,
@@ -20,7 +18,7 @@ const QuestionItemDesktop = ({
   return (
     <div className="flex flex-col justify-between p-3 pt-2.5 bg-white rounded-xl max-h-question">
       <div className="flex space-x-2 items-center text-sm font-medium truncate-3-lines">
-        {children}
+        {meetingQuestion.question}
       </div>
       <div>
         <div className="flex space-x-2 justify-end pt-3">

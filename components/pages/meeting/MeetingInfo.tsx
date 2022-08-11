@@ -24,12 +24,19 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
   return (
     <SubPageLayout title={meeting.title} onClose={onClose}>
       <div className="space-y-4">
-        <div>
-          <p className="text-sm font-medium">Meeting ID</p>
-          <p className="text-2xl font-bold">{meeting.id}</p>
-        </div>
-        <div>
-          <QRCode value={meeting.id} size={200} bgColor="#E5E7EB" />
+        <div className="flex flex-col items-center w-full space-y-4 text-mblue-600">
+          <div>
+            <p className="text-sm font-medium text-center">Meeting ID</p>
+            <p className="text-2xl font-bold">{meeting.id}</p>
+          </div>
+          <div>
+            <QRCode
+              value={meeting.id}
+              size={200}
+              bgColor="#e6eef7"
+              fgColor="#0c406e"
+            />
+          </div>
         </div>
         <Accordion title="General info">
           <div className="p-2 space-y-1 bg-white rounded-xl">
@@ -76,7 +83,7 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
                 }`}
               </p>
               {meetingCreator.name && (
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-mblue-500 text-opacity-60">
                   ({meetingCreator.email})
                 </p>
               )}
@@ -90,32 +97,32 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
             </div>
           </Accordion>
         )}
+        <Button
+          disabled={wasCopiedToClipboard}
+          variant="highlighted"
+          onClick={() => {
+            navigator.clipboard.writeText(meeting.id);
+            setWasCopiedToClipboard(true);
+            setTimeout(() => {
+              setWasCopiedToClipboard(false);
+            }, 2000);
+          }}
+        >
+          <div className="flex items-center justify-center space-x-2">
+            {wasCopiedToClipboard ? (
+              <>
+                <MdCheck className="w-3.5 h-3.5 flex-shrink-0" />
+                <p>Copied to clipboard</p>
+              </>
+            ) : (
+              <>
+                <MdContentCopy className="w-3.5 h-3.5 flex-shrink-0" />
+                <p>Copy Meeting ID to clipboard</p>
+              </>
+            )}
+          </div>
+        </Button>
       </div>
-      <Button
-        disabled={wasCopiedToClipboard}
-        variant="highlighted"
-        onClick={() => {
-          navigator.clipboard.writeText(meeting.id);
-          setWasCopiedToClipboard(true);
-          setTimeout(() => {
-            setWasCopiedToClipboard(false);
-          }, 2000);
-        }}
-      >
-        <div className="flex items-center justify-center space-x-2">
-          {wasCopiedToClipboard ? (
-            <>
-              <MdCheck className="w-3.5 h-3.5 flex-shrink-0" />
-              <p>Copied to clipboard</p>
-            </>
-          ) : (
-            <>
-              <MdContentCopy className="w-3.5 h-3.5 flex-shrink-0" />
-              <p>Copy Meeting ID to clipboard</p>
-            </>
-          )}
-        </div>
-      </Button>
     </SubPageLayout>
   );
 };

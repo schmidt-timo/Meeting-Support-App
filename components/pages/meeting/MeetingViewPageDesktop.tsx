@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MdOutlineClose, MdPeople } from "react-icons/md";
+import { MdInfo, MdOutlineClose, MdPeople } from "react-icons/md";
 import QRCode from "react-qr-code";
 import { useAuth } from "../../../lib/auth";
 import {
@@ -15,6 +15,7 @@ import {
   Meeting,
   MeetingAgendaStatus,
   MeetingNote,
+  MeetingParticipant,
   MeetingQuestion,
 } from "../../../utils/types";
 import Label from "../../formElements/Label";
@@ -46,6 +47,7 @@ type MeetingViewPageProps = {
   setSharedNotesDatabaseStatus: (status: DatabaseSyncStatus) => void;
   onManageParticipants: () => void;
   meetingQuestions: MeetingQuestion[];
+  participants: MeetingParticipant[];
   onAlarm: () => void;
 };
 
@@ -67,6 +69,7 @@ const MeetingViewPageDesktop = ({
   setSharedNotesDatabaseStatus,
   onManageParticipants,
   meetingQuestions,
+  participants,
   onAlarm,
 }: MeetingViewPageProps) => {
   const [showSharedNotes, setShowSharedNotes] = useState(false);
@@ -80,7 +83,7 @@ const MeetingViewPageDesktop = ({
   return (
     <div className="w-full h-meetingviewDesktop">
       <div className="w-full py-4 px-10 flex items-center justify-between bg-white flex-shrink-0">
-        <span className="w-full truncate pr-2">
+        <span className="w-full truncate pr-2 text-mblue-600">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
           <MeetingCounter
             startDate={meeting.startDate}
@@ -88,13 +91,13 @@ const MeetingViewPageDesktop = ({
             onReachingEndTime={onAlarm}
           />
         </span>
-        <span className="w-full space-x-2 flex items-center justify-end">
+        <span className="w-full space-x-3 flex items-center justify-end">
           <button
             onClick={onManageParticipants}
-            className="rounded-xl bg-gray-800 hover:bg-black text-white flex items-center justify-center flex-shrink-0 py-2 px-3 text-xs space-x-1.5"
+            className="rounded-xl bg-mblue-500 hover:bg-mblue-600 text-white flex items-center justify-center flex-shrink-0 py-1.5 px-3 text-xs space-x-1.5"
           >
             <MdPeople className="w-5 h-5" />
-            <p>Manage Participants</p>
+            <p>{participants.length} Participants</p>
           </button>
           <button
             className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0"
@@ -124,7 +127,9 @@ const MeetingViewPageDesktop = ({
               <button
                 onClick={() => setShowSharedNotes(false)}
                 className={`rounded-l-xl w-full py-1 flex items-center space-x-1.5 justify-center text-xs ${
-                  !showSharedNotes ? "bg-gray-800 text-white" : "bg-gray-300"
+                  !showSharedNotes
+                    ? "bg-mblue-600 text-white"
+                    : "bg-mblue-100 text-mblue-600"
                 }`}
               >
                 <p className="text-xs font-medium">Your Notes</p>
@@ -133,7 +138,9 @@ const MeetingViewPageDesktop = ({
               <button
                 onClick={() => setShowSharedNotes(true)}
                 className={`rounded-r-xl w-full py-1 flex items-center space-x-1.5 justify-center text-xs ${
-                  showSharedNotes ? "bg-gray-800 text-white" : "bg-gray-300"
+                  showSharedNotes
+                    ? "bg-mblue-600 text-white"
+                    : "bg-mblue-100 text-mblue-600"
                 }`}
               >
                 <p className="text-xs font-medium">Shared Notes</p>
@@ -161,13 +168,23 @@ const MeetingViewPageDesktop = ({
 
         <div className="w-1/3 space-y-5 h-full flex flex-col">
           <div className="w-full">
-            <div className="bg-gray-800 text-white rounded-xl p-4">
+            <div className="bg-mblue-600 text-white rounded-xl p-4">
               <div className="w-full truncate pr-2 flex justify-between">
-                <span>
-                  <p className="text-xs">Meeting ID</p>
-                  <h1 className="font-bold text-base tracking-wider">
-                    {meeting.id}
-                  </h1>
+                <span className="flex flex-col justify-between">
+                  <div>
+                    <p className="text-xs">Meeting ID</p>
+                    <h1 className="font-bold text-base tracking-wider">
+                      {meeting.id}
+                    </h1>
+                  </div>
+                  <button
+                    onClick={onShowInfo}
+                    className="rounded-xl bg-white hover:bg-mblue-200 text-mblue-600 flex items-center justify-center flex-shrink-0 py-1.5 text-xs space-x-1.5"
+                    style={{ width: "7rem" }}
+                  >
+                    <MdInfo className="w-4 h-4" />
+                    <p>More info</p>
+                  </button>
                 </span>
 
                 <span className="bg-white p-3 rounded-xl">
@@ -191,9 +208,11 @@ const MeetingViewPageDesktop = ({
             )}
           </div>
 
-          <div className="w-full grow flex flex-col overflow-hidden border border-gray-400 rounded-xl bg-gray-200">
-            <div className="w-full bg-gray-800 rounded-t-xl text-sm text-center text-white py-2">
-              Questions
+          <div className="w-full grow flex flex-col overflow-hidden border border-mblue-600 rounded-xl bg-mblue-100">
+            <div className="w-full bg-mblue-600 rounded-t-xl text-sm text-center text-white py-2">
+              {meetingQuestions.length > 0
+                ? `Questions (${meetingQuestions.length})`
+                : "Questions"}
             </div>
             <div className="grow overflow-auto p-3 space-y-3">
               <QuestionItemInput
@@ -204,7 +223,7 @@ const MeetingViewPageDesktop = ({
               />
               <div className="space-y-2">
                 {!!openQuestions.length && (
-                  <>
+                  <div className="pb-1.5 space-y-2">
                     <Label>{`Open Questions (${openQuestions.length})`}</Label>
                     {openQuestions.map((q) => (
                       <QuestionItemDesktop
@@ -230,11 +249,9 @@ const MeetingViewPageDesktop = ({
                           );
                         }}
                         upvoted={q.upvotes.includes(user!.id)}
-                      >
-                        {q.question}
-                      </QuestionItemDesktop>
+                      />
                     ))}
-                  </>
+                  </div>
                 )}
                 {!!answeredQuestions.length && (
                   <>
@@ -263,9 +280,7 @@ const MeetingViewPageDesktop = ({
                           );
                         }}
                         upvoted={q.upvotes.includes(user!.id)}
-                      >
-                        {q.question}
-                      </QuestionItemDesktop>
+                      />
                     ))}
                   </>
                 )}

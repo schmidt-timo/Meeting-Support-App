@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MdCheck, MdContentCopy, MdIosShare, MdShare } from "react-icons/md";
+import { MdCheck, MdContentCopy, MdIosShare } from "react-icons/md";
 import { useMeeting } from "../../../lib/supabase/meeting";
 import {
   filterAnsweredQuestions,
@@ -112,24 +112,28 @@ const ReportDetailsPage = ({
                   </>
                 ) : (
                   <>
-                    <DetailsLine symbol="date">
-                      {`from ${formatMeetingDate(meeting.startDate)}`}
-                    </DetailsLine>
-                    <DetailsLine symbol="time">
-                      {meeting.startDate.toLocaleTimeString("de-DE", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </DetailsLine>
-                    <DetailsLine symbol="date">
-                      {`to ${formatMeetingDate(meeting.endDate)}`}
-                    </DetailsLine>
-                    <DetailsLine symbol="time">
-                      {meeting.endDate.toLocaleTimeString("de-DE", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </DetailsLine>
+                    <div className="flex items-center space-x-2">
+                      <DetailsLine symbol="date">
+                        {`from ${formatMeetingDate(meeting.startDate)}`}
+                      </DetailsLine>
+                      <DetailsLine symbol="time">
+                        {meeting.startDate.toLocaleTimeString("de-DE", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </DetailsLine>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <DetailsLine symbol="date">
+                        {`to ${formatMeetingDate(meeting.endDate)}`}
+                      </DetailsLine>
+                      <DetailsLine symbol="time">
+                        {meeting.endDate.toLocaleTimeString("de-DE", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </DetailsLine>
+                    </div>
                   </>
                 )}
                 {meeting.location && (
@@ -139,7 +143,9 @@ const ReportDetailsPage = ({
                 )}
                 <DetailsLine symbol="meeting">
                   <div className="flex items-center space-x-1">
-                    <p className="text-xs text-gray-500">Meeting ID:</p>
+                    <p className="text-xs text-mblue-500 text-opacity-60">
+                      Meeting ID:
+                    </p>
                     <p>{meeting.id}</p>
                   </div>
                 </DetailsLine>
@@ -152,7 +158,7 @@ const ReportDetailsPage = ({
                     }`}
                   </p>
                   {meetingCreator.name && (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-mblue-500 text-opacity-60">
                       ({meetingCreator.email})
                     </p>
                   )}
@@ -162,7 +168,7 @@ const ReportDetailsPage = ({
           </div>
           <Accordion title="Description">
             <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs whitespace-pre-wrap">
+              <p className="text-xs whitespace-pre-wrap text-mblue-600">
                 {!!meeting.description?.length
                   ? meeting.description
                   : "No description available"}
@@ -192,14 +198,16 @@ const ReportDetailsPage = ({
           {meetingNote?.content && (
             <Accordion title="Your notes">
               <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
-                <p className="whitespace-pre-wrap">{meetingNote?.content}</p>
+                <p className="whitespace-pre-wrap text-mblue-600">
+                  {meetingNote?.content}
+                </p>
               </div>
             </Accordion>
           )}
           {sharedNotes?.content && (
             <Accordion title="Shared notes">
               <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
-                <p className="whitespace-pre-wrap">
+                <p className="whitespace-pre-wrap text-mblue-600">
                   {sharedNotes?.content as string}
                 </p>
               </div>

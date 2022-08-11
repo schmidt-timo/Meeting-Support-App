@@ -20,7 +20,7 @@ const NavItem = ({ id, active, children, onSelect }: NavItemProps) => {
   return (
     <button
       className={`w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs ${
-        active ? "font-medium text-black" : "text-gray-500"
+        active ? "font-medium text-white" : "text-mblue-100 text-opacity-70"
       }`}
       onClick={() => onSelect(id)}
     >
@@ -38,16 +38,16 @@ const MobileNavigation = ({ activeItemId, onClick }: Props) => {
   const activeItem = activeItemId;
 
   return (
-    <div className="w-full bg-gray-200 flex justify-between drop-shadow sm:justify-center z-10">
+    <div className="w-full bg-mblue-500 flex justify-between drop-shadow sm:justify-center z-10">
       <NavItem
         active={activeItem === NAVIGATION_IDS.meetings}
         id={NAVIGATION_IDS.meetings}
         onSelect={(id) => onClick(id)}
       >
         {activeItem === NAVIGATION_IDS.meetings ? (
-          <MdAccessTimeFilled className="w-5 h-5 text-black" />
+          <MdAccessTimeFilled className="w-5 h-5 text-white" />
         ) : (
-          <MdAccessTime className="w-5 h-5 text-gray-500" />
+          <MdAccessTime className="w-5 h-5 text-mblue-100 text-opacity-70" />
         )}
         <p>Meetings</p>
       </NavItem>
@@ -57,9 +57,9 @@ const MobileNavigation = ({ activeItemId, onClick }: Props) => {
         onSelect={(id) => onClick(id)}
       >
         {activeItem === NAVIGATION_IDS.reports ? (
-          <MdInsertChart className="w-5 h-5 text-black" />
+          <MdInsertChart className="w-5 h-5 text-white" />
         ) : (
-          <MdInsertChartOutlined className="w-5 h-5 text-gray-500" />
+          <MdInsertChartOutlined className="w-5 h-5 text-mblue-100 text-opacity-70" />
         )}
         <p className="mobileSM:hidden">Reports</p>
         <p className="hidden mobileSM:inline-flex">Meeting Reports</p>
@@ -70,9 +70,9 @@ const MobileNavigation = ({ activeItemId, onClick }: Props) => {
         onSelect={(id) => onClick(id)}
       >
         {activeItem === NAVIGATION_IDS.profile ? (
-          <MdPerson className="w-5 h-5 text-black" />
+          <MdPerson className="w-5 h-5 text-white" />
         ) : (
-          <MdPersonOutline className="w-5 h-5 text-gray-500" />
+          <MdPersonOutline className="w-5 h-5 text-mblue-100 text-opacity-70" />
         )}
         <p>Profile</p>
       </NavItem>

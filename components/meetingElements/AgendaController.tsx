@@ -26,9 +26,9 @@ const AgendaController = ({
   }, [status]);
 
   return (
-    <div className="border border-gray-800 rounded-xl">
+    <div className="border border-mblue-600 rounded-xl">
       <div
-        className={`text-white bg-gray-800 flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
+        className={`text-white bg-mblue-600 flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
           !!remainingItems.length ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
@@ -58,28 +58,28 @@ const AgendaController = ({
           <button
             disabled={!agendaItems[status.currentItemIndex - 1]}
             onClick={() => setCurrentAgendaItem(status.currentItemIndex - 1)}
-            className="py-1 px-4 bg-white text-black text-xs rounded-xl disabled:border-gray-800 group"
+            className="py-1 px-4 bg-white text-mblue-600 text-xs rounded-xl disabled:bg-transparent group"
           >
-            <MdKeyboardArrowLeft className="w-5 h-5 group-disabled:border-gray-800" />
+            <MdKeyboardArrowLeft className="w-5 h-5 group-disabled:text-transparent" />
           </button>
 
           <button
             onClick={onShowFullAgenda}
-            className="w-full py-1 px-4 bg-white text-black text-xs rounded-xl"
+            className="w-full py-1 px-4 bg-white text-mblue-600 text-xs rounded-xl"
           >
             Show full agenda
           </button>
           <button
             disabled={!agendaItems[status.currentItemIndex + 1]}
             onClick={() => setCurrentAgendaItem(status.currentItemIndex + 1)}
-            className="py-1 px-4 bg-white text-black text-xs rounded-xl disabled:bg-transparent group"
+            className="py-1 px-4 bg-white text-mblue-600 text-xs rounded-xl disabled:bg-transparent group"
           >
             <MdKeyboardArrowRight className="w-5 h-5 group-disabled:text-transparent" />
           </button>
         </span>
       </div>
       {!!remainingItems.length && (
-        <div className="p-3 text-gray-500 text-sm">
+        <div className="p-3 text-mblue-400 text-sm">
           {remainingItems.slice(0, 3).map((item, index) => (
             <span className="flex justify-between" key={item.id}>
               <p className="truncate pr-2">{`${

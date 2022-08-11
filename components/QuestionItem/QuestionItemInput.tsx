@@ -34,20 +34,22 @@ const QuestionItemInput = ({ onAdd, isDesktop }: Props) => {
       <LabelInputWrapper>
         <Label>Add new question</Label>
         <Input
-          placeholder="Your question here?"
+          placeholder="Write your question here"
           {...register("question", {
             required: ERROR_MESSAGES.IS_REQUIRED,
           })}
         />
         <ErrorMessage fieldName="question" errors={errors} />
 
-        <Button
-          type="submit"
-          variant="highlighted"
-          className={isDesktop ? "bg-gray-500 hover:bg-gray-600" : ""}
-        >
-          Add question
-        </Button>
+        {isDesktop ? (
+          <Button type="submit" variant="normal">
+            Add question
+          </Button>
+        ) : (
+          <Button type="submit" variant="highlighted">
+            Add question
+          </Button>
+        )}
       </LabelInputWrapper>
     </form>
   );

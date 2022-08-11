@@ -54,9 +54,7 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
         {errorMessage && !!errorMessage.length && (
           <NotificationLabel>{errorMessage}</NotificationLabel>
         )}
-        <Button type="submit" className="bg-gray-400 hover:bg-gray-500">
-          Add participant
-        </Button>
+        <Button type="submit">Add participant</Button>
       </LabelInputWrapper>
     </form>
   );

@@ -124,7 +124,7 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
           </FeedbackViewItem>
         </div>
       ) : (
-        <p>No feedback available yet</p>
+        <p className="text-sm text-mblue-600">No feedback available yet</p>
       )}
     </SubPageLayout>
   );

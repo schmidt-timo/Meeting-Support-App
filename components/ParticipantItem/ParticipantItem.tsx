@@ -3,8 +3,8 @@ import { getNameInitials } from "../../utils/functions";
 import { MeetingParticipant } from "../../utils/types";
 
 type Props = {
-  userId: string;
   participant: MeetingParticipant;
+  userId?: string;
   onDelete?: (participantId: string) => void;
 };
 
@@ -15,7 +15,7 @@ const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
         <span
           className="rounded-full w-9 h-9 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold"
           style={{
-            backgroundColor: participant.color ?? "gray",
+            backgroundColor: participant.color ?? "#0c406e",
           }}
         >
           {!!participant.name?.length
@@ -23,10 +23,20 @@ const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
             : getNameInitials(participant.email)}
         </span>
         <div className="flex flex-col truncate pr-3 -space-y-0.5">
-          {!!participant.name?.length && (
-            <h1 className="font-bold truncate text-sm">{participant.name}</h1>
+          {!!participant.name?.length ? (
+            <>
+              <h1 className="font-bold truncate text-sm text-mblue-600">
+                {participant.name}
+              </h1>
+              <p className="text-sm truncate text-mblue-500 text-opacity-60">
+                {participant.email}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm truncate text-mblue-600">
+              {participant.email}
+            </p>
           )}
-          <p className="text-sm truncate">{participant.email}</p>
         </div>
       </div>
       {onDelete && participant.id !== userId && (

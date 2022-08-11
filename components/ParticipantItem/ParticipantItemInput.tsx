@@ -32,7 +32,7 @@ const ParticipantItemInput = ({ errorMessage, onAdd }: Props) => {
   const onSubmit = (data: ParticipantInputs) => {
     const participant: MeetingParticipant = {
       id: generateRandomID(),
-      email: data.email,
+      email: data.email.toLowerCase(),
     };
     onAdd(participant);
     reset();

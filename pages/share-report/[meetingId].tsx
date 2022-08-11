@@ -125,7 +125,7 @@ const PublicMeetingReport: NextPage<Props> = ({
         </div>
         <Accordion title="Description">
           <div className="w-full rounded-xl p-3 bg-white space-y-1">
-            <p className="text-xs whitespace-pre-wrap">
+            <p className="text-xs whitespace-pre-wrap text-mblue-500">
               {!!meeting.description?.length
                 ? meeting.description
                 : "No description available"}
@@ -141,7 +141,7 @@ const PublicMeetingReport: NextPage<Props> = ({
             </div>
           ) : (
             <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs text-mblue-600">No agenda available</p>
+              <p className="text-xs text-mblue-500">No agenda available</p>
             </div>
           )}
         </Accordion>
@@ -172,7 +172,7 @@ const PublicMeetingReport: NextPage<Props> = ({
             </div>
           ) : (
             <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs text-mblue-600">No questions available</p>
+              <p className="text-xs text-mblue-500">No questions available</p>
             </div>
           )}
         </Accordion>

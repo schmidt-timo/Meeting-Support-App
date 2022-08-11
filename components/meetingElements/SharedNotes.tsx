@@ -32,9 +32,9 @@ const SharedNotes = ({
   return (
     <div className="flex flex-col relative">
       {showModal && (
-        <div className="absolute w-full h-full bg-black rounded-xl bg-opacity-80 flex justify-center items-center p-5">
+        <div className="absolute w-full h-full text-mblue-500 rounded-xl bg-opacity-80 flex justify-center items-center p-5">
           <div className="bg-white p-3 rounded-xl flex flex-col items-center justify-center space-y-3 max-w-2xl">
-            <p className="text-xs text-mblue-600">
+            <p className="text-xs text-mblue-500">
               The shared notes have been modified by another person in the
               meantime. Select whether you want to keep or discard your unsaved
               changes.
@@ -68,7 +68,7 @@ ${unsubmittedText}`
       )}
       <textarea
         id="sharedNotes"
-        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none border-mblue-200 text-mblue-600 placeholder-mblue-500 placeholder-opacity-40
+        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none border-mblue-200 text-mblue-500 placeholder-mblue-500 placeholder-opacity-40
         ${databaseStatus === "NOT_SAVED" && "border-red-500"}
         ${databaseStatus === "SAVED" && "border-green-500"}
         ${databaseStatus === "SAVING" && "border-yellow-500"}

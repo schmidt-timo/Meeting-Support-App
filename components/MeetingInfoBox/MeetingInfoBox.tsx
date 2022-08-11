@@ -48,7 +48,7 @@ const MeetingInfoBoxButton = ({
   return (
     <button
       disabled={disabled}
-      className={`rounded-xl px-2.5 py-1 min-w-xs max-w-xl text-mblue-600
+      className={`rounded-xl px-2.5 py-1 min-w-xs max-w-xl text-mblue-500
       ${!color && "bg-white hover:bg-mblue-200"}
       ${
         color === "green" &&
@@ -84,15 +84,15 @@ type InfoLineProps = {
 
 const InfoLine = ({ symbol, children }: InfoLineProps) => {
   return (
-    <span className="flex items-center space-x-1 text-mblue-600">
+    <span className="flex items-center space-x-1 text-mblue-500">
       {symbol === "date" && (
-        <MdCalendarToday className="h-2.5 w-3 text-mblue-600 text-opacity-70" />
+        <MdCalendarToday className="h-2.5 w-3 text-mblue-500 text-opacity-70" />
       )}
       {symbol === "time" && (
-        <MdAccessTime className="h-3 w-3 text-mblue-600 text-opacity-70" />
+        <MdAccessTime className="h-3 w-3 text-mblue-500 text-opacity-70" />
       )}
       {symbol === "location" && (
-        <MdOutlineLocationOn className="h-3 w-3 text-mblue-600 text-opacity-70" />
+        <MdOutlineLocationOn className="h-3 w-3 text-mblue-500 text-opacity-70" />
       )}
       <p className="text-xs">{children}</p>
     </span>
@@ -142,11 +142,11 @@ const MeetingInfoBox = ({
           onClick={onStartMeeting}
           className="absolute right-3 top-3 rounded-full h-10 w-10 flex items-center justify-center bg-white hover:bg-mblue-200"
         >
-          <MdPlayArrow className="w-7 h-7 text-mblue-600" />
+          <MdPlayArrow className="w-7 h-7 text-mblue-500" />
         </button>
       )}
       <p
-        className="font-medium truncate text-mblue-600"
+        className="font-medium truncate text-mblue-500"
         style={{ maxWidth: "80%" }}
       >
         {meeting.title}

@@ -44,7 +44,7 @@ const Header = ({ children, buttons, showBackArrow: backArrow }: Props) => {
         </button>
       )}
       <span className="w-full flex justify-between items-center py-1">
-        <h1 className="p-3 font-bold text-2xl text-mblue-600">{children}</h1>
+        <h1 className="p-3 font-bold text-2xl text-mblue-500">{children}</h1>
         <span className="flex space-x-2">
           {buttons?.map((button) => (
             <HeaderButton key={button.id} onClick={() => button.onClick()}>
@@ -94,7 +94,7 @@ export const DesktopHeader = ({
         </button>
       )}
       <span className="w-full flex justify-between items-center py-1">
-        <h1 className="p-3 font-bold text-2xl text-mblue-600">{children}</h1>
+        <h1 className="p-3 font-bold text-2xl text-mblue-500">{children}</h1>
         <span className="flex space-x-2">
           {buttons?.map((button) => (
             <button

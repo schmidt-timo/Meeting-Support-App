@@ -44,7 +44,7 @@ const LoginPage = ({
       title="Login"
       secondaryChildren={
         <Button
-          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-500       hover:bg-opacity-30"
+          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-600       hover:bg-opacity-30"
           onClick={onSignUpNewAccount}
         >
           Sign up for new account

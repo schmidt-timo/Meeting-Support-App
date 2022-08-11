@@ -14,7 +14,7 @@ type DetailsLineProps = {
 
 const DetailsLine = ({ symbol, children }: DetailsLineProps) => {
   return (
-    <div className="flex items-center space-x-2 text-mblue-600">
+    <div className="flex items-center space-x-2 text-mblue-500">
       {symbol === "date" && (
         <MdCalendarToday className="w-3.5 text-mblue-500 text-opacity-60 flex-shrink-0" />
       )}

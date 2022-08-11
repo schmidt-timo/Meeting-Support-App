@@ -78,15 +78,15 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
         <div className="space-y-5">
           <FeedbackViewItem question={MEETING_FEEDBACK_QUESTIONS[0]}>
             <div className="flex items-center justify-between space-x-2">
-              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium">
+              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium text-green-500">
                 <MdOutlineSentimentSatisfied className="w-6 h-6" />
                 <p>{emojis.good}</p>
               </span>
-              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium">
+              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium text-yellow-500">
                 <MdOutlineSentimentNeutral className="w-6 h-6" />
                 <p>{emojis.neutral}</p>
               </span>
-              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium">
+              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium text-red-500">
                 <MdOutlineSentimentDissatisfied className="w-6 h-6" />
                 <p>{emojis.bad}</p>
               </span>
@@ -94,11 +94,11 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
           </FeedbackViewItem>
           <FeedbackViewItem question={MEETING_FEEDBACK_QUESTIONS[1]}>
             <div className="flex items-center justify-between space-x-2">
-              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium">
+              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium text-mblue-500">
                 <MdThumbUpOffAlt className="w-6 h-6" />
                 <p>{yesNo.yes}</p>
               </span>
-              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium">
+              <span className="w-full py-4 px-3 bg-white rounded-xl text-sm flex items-center justify-center space-x-2 text-base font-medium text-mblue-500">
                 <MdThumbDownOffAlt className="w-6 h-6" />
                 <p>{yesNo.no}</p>
               </span>
@@ -106,7 +106,7 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
           </FeedbackViewItem>
           <FeedbackViewItem question={MEETING_FEEDBACK_QUESTIONS[2]}>
             {!!comments.length ? (
-              <span className="space-y-2">
+              <span className="space-y-2 text-mblue-500">
                 {comments.map((response) => (
                   <div
                     key={response.id}
@@ -117,14 +117,14 @@ const FeedbackPage: NextPage<Props> = ({ meeting, feedback }) => {
                 ))}
               </span>
             ) : (
-              <div className="p-3 bg-white rounded-xl text-sm w-full">
+              <div className="p-3 bg-white rounded-xl text-sm w-full text-mblue-500">
                 No comments available
               </div>
             )}
           </FeedbackViewItem>
         </div>
       ) : (
-        <p className="text-sm text-mblue-600">No feedback available yet</p>
+        <p className="text-sm text-mblue-500">No feedback available yet</p>
       )}
     </SubPageLayout>
   );

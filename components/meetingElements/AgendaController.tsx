@@ -26,9 +26,9 @@ const AgendaController = ({
   }, [status, agendaItems]);
 
   return (
-    <div className="border border-mblue-600 rounded-xl">
+    <div className="border border-mblue-500 rounded-xl">
       <div
-        className={`text-white bg-mblue-600 flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
+        className={`text-white bg-mblue-500 flex flex-col justify-between text-center px-3 pt-2 pb-3 space-y-2 ${
           !!remainingItems.length ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
@@ -58,21 +58,21 @@ const AgendaController = ({
           <button
             disabled={!agendaItems[status.currentItemIndex - 1]}
             onClick={() => setCurrentAgendaItem(status.currentItemIndex - 1)}
-            className="py-1 px-4 bg-white text-mblue-600 text-xs rounded-xl disabled:bg-transparent group"
+            className="py-1 px-4 bg-white text-mblue-500 text-xs rounded-xl disabled:bg-transparent group"
           >
             <MdKeyboardArrowLeft className="w-5 h-5 group-disabled:text-transparent" />
           </button>
 
           <button
             onClick={onShowFullAgenda}
-            className="w-full py-1 px-4 bg-white text-mblue-600 text-xs rounded-xl"
+            className="w-full py-1 px-4 bg-white text-mblue-500 text-xs rounded-xl"
           >
             Show full agenda
           </button>
           <button
             disabled={!agendaItems[status.currentItemIndex + 1]}
             onClick={() => setCurrentAgendaItem(status.currentItemIndex + 1)}
-            className="py-1 px-4 bg-white text-mblue-600 text-xs rounded-xl disabled:bg-transparent group"
+            className="py-1 px-4 bg-white text-mblue-500 text-xs rounded-xl disabled:bg-transparent group"
           >
             <MdKeyboardArrowRight className="w-5 h-5 group-disabled:text-transparent" />
           </button>

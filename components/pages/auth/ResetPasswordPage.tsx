@@ -40,7 +40,7 @@ const ResetPasswordPage = ({
       title="Reset your password"
       secondaryChildren={
         <Button
-          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-500       hover:bg-opacity-30"
+          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-600       hover:bg-opacity-30"
           onClick={onLogin}
         >
           Back To Login

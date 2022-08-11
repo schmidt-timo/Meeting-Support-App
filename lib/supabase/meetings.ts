@@ -24,7 +24,7 @@ export const fetchCompletedMeetings = async () => {
     .from("meetings")
     .select("*")
     .eq("completed", true)
-    .order("startDate", { ascending: true });
+    .order("startDate", { ascending: false });
 };
 
 export const fetchSingleMeeting = async (meetingId: string) => {

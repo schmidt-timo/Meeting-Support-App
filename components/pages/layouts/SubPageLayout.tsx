@@ -16,17 +16,17 @@ const SubPageLayout = ({ title, children, onClose, onBack }: Props) => {
           <button
             type="button"
             onClick={onBack}
-            className="rounded-full p-1 bg-mblue-600 hover:bg-mblue-600 group"
+            className="rounded-full p-1 bg-mblue-500 hover:bg-mblue-600 group"
           >
             <MdKeyboardBackspace className="text-white w-6 h-6 group-hover:text-white" />
           </button>
         )}
-        <h1 className="font-bold text-xl truncate text-mblue-600">{title}</h1>
+        <h1 className="font-bold text-xl truncate text-mblue-500">{title}</h1>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1 bg-mblue-600 hover:bg-mblue-600 group"
+            className="rounded-full p-1 bg-mblue-500 hover:bg-mblue-600 group"
           >
             <MdOutlineClose className="text-white w-6 h-6 group-hover:text-white" />
           </button>

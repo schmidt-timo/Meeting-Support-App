@@ -15,7 +15,7 @@ const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
         <span
           className="rounded-full w-9 h-9 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold"
           style={{
-            backgroundColor: participant.color ?? "#0c406e",
+            backgroundColor: participant.color ?? "gray",
           }}
         >
           {!!participant.name?.length
@@ -25,7 +25,7 @@ const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
         <div className="flex flex-col truncate pr-3 -space-y-0.5">
           {!!participant.name?.length ? (
             <>
-              <h1 className="font-bold truncate text-sm text-mblue-600">
+              <h1 className="font-bold truncate text-sm text-mblue-500">
                 {participant.name}
               </h1>
               <p className="text-sm truncate text-mblue-500 text-opacity-60">
@@ -33,7 +33,7 @@ const ParticipantItem = ({ userId, participant, onDelete }: Props) => {
               </p>
             </>
           ) : (
-            <p className="text-sm truncate text-mblue-600">
+            <p className="text-sm truncate text-mblue-500">
               {participant.email}
             </p>
           )}

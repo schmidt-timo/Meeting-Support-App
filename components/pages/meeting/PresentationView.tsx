@@ -80,7 +80,7 @@ const PresentationView = ({
     <div>
       <div
         ref={ref}
-        className={`w-full h-full border border-mblue-600 overflow-hidden aspect-video relative z-10 desktop:aspect-auto desktop:h-presentationDesktop ${
+        className={`w-full h-full border border-mblue-500 overflow-hidden aspect-video relative z-10 desktop:aspect-auto desktop:h-presentationDesktop ${
           agendaItem.fileUrl ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
@@ -150,7 +150,7 @@ const PresentationView = ({
             </div>
           )}
           {fullscreenHandler.active && (
-            <div className="flex items-center absolute right-2 top-2 justify-center bg-mblue-600 p-1 px-3 rounded-xl space-x-2">
+            <div className="flex items-center absolute right-2 top-2 justify-center bg-mblue-500 p-1 px-3 rounded-xl space-x-2">
               {showAlarm && (
                 <span className="flex space-x-2 items-center">
                   <MdNotificationsActive className="w-4 h-4 text-red-500 flex-shrink-0" />
@@ -170,7 +170,7 @@ const PresentationView = ({
           {fullscreenHandler.active &&
             agendaStatus.startedAt &&
             agendaItem.duration && (
-              <div className="flex items-center absolute left-2 top-2 justify-center bg-mblue-600 p-1 px-3 rounded-xl space-x-2">
+              <div className="flex items-center absolute left-2 top-2 justify-center bg-mblue-500 p-1 px-3 rounded-xl space-x-2">
                 <span className="truncate max-w-xl">
                   <h1 className="font-medium text-sm text-white truncate">
                     {`${agendaStatus.currentItemIndex + 1}. ${
@@ -192,7 +192,7 @@ const PresentationView = ({
               </div>
             )}
           {fullscreenHandler.active && agendaItem.fileUrl && (
-            <div className="flex items-center justify-center space-x-2 absolute left-2 bottom-2 flex-shrink-0 bg-mblue-600 rounded-xl px-1">
+            <div className="flex items-center justify-center space-x-2 absolute left-2 bottom-2 flex-shrink-0 bg-mblue-500 rounded-xl px-1">
               <button
                 onClick={() => onPresentationPageChange(pageNumber - 1)}
                 className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-transparent"
@@ -223,7 +223,7 @@ const PresentationView = ({
                 ? fullscreenHandler.enter
                 : fullscreenHandler.exit
             }
-            className={`flex items-center justify-center rounded-full bg-mblue-600 text-white flex-shrink-0 absolute bottom-2 right-2 disabled:hidden
+            className={`flex items-center justify-center rounded-full bg-mblue-500 text-white flex-shrink-0 absolute bottom-2 right-2 disabled:hidden
             ${!isDesktop && !fullscreenHandler.active && "w-8 h-8"}
             ${isDesktop && fullscreenHandler.active && "w-10 h-10"}
             ${isDesktop && !fullscreenHandler.active && "w-10 h-10"}
@@ -242,7 +242,7 @@ const PresentationView = ({
         </FullScreen>
       </div>
       {agendaItem.fileUrl && (
-        <div className="flex py-0.5 w-full bg-mblue-600 rounded-b-xl justify-between">
+        <div className="flex py-0.5 w-full bg-mblue-500 rounded-b-xl justify-between">
           <button
             className="text-xs mobileSM:text-sm text-white px-2.5"
             onClick={() => setShowPDF(!showPDF)}

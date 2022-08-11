@@ -35,13 +35,13 @@ const AgendaItemView = ({ agendaItem }: Props) => {
       >
         <div className="flex justify-between space-x-3 pb-1">
           <h1
-            className="font-bold truncate-3-lines"
+            className="font-bold truncate-3-lines text-mblue-500"
             style={{ lineHeight: "1.3rem" }}
           >
             {agendaItem.title}
           </h1>
           {agendaItem.duration && (
-            <span className="flex flex-shrink-0 items-center justify-center text-xs font-medium text-white bg-gray-700 rounded-xl h-5 px-2.5">
+            <span className="flex flex-shrink-0 items-center justify-center text-xs font-medium text-white bg-mblue-500 rounded-xl h-5 px-2.5">
               {agendaItem.duration} min
             </span>
           )}
@@ -50,7 +50,7 @@ const AgendaItemView = ({ agendaItem }: Props) => {
           <div className="relative">
             <p
               ref={descriptionRef}
-              className={`text-xs whitespace-pre-wrap
+              className={`text-xs whitespace-pre-wrap text-mblue-500
               ${isCollapsible && isCollapsed && "max-h-28 overflow-hidden"}
               ${agendaItem.fileUrl && "pb-2"}
               `}
@@ -58,7 +58,7 @@ const AgendaItemView = ({ agendaItem }: Props) => {
               {agendaItem.description}
             </p>
             {isCollapsible && isCollapsed && (
-              <div className="w-full h-32 absolute bg-gradient-to-t from-white bottom-0 right-0 z-20 flex items-end justify-center text-xs font-medium text-gray-800 cursor-pointer">
+              <div className="w-full h-32 absolute bg-gradient-to-t from-white bottom-0 right-0 z-20 flex items-end justify-center text-xs font-medium text-mblue-500 cursor-pointer">
                 {isMobile
                   ? "Tap to reveal full description"
                   : "Click to reveal full description"}
@@ -67,16 +67,16 @@ const AgendaItemView = ({ agendaItem }: Props) => {
           </div>
         )}
         {agendaItem.fileUrl && (
-          <div className="w-full flex flex-col flex-shrink-0 text-sm pl-2 pr-3 rounded-xl bg-gray-200 p-2 space-x-1 space-y-2 truncate">
+          <div className="w-full flex flex-col flex-shrink-0 text-sm pl-2 pr-3 rounded-xl bg-mblue-100 p-2 space-x-1 space-y-2 truncate">
             <span className="flex space-x-1 items-center px-1">
-              <MdInsertDriveFile className="flex-shrink-0 text-gray-900" />
-              <p className="text-sm truncate">
+              <MdInsertDriveFile className="flex-shrink-0 text-mblue-500" />
+              <p className="text-sm truncate text-mblue-500">
                 {getFileNameFromUrl(agendaItem.fileUrl)}
               </p>
             </span>
-            <div className="flex space-x-2 text-black text-sm font-medium">
+            <div className="flex space-x-2 text-mblue-500 text-sm font-medium">
               <a href={agendaItem.fileUrl} target="_blank" rel="noreferrer">
-                <button className="px-2.5 py-0.5 rounded-xl bg-white flex items-center justify-center space-x-1.5">
+                <button className="px-2.5 py-0.5 rounded-xl bg-white flex items-center justify-center space-x-1.5 text-mblue-500">
                   <MdRemoveRedEye className="h-4 w-4" />
                   <p>View PDF</p>
                 </button>

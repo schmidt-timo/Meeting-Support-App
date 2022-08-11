@@ -20,9 +20,9 @@ const Button = ({
       type={type}
       disabled={disabled}
       className={`w-full rounded-xl text-sm font-medium px-3 h-input outline-0 flex-shrink-0
-      ${variant === "light" && "bg-mblue-100 hover:bg-mblue-200 text-mblue-600"}
+      ${variant === "light" && "bg-mblue-100 hover:bg-mblue-200 text-mblue-500"}
       ${
-        variant === "normal" && "bg-mblue-200 hover:bg-mblue-300 text-mblue-600"
+        variant === "normal" && "bg-mblue-200 hover:bg-mblue-300 text-mblue-500"
       }
       ${
         variant === "highlighted" &&

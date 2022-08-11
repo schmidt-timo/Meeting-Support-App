@@ -8,11 +8,11 @@ type Props = {
 const LocalFilePreview = ({ file, onRemove }: Props) => {
   return (
     <div className="w-full flex flex-col flex-shrink-0 text-sm pl-2 pr-3 rounded-xl bg-mblue-100 p-2 space-x-1 space-y-2 truncate">
-      <span className="flex space-x-1 items-center px-1 text-mblue-600">
+      <span className="flex space-x-1 items-center px-1 text-mblue-500">
         <MdInsertDriveFile className="flex-shrink-0" />
         <p className="text-sm truncate">{file.name}</p>
       </span>
-      <div className="flex space-x-2 text-mblue-600 text-sm font-medium">
+      <div className="flex space-x-2 text-mblue-500 text-sm font-medium">
         <a href={URL.createObjectURL(file)} target="_blank" rel="noreferrer">
           <button
             type="button"

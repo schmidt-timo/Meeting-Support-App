@@ -18,7 +18,7 @@ const Modal = ({ title, children, onClose, variant = "STANDARD" }: Props) => {
       <div className="p-10">
         <div className="w-full flex flex-col bg-white p-3 rounded-xl desktop:max-w-desktop">
           <div
-            className={`flex justify-between pb-3 space-x-2 text-mblue-600 
+            className={`flex justify-between pb-3 space-x-2 text-mblue-500 
             ${typeof title !== "string" ? "items-start" : "items-center"}`}
           >
             <h1 className="font-bold w-full text-sm mobileSM:text-base">

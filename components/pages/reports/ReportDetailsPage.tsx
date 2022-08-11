@@ -168,7 +168,7 @@ const ReportDetailsPage = ({
           </div>
           <Accordion title="Description">
             <div className="w-full rounded-xl p-3 bg-white space-y-1">
-              <p className="text-xs whitespace-pre-wrap text-mblue-600">
+              <p className="text-xs whitespace-pre-wrap text-mblue-500">
                 {!!meeting.description?.length
                   ? meeting.description
                   : "No description available"}
@@ -198,7 +198,7 @@ const ReportDetailsPage = ({
           {meetingNote?.content && (
             <Accordion title="Your notes">
               <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
-                <p className="whitespace-pre-wrap text-mblue-600">
+                <p className="whitespace-pre-wrap text-mblue-500">
                   {meetingNote?.content}
                 </p>
               </div>
@@ -207,7 +207,7 @@ const ReportDetailsPage = ({
           {sharedNotes?.content && (
             <Accordion title="Shared notes">
               <div className="space-y-1.5 bg-white rounded-xl p-3 text-xs">
-                <p className="whitespace-pre-wrap text-mblue-600">
+                <p className="whitespace-pre-wrap text-mblue-500">
                   {sharedNotes?.content as string}
                 </p>
               </div>

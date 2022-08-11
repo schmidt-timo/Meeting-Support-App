@@ -98,11 +98,11 @@ const FeedbackQuestion = ({
   register,
 }: FeedbackQuestionProps) => {
   return (
-    <div className="bg-white rounded-xl p-3 font-medium text-center text-mblue-600">
+    <div className="bg-white rounded-xl p-3 font-medium text-center text-mblue-500">
       <p>{question}</p>
       {responseType === "emojis" && (
         <div className="w-full pt-3">
-          <fieldset className="flex space-x-5 items-center justify-center text-mblue-600">
+          <fieldset className="flex space-x-5 items-center justify-center text-mblue-500">
             <label>
               <MdOutlineSentimentSatisfied
                 className={`w-14 h-14 cursor-pointer ${
@@ -146,7 +146,7 @@ const FeedbackQuestion = ({
         </div>
       )}
       {responseType === "yesNo" && (
-        <div className="w-full flex items-center justify-center space-x-5 pt-3 text-mblue-600">
+        <div className="w-full flex items-center justify-center space-x-5 pt-3 text-mblue-500">
           <label>
             <MdThumbUpOffAlt
               className={`w-14 h-14 cursor-pointer ${

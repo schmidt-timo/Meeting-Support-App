@@ -66,7 +66,7 @@ const ManageAgendaContent = ({
             onClick={() => setShowNewItemButton(false)}
             className="flex items-center justify-center space-x-2 bg-mblue-200 hover:bg-mblue-300 group-hover:text-white"
           >
-            <MdAddCircle className="w-5 h-5 text-mblue-600 group-hover:text-white" />
+            <MdAddCircle className="w-5 h-5 text-mblue-500 group-hover:text-white" />
             <p>Add item</p>
           </Button>
         )}
@@ -76,7 +76,7 @@ const ManageAgendaContent = ({
         disabled={!showNewItemButton}
         variant="highlighted"
         onClick={() => onNext(agendaItems)}
-        className="disabled:text-mblue-600 disabled:text-opacity-40 disabled:bg-mblue-600 disabled:bg-opacity-10"
+        className="disabled:text-mblue-500 disabled:text-opacity-40 disabled:bg-mblue-500 disabled:bg-opacity-10"
       >
         {showNewItemButton
           ? buttonText

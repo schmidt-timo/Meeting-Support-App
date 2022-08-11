@@ -24,7 +24,7 @@ const MeetingInfo = ({ meeting, meetingCreator, onClose }: Props) => {
   return (
     <SubPageLayout title={meeting.title} onClose={onClose}>
       <div className="space-y-4">
-        <div className="flex flex-col items-center w-full space-y-4 text-mblue-600">
+        <div className="flex flex-col items-center w-full space-y-4 text-mblue-500">
           <div>
             <p className="text-sm font-medium text-center">Meeting ID</p>
             <p className="text-2xl font-bold">{meeting.id}</p>

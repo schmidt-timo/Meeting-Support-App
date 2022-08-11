@@ -73,7 +73,7 @@ const MeetingViewPage = ({
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="w-full p-4 flex items-center justify-between bg-white z-20 overflow-hidden">
-        <span className="w-full truncate pr-2 text-mblue-600">
+        <span className="w-full truncate pr-2 text-mblue-500">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
           <MeetingCounter
             startDate={meeting.startDate}
@@ -121,8 +121,8 @@ const MeetingViewPage = ({
               onClick={() => setShowSharedNotes(false)}
               className={`rounded-l-xl w-full py-1 flex flex-col items-center space-x-1.5 justify-center text-xs ${
                 !showSharedNotes
-                  ? "bg-mblue-600 text-white"
-                  : "bg-mblue-100 text-mblue-600"
+                  ? "bg-mblue-500 text-white"
+                  : "bg-mblue-100 text-mblue-500"
               }`}
             >
               <p className="text-xs font-medium">Your Notes</p>
@@ -132,8 +132,8 @@ const MeetingViewPage = ({
               onClick={() => setShowSharedNotes(true)}
               className={`rounded-r-xl w-full py-1 flex flex-col items-center space-x-1.5 justify-center text-xs ${
                 showSharedNotes
-                  ? "bg-mblue-600 text-white"
-                  : "bg-mblue-100 text-mblue-600"
+                  ? "bg-mblue-500 text-white"
+                  : "bg-mblue-100 text-mblue-500"
               }`}
             >
               <p className="text-xs font-medium">Shared Notes</p>

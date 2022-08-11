@@ -17,7 +17,7 @@ const QuestionItem = ({
 }: Props) => {
   return (
     <div className="flex flex-col justify-between p-3 pt-2.5 bg-white rounded-xl max-h-question">
-      <div className="flex space-x-2 items-center text-sm font-medium truncate-3-lines text-mblue-600">
+      <div className="flex space-x-2 items-center text-sm font-medium truncate-3-lines text-mblue-500">
         {meetingQuestion.question}
       </div>
       <div>
@@ -27,8 +27,8 @@ const QuestionItem = ({
             className={`flex items-center space-x-1.5 py-1 px-2 font-medium rounded-xl text-xs
               ${
                 upvoted
-                  ? "bg-mblue-600 text-white"
-                  : "bg-mblue-200 bg-opacity-60 text-mblue-600"
+                  ? "bg-mblue-500 text-white"
+                  : "bg-mblue-200 bg-opacity-60 text-mblue-500"
               }`}
           >
             <MdThumbUp className="w-3 h-3 flex-shrink-0" />
@@ -36,7 +36,7 @@ const QuestionItem = ({
           </button>
           <button
             onClick={onMarkAsAnswered}
-            className="flex items-center space-x-1.5 py-1 px-2 font-medium bg-mblue-200 bg-opacity-60 text-mblue-600 rounded-xl text-xs"
+            className="flex items-center space-x-1.5 py-1 px-2 font-medium bg-mblue-200 bg-opacity-60 text-mblue-500 rounded-xl text-xs"
           >
             {meetingQuestion.answered ? (
               <MdOutlineClose className="w-3.5 h-3.5 flex-shrink-0" />

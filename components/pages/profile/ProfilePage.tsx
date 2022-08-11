@@ -42,7 +42,7 @@ const ProfilePage = ({
         <div className="text-center pb-8 truncate">
           {!!user.name?.length ? (
             <>
-              <h1 className="font-bold text-xl truncate text-mblue-600">
+              <h1 className="font-bold text-xl truncate text-mblue-500">
                 {user.name}
               </h1>
               <h2 className="text-sm font-medium text-mblue-500 text-opacity-40 truncate">
@@ -50,7 +50,7 @@ const ProfilePage = ({
               </h2>
             </>
           ) : (
-            <h1 className="font-medium text-mblue-600 truncate">{email}</h1>
+            <h1 className="font-medium text-mblue-500 truncate">{email}</h1>
           )}
         </div>
         <div className="space-y-2 w-full flex flex-col items-center max-w-buttons">

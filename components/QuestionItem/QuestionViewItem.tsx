@@ -9,12 +9,12 @@ type Props = {
 const QuestionViewItem = ({ meetingQuestion }: Props) => {
   return (
     <div className="flex flex-col justify-between py-2 px-3 pt-2.5 bg-white rounded-xl max-h-question">
-      <div className="flex space-x-2 items-center text-sm font-medium truncate-3-lines">
+      <div className="flex space-x-2 items-center text-sm font-medium truncate-3-lines text-mblue-500">
         {meetingQuestion.question}
       </div>
       <div>
         <div className="flex space-x-1 justify-start pt-3">
-          <div className="flex items-center space-x-1.5 py-1 px-2 font-medium text-xs">
+          <div className="flex items-center space-x-1.5 py-1 px-2 font-medium text-xs text-mblue-500">
             <MdThumbUp className="w-3 h-3 flex-shrink-0" />
             <p>{formatUpvoteText(meetingQuestion.upvotes)}</p>
           </div>

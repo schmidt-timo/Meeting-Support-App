@@ -16,11 +16,11 @@ const Accordion = ({ title, children }: Props) => {
         onClick={() => setCollapsed(!collapsed)}
         role="button"
       >
-        <p className="text-mblue-600 uppercase text-sm truncate">{title}</p>
+        <p className="text-mblue-500 uppercase text-sm truncate">{title}</p>
         {collapsed ? (
-          <MdOutlineExpandMore className="text-mblue-600 w-6 h-6" />
+          <MdOutlineExpandMore className="text-mblue-500 w-6 h-6" />
         ) : (
-          <MdOutlineExpandLess className="text-mblue-600 w-6 h-6" />
+          <MdOutlineExpandLess className="text-mblue-500 w-6 h-6" />
         )}
       </div>
       <div className={`space-y-3 ${collapsed && "hidden"}`}>{children}</div>

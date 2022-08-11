@@ -20,10 +20,20 @@ const DetailsParticipantItem = ({ participant }: Props) => {
             : getNameInitials(participant.email)}
         </span>
         <div className="flex flex-col truncate pr-3 -space-y-0.5">
-          {!!participant.name?.length && (
-            <h1 className="font-bold truncate text-sm">{participant.name}</h1>
+          {!!participant.name?.length ? (
+            <>
+              <h1 className="font-bold truncate text-sm text-mblue-500">
+                {participant.name}
+              </h1>
+              <p className="text-sm truncate text-mblue-500 text-opacity-60">
+                {participant.email}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm truncate text-mblue-500">
+              {participant.email}
+            </p>
           )}
-          <p className="text-xs truncate">{participant.email}</p>
         </div>
       </div>
     </div>

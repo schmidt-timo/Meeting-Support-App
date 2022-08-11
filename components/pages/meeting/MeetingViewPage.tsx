@@ -9,6 +9,8 @@ import {
   Meeting,
   MeetingAgendaStatus,
   MeetingNote,
+  MeetingParticipant,
+  MeetingQuestion,
 } from "../../../utils/types";
 import NotificationLabel from "../../formElements/NotificationLabel";
 import AgendaController from "../../meetingElements/AgendaController";
@@ -37,6 +39,8 @@ type MeetingViewPageProps = {
   onManageParticipants: () => void;
   onManageQuestions: () => void;
   onAlarm: () => void;
+  participants: MeetingParticipant[];
+  questions: MeetingQuestion[];
 };
 
 const MeetingViewPage = ({
@@ -58,13 +62,15 @@ const MeetingViewPage = ({
   onManageParticipants,
   onManageQuestions,
   onAlarm,
+  participants,
+  questions,
 }: MeetingViewPageProps) => {
   const [showSharedNotes, setShowSharedNotes] = useState(false);
 
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="w-full p-4 flex items-center justify-between bg-white z-20 overflow-hidden">
-        <span className="w-full truncate pr-2">
+        <span className="w-full truncate pr-2 text-mblue-600">
           <h1 className="font-bold text-base truncate">{meeting.title}</h1>
           <MeetingCounter
             startDate={meeting.startDate}
@@ -111,7 +117,9 @@ const MeetingViewPage = ({
             <button
               onClick={() => setShowSharedNotes(false)}
               className={`rounded-l-xl w-full py-1 flex flex-col items-center space-x-1.5 justify-center text-xs ${
-                !showSharedNotes ? "bg-gray-800 text-white" : "bg-gray-200"
+                !showSharedNotes
+                  ? "bg-mblue-600 text-white"
+                  : "bg-mblue-100 text-mblue-600"
               }`}
             >
               <p className="text-xs font-medium">Your Notes</p>
@@ -120,7 +128,9 @@ const MeetingViewPage = ({
             <button
               onClick={() => setShowSharedNotes(true)}
               className={`rounded-r-xl w-full py-1 flex flex-col items-center space-x-1.5 justify-center text-xs ${
-                showSharedNotes ? "bg-gray-800 text-white" : "bg-gray-200"
+                showSharedNotes
+                  ? "bg-mblue-600 text-white"
+                  : "bg-mblue-100 text-mblue-600"
               }`}
             >
               <p className="text-xs font-medium">Shared Notes</p>
@@ -145,19 +155,25 @@ const MeetingViewPage = ({
           />
         )}
       </div>
-      <div className="w-full bg-gray-800 flex justify-between drop-shadow mobileXL:justify-center z-10 border-t border-gray-500">
+      <div className="w-full bg-mblue-500 flex justify-between mobileXL:justify-center z-10">
         <button
           onClick={onManageParticipants}
           className="w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs text-white"
         >
-          <MdPeople className="w-4 h-4 text-white flex-shrink-0" />
+          <span className="flex space-x-1 items-center">
+            <MdPeople className="w-4 h-4 text-white flex-shrink-0" />
+            <p>{participants.length}</p>
+          </span>
           <p>Participants</p>
         </button>
         <button
           onClick={onManageQuestions}
           className="w-full p-3 flex flex-col items-center justify-center space-y-1 max-w-lg desktop:max-w-nav text-xs text-white"
         >
-          <MdQuestionAnswer className="w-4 h-4 text-white flex-shrink-0" />
+          <span className="flex space-x-1 items-center">
+            <MdQuestionAnswer className="w-4 h-4 text-white flex-shrink-0" />
+            {questions.length > 0 && <p>{questions.length}</p>}
+          </span>
           <p>Questions</p>
         </button>
         <button

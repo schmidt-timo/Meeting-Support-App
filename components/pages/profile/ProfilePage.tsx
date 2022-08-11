@@ -42,21 +42,31 @@ const ProfilePage = ({
         <div className="text-center pb-8 truncate">
           {!!user.name?.length ? (
             <>
-              <h1 className="font-bold text-xl truncate">{user.name}</h1>
-              <h2 className="text-sm font-medium text-gray-400 truncate">
+              <h1 className="font-bold text-xl truncate text-mblue-600">
+                {user.name}
+              </h1>
+              <h2 className="text-sm font-medium text-mblue-500 text-opacity-40 truncate">
                 {email}
               </h2>
             </>
           ) : (
-            <h1 className="font-medium text-gray-700 truncate">{email}</h1>
+            <h1 className="font-medium text-mblue-600 truncate">{email}</h1>
           )}
         </div>
         <div className="space-y-2 w-full flex flex-col items-center max-w-buttons">
-          <Button onClick={onUpdateProfile}>Update profile settings</Button>
-          <Button onClick={onChangeEmail}>Change email address</Button>
-          <Button onClick={onChangePassword}>Change password</Button>
-          <Button onClick={onDeleteAccount}>Delete account</Button>
-          <Button onClick={onLogout} variant="lightred">
+          <Button variant="light" onClick={onUpdateProfile}>
+            Update profile settings
+          </Button>
+          <Button variant="light" onClick={onChangeEmail}>
+            Change email address
+          </Button>
+          <Button variant="light" onClick={onChangePassword}>
+            Change password
+          </Button>
+          <Button variant="light" onClick={onDeleteAccount}>
+            Delete account
+          </Button>
+          <Button variant="lightred" onClick={onLogout}>
             Log out
           </Button>
         </div>

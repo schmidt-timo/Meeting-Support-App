@@ -46,7 +46,7 @@ const MeetingNotes = ({
   return (
     <div className="flex flex-col relative">
       <textarea
-        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none border-gray-400
+        className={`w-full rounded-t-xl bg-white px-3 py-2 border-x border-t outline-0 resize-none text-sm min-h-150 focus:outline-none border-mblue-200 text-mblue-600 placeholder-mblue-500 placeholder-opacity-40
         ${databaseStatus === "NOT_SAVED" && "border-red-500"}
         ${databaseStatus === "SAVED" && "border-green-500"}
         ${databaseStatus === "SAVING" && "border-yellow-500"}

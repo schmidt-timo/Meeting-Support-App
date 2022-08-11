@@ -44,12 +44,12 @@ const MeetingOverviewPage = ({
         buttons: [
           {
             id: "HEADER_BTN_QR",
-            icon: <MdQrCodeScanner className="w-6 h-6" />,
+            icon: <MdQrCodeScanner className="w-6 h-6 text-white" />,
             onClick: onAddMeeting,
           },
           {
             id: "HEADER_BTN_NEWMEETING",
-            icon: <MdOutlineAdd className="w-8 h-8" />,
+            icon: <MdOutlineAdd className="w-8 h-8 text-white" />,
             onClick: onCreateMeeting,
           },
         ],

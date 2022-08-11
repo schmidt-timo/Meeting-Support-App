@@ -15,7 +15,7 @@ type HeaderButtonProps = {
 const HeaderButton = ({ children, onClick }: HeaderButtonProps) => {
   return (
     <button
-      className="rounded-full w-11 h-11 bg-gray-300 hover:bg-gray-400 flex items-center justify-center"
+      className="rounded-full w-10 h-10 bg-mblue-500 hover:bg-mblue-600 flex items-center justify-center"
       onClick={onClick}
     >
       {children}
@@ -44,7 +44,7 @@ const Header = ({ children, buttons, showBackArrow: backArrow }: Props) => {
         </button>
       )}
       <span className="w-full flex justify-between items-center py-1">
-        <h1 className="p-3 font-bold text-2xl">{children}</h1>
+        <h1 className="p-3 font-bold text-2xl text-mblue-600">{children}</h1>
         <span className="flex space-x-2">
           {buttons?.map((button) => (
             <HeaderButton key={button.id} onClick={() => button.onClick()}>
@@ -98,7 +98,7 @@ export const DesktopHeader = ({
         <span className="flex space-x-2">
           {buttons?.map((button) => (
             <button
-              className="bg-gray-300 hover:bg-gray-600 hover:text-white rounded-xl flex items-center space-x-1.5 text-xs px-3 py-1 font-medium"
+              className="bg-mblue-500 hover:bg-mblue-600 text-white rounded-xl flex items-center space-x-1.5 text-xs px-3 py-1 font-medium"
               key={button.id}
               onClick={() => button.onClick()}
             >

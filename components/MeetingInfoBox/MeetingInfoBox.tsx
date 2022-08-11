@@ -43,10 +43,16 @@ const MeetingInfoBoxButton = ({
 }: MeetingInfoBoxButtonProps) => {
   return (
     <button
-      className={`rounded-xl px-2.5 py-1 bg-white min-w-xs max-w-xl
-      ${!color && "hover:bg-gray-300"}
-      ${color === "green" && "bg-green-300 hover:bg-green-500"} 
-      ${color === "red" && "bg-red-300 hover:bg-red-400"}
+      className={`rounded-xl px-2.5 py-1 min-w-xs max-w-xl text-mblue-600
+      ${!color && "bg-white hover:bg-mblue-200"}
+      ${
+        color === "green" &&
+        "bg-green-300 bg-opacity-80 hover:bg-green-400 hover:bg-opacity-80"
+      } 
+      ${
+        color === "red" &&
+        "bg-red-300 bg-opacity-80 hover:bg-red-400 hover:bg-opacity-80"
+      }
       ${symbol && "flex items-center justify-center space-x-1"}
       ${className}
       `}
@@ -72,13 +78,15 @@ type InfoLineProps = {
 
 const InfoLine = ({ symbol, children }: InfoLineProps) => {
   return (
-    <span className="flex items-center space-x-1">
+    <span className="flex items-center space-x-1 text-mblue-600">
       {symbol === "date" && (
-        <MdCalendarToday className="h-2.5 w-3 text-gray-500" />
+        <MdCalendarToday className="h-2.5 w-3 text-mblue-600 text-opacity-70" />
       )}
-      {symbol === "time" && <MdAccessTime className="h-3 w-3 text-gray-500" />}
+      {symbol === "time" && (
+        <MdAccessTime className="h-3 w-3 text-mblue-600 text-opacity-70" />
+      )}
       {symbol === "location" && (
-        <MdOutlineLocationOn className="h-3 w-3 text-gray-500" />
+        <MdOutlineLocationOn className="h-3 w-3 text-mblue-600 text-opacity-70" />
       )}
       <p className="text-xs">{children}</p>
     </span>
@@ -122,16 +130,19 @@ const MeetingInfoBox = ({
   const agendaIsAvailable = meeting.agenda && meeting.agenda.length > 0;
 
   return (
-    <div className="relative p-3 bg-gray-200 rounded-xl">
+    <div className="relative p-3 bg-mblue-100 rounded-xl">
       {!meeting.completed && (
         <button
           onClick={onStartMeeting}
-          className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-300"
+          className="absolute right-3 top-3 rounded-full h-10 w-10 flex items-center justify-center bg-white hover:bg-mblue-200"
         >
-          <MdPlayArrow className="w-7 h-7" />
+          <MdPlayArrow className="w-7 h-7 text-mblue-600" />
         </button>
       )}
-      <p className="font-medium truncate" style={{ maxWidth: "80%" }}>
+      <p
+        className="font-medium truncate text-mblue-600"
+        style={{ maxWidth: "80%" }}
+      >
         {meeting.title}
       </p>
       {isTheSameDay(meeting.startDate, meeting.endDate) ? (

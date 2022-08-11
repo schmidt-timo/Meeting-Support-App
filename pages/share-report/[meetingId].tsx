@@ -1,11 +1,11 @@
 import { GetServerSideProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import Accordion from "../../components/Accordion/Accordion";
-import AgendaItemView from "../../components/AgendaItem/AgendaItemView";
+import AgendaItem from "../../components/AgendaItem/AgendaItem";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import DetailsLine from "../../components/MeetingDetails/DetailsLine";
 import SubPageLayout from "../../components/pages/layouts/SubPageLayout";
-import QuestionViewItem from "../../components/QuestionItem/QuestionViewItem";
+import QuestionItem from "../../components/QuestionItem/QuestionItem";
 import { fetchSingleMeeting } from "../../lib/supabase/meetings";
 import { usePublicMeeting } from "../../lib/supabase/publicMeeting";
 import {
@@ -77,24 +77,28 @@ const PublicMeetingReport: NextPage<Props> = ({
                 </>
               ) : (
                 <>
-                  <DetailsLine symbol="date">
-                    {`from ${formatMeetingDate(meeting.startDate)}`}
-                  </DetailsLine>
-                  <DetailsLine symbol="time">
-                    {meeting.startDate.toLocaleTimeString("de-DE", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </DetailsLine>
-                  <DetailsLine symbol="date">
-                    {`to ${formatMeetingDate(meeting.endDate)}`}
-                  </DetailsLine>
-                  <DetailsLine symbol="time">
-                    {meeting.endDate.toLocaleTimeString("de-DE", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </DetailsLine>
+                  <div className="flex items-center space-x-2">
+                    <DetailsLine symbol="date">
+                      {`from ${formatMeetingDate(meeting.startDate)}`}
+                    </DetailsLine>
+                    <DetailsLine symbol="time">
+                      {meeting.startDate.toLocaleTimeString("de-DE", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </DetailsLine>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <DetailsLine symbol="date">
+                      {`to ${formatMeetingDate(meeting.endDate)}`}
+                    </DetailsLine>
+                    <DetailsLine symbol="time">
+                      {meeting.endDate.toLocaleTimeString("de-DE", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </DetailsLine>
+                  </div>
                 </>
               )}
               {meeting.location && (
@@ -102,7 +106,9 @@ const PublicMeetingReport: NextPage<Props> = ({
               )}
               <DetailsLine symbol="meeting">
                 <div className="flex items-center space-x-1">
-                  <p className="text-xs text-gray-500">Meeting ID:</p>
+                  <p className="text-xs text-mblue-500 text-opacity-60">
+                    Meeting ID:
+                  </p>
                   <p>{meeting.id}</p>
                 </div>
               </DetailsLine>
@@ -130,7 +136,7 @@ const PublicMeetingReport: NextPage<Props> = ({
           {!!meeting.agenda.length ? (
             <div className="space-y-1.5">
               {meeting.agenda.map((item) => (
-                <AgendaItemView agendaItem={item} key={item.id} />
+                <AgendaItem agendaItem={item} key={item.id} viewOnly />
               ))}
             </div>
           ) : (
@@ -152,16 +158,10 @@ const PublicMeetingReport: NextPage<Props> = ({
           {!!meetingQuestions.length ? (
             <div className="space-y-1.5">
               {openQuestions.map((question) => (
-                <QuestionViewItem
-                  meetingQuestion={question}
-                  key={question.id}
-                />
+                <QuestionItem meetingQuestion={question} key={question.id} />
               ))}
               {answeredQuestions.map((question) => (
-                <QuestionViewItem
-                  meetingQuestion={question}
-                  key={question.id}
-                />
+                <QuestionItem meetingQuestion={question} key={question.id} />
               ))}
             </div>
           ) : (

@@ -1,35 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Meeting Support App
 
-## Getting Started
+An app to support face-to-face meetings with a range of features, such as
 
-First, run the development server:
+- Providing a meeting description in advance
+- Collaborative agenda creation including PDF upload
+- Timer to avoid lengthy meetings
+- Alarm feature when the scheduled meeting duration is reached
+- View and control agenda items and uploaded PDF documents
+- Create private and shared notes
+- Ask questions before and during a meeting
+- Reports for completed meetings
+- Feedback function for completed meetings
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The app is primarily designed for use on mobile devices, but can also be used on other devices as it is responsive.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Screenshots
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+![Meeting Support App](public/readme/MeetingSupportApp.png)
+![Meeting Support App - Meeting Creation](public/readme/MeetingCreation.png)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### How to run it
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### Deployed version
 
-## Learn More
+A deployed version can be found on https://meeting-support-app.vercel.app.
+To use the app, you must first register and confirm your email address.
 
-To learn more about Next.js, take a look at the following resources:
+#### Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[Please follow the instructions here](/lib/supabase/README.md)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### Credits
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# meeting-support-app
+- Google Material Icons via [react-icons](https://react-icons.github.io/react-icons/icons?name=md)

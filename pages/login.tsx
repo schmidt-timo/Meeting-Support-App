@@ -80,18 +80,18 @@ const LoginScreen: NextPage = () => {
 
       if (createUserData) {
         setSignUpSuccessMessage(
-          "The account has been created successfully. You will be redirected shortly."
+          "A confirmation email has been sent to you. Please check your mailbox."
         );
-        setTimeout(() => {
-          setSignUpSuccessMessage("");
-          logout();
-          login({
-            email,
-            password,
-          }).then(() => {
-            router.reload();
-          });
-        }, 4000);
+        // setTimeout(() => {
+        //   setSignUpSuccessMessage("");
+        //   logout();
+        //   login({
+        //     email,
+        //     password,
+        //   }).then(() => {
+        //     router.reload();
+        //   });
+        // }, 4000);
       }
     }
   };

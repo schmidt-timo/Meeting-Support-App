@@ -43,14 +43,7 @@ const SignUpPage = ({
   return (
     <AuthPageLayout
       title="Sign up for new account"
-      secondaryChildren={
-        <Button
-          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-600       hover:bg-opacity-30"
-          onClick={onLogin}
-        >
-          Back To Login
-        </Button>
-      }
+      secondaryChildren={<Button onClick={onLogin}>Back To Login</Button>}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-3 p-5">
@@ -95,7 +88,7 @@ const SignUpPage = ({
             <NotificationLabel variant="red">{errorMessage}</NotificationLabel>
           )}
           {!!successMessage?.length && (
-            <NotificationLabel variant="green">
+            <NotificationLabel variant="yellow">
               {successMessage}
             </NotificationLabel>
           )}

@@ -43,12 +43,7 @@ const LoginPage = ({
     <AuthPageLayout
       title="Login"
       secondaryChildren={
-        <Button
-          className="bg-mblue-500 bg-opacity-20 hover:bg-mblue-600       hover:bg-opacity-30"
-          onClick={onSignUpNewAccount}
-        >
-          Sign up for new account
-        </Button>
+        <Button onClick={onSignUpNewAccount}>Sign up for new account</Button>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

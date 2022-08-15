@@ -28,6 +28,7 @@ const ManageAgendaContent = ({
   isUploading,
 }: ManageAgendaContentProps) => {
   const [showNewItemButton, setShowNewItemButton] = useState<Boolean>(true);
+  const [isInEditMode, setIsInEditMode] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const ManageAgendaContent = ({
             onDelete={onDeleteAgendaItem}
             onChange={onUpdateAgendaItem}
             onRemoveFile={onRemoveFile}
+            onEdit={(inEditMode) => setIsInEditMode(inEditMode)}
           />
         ))}
         {!showNewItemButton ? (
@@ -54,9 +56,13 @@ const ManageAgendaContent = ({
               isUploading={isUploading}
               onAbort={() => setShowNewItemButton(true)}
               onSave={(item, file) =>
-                onAddAgendaItem(item, file).then(() => {
-                  setShowNewItemButton(true);
-                })
+                onAddAgendaItem(item, file)
+                  .then(() => {
+                    setShowNewItemButton(true);
+                  })
+                  .catch((error) => {
+                    throw error;
+                  })
               }
               onRemoveFile={onRemoveFile}
             />
@@ -73,14 +79,14 @@ const ManageAgendaContent = ({
       </div>
 
       <Button
-        disabled={!showNewItemButton}
+        disabled={!showNewItemButton || isInEditMode}
         variant="highlighted"
         onClick={() => onNext(agendaItems)}
         className="disabled:text-mblue-500 disabled:text-opacity-40 disabled:bg-mblue-500 disabled:bg-opacity-10"
       >
-        {showNewItemButton
-          ? buttonText
-          : "Save or discard the opened item first!"}
+        {!showNewItemButton || isInEditMode
+          ? "Save or discard the opened item first!"
+          : buttonText}
       </Button>
     </>
   );

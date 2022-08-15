@@ -100,7 +100,7 @@ export const useMeetingStatus = (meeting: Meeting) => {
       currentItemIndex: 0,
       startedAt: now,
     }).catch((error) => {
-      console.log(error);
+      throw error;
     });
 
     const { data, error } = await updateMeetingDetails(newMeeting);

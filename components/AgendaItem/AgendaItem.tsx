@@ -15,6 +15,7 @@ type Props = {
   onDelete: (itemId: string) => void;
   onChange: (agendaItem: MeetingAgendaItem, file?: File) => Promise<void>;
   onRemoveFile: (fileUrl: string, itemId: string) => void;
+  onEdit: (editModeActive: boolean) => void;
 };
 
 const AgendaItem = ({
@@ -22,10 +23,12 @@ const AgendaItem = ({
   onDelete,
   onChange,
   onRemoveFile,
+  onEdit,
 }: Props) => {
-  const [isInEditMode, setIsInEditMode] = useState<Boolean>(false);
+  const [isInEditMode, setIsInEditMode] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [fileIsUploading, setFileIsUploading] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,13 +44,22 @@ const AgendaItem = ({
       {isInEditMode ? (
         <AgendaItemInput
           agendaItem={agendaItem}
-          onAbort={() => setIsInEditMode(false)}
+          onAbort={() => {
+            setIsInEditMode(false);
+            onEdit(false);
+          }}
           onSave={async (item, file) => {
+            if (file) {
+              setFileIsUploading(true);
+            }
             onChange(item, file).then(() => {
               setIsInEditMode(false);
+              onEdit(false);
+              setFileIsUploading(false);
             });
           }}
           onRemoveFile={onRemoveFile}
+          isUploading={fileIsUploading}
         />
       ) : (
         <div
@@ -113,7 +125,10 @@ const AgendaItem = ({
           )}
           <div className="space-x-2 flex justify-end pt-2">
             <button
-              onClick={() => setIsInEditMode(true)}
+              onClick={() => {
+                setIsInEditMode(true);
+                onEdit(true);
+              }}
               className="bg-mblue-200 rounded-full w-7 h-7 flex justify-center items-center flex-shrink-0 bg-mblue-200 bg-opacity-80 text-mblue-500 hover:mblue-200 hover:bg-opacity-100"
             >
               <MdMode className="text-mblue-500 h-4 w-4" />

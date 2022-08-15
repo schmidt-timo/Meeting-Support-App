@@ -46,6 +46,7 @@ const AgendaItemInput = ({
       title: data.agendaItemTitle,
       duration: data.agendaItemDuration,
       description: data.agendaItemDescription,
+      fileUrl: agendaItem?.fileUrl,
     };
     onSave(item, file);
   };

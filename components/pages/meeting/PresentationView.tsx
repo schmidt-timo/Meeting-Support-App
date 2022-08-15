@@ -81,7 +81,7 @@ const PresentationView = ({
       <div
         ref={ref}
         className={`w-full h-full border border-mblue-500 overflow-hidden aspect-video relative z-10 desktop:aspect-auto desktop:h-presentationDesktop ${
-          agendaItem.fileUrl ? "rounded-t-xl" : "rounded-xl"
+          agendaItem?.fileUrl ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
         <FullScreen
@@ -90,7 +90,7 @@ const PresentationView = ({
         >
           {showPDF ? (
             <>
-              <div className="desktop:hidden">
+              {fullscreenHandler.active ? (
                 <Document
                   loading={
                     <p className="text-sm font-medium">PDF is loading ...</p>
@@ -98,29 +98,47 @@ const PresentationView = ({
                   file={agendaItem.fileUrl}
                   onLoadSuccess={onDocumentLoadSuccess}
                 >
-                  <Page
-                    pageNumber={pageNumber}
-                    height={height + 2}
-                    scale={scale}
-                  />
+                  <Page pageNumber={pageNumber} width={window.innerWidth} />
                 </Document>
-              </div>
+              ) : (
+                <>
+                  <div className="desktop:hidden">
+                    <Document
+                      loading={
+                        <p className="text-sm font-medium">
+                          PDF is loading ...
+                        </p>
+                      }
+                      file={agendaItem.fileUrl}
+                      onLoadSuccess={onDocumentLoadSuccess}
+                    >
+                      <Page
+                        pageNumber={pageNumber}
+                        height={height + 2}
+                        scale={scale}
+                      />
+                    </Document>
+                  </div>
 
-              <div className="hidden desktop:block">
-                <Document
-                  loading={
-                    <p className="text-sm font-medium">PDF is loading ...</p>
-                  }
-                  file={agendaItem.fileUrl}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                >
-                  <Page
-                    pageNumber={pageNumber}
-                    width={width + 2}
-                    scale={scale}
-                  />
-                </Document>
-              </div>
+                  <div className="hidden desktop:block">
+                    <Document
+                      loading={
+                        <p className="text-sm font-medium">
+                          PDF is loading ...
+                        </p>
+                      }
+                      file={agendaItem.fileUrl}
+                      onLoadSuccess={onDocumentLoadSuccess}
+                    >
+                      <Page
+                        pageNumber={pageNumber}
+                        width={width + 2}
+                        scale={scale}
+                      />
+                    </Document>
+                  </div>
+                </>
+              )}
             </>
           ) : (
             <div

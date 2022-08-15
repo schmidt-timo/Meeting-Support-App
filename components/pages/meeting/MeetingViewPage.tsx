@@ -13,6 +13,7 @@ import {
   MeetingParticipant,
   MeetingQuestion,
 } from "../../../utils/types";
+import Button from "../../formElements/Button";
 import NotificationLabel from "../../formElements/NotificationLabel";
 import AgendaController from "../../meetingElements/AgendaController";
 import MeetingCounter from "../../meetingElements/MeetingCounter";
@@ -111,9 +112,18 @@ const MeetingViewPage = ({
             onAgendaItemChange={onAgendaItemChange}
           />
         ) : (
-          <NotificationLabel variant="yellow">
-            No agenda available for this meeting.
-          </NotificationLabel>
+          <div className="border border-mblue-500 bg-mblue-200 aspect-video desktopXS:aspect-auto rounded-xl p-2 space-y-2 desktopXS:space-y-0 flex flex-col desktopXS:flex-row items-center justify-center desktopXS:justify-between">
+            <NotificationLabel variant="yellow">
+              No agenda available for this meeting.
+            </NotificationLabel>
+            <Button
+              onClick={onShowFullAgenda}
+              variant="highlighted"
+              className="max-w-xl"
+            >
+              Manage Agenda
+            </Button>
+          </div>
         )}
         <div className="flex flex-col space-y-2">
           <div className="flex items-center justify-between space-x-1">

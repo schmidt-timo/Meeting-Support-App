@@ -13,11 +13,13 @@ import {
 } from "../../../utils/filtering";
 import {
   Meeting,
+  MeetingAgendaItem,
   MeetingAgendaStatus,
   MeetingNote,
   MeetingParticipant,
   MeetingQuestion,
 } from "../../../utils/types";
+import Button from "../../formElements/Button";
 import Label from "../../formElements/Label";
 import NotificationLabel from "../../formElements/NotificationLabel";
 import AgendaController from "../../meetingElements/AgendaController";
@@ -33,6 +35,7 @@ type MeetingViewPageProps = {
   meeting: Meeting;
   onShowInfo: () => void;
   onExitMeeting: () => void;
+  agendaItems: MeetingAgendaItem[];
   agendaStatus: MeetingAgendaStatus;
   onShowFullAgenda: () => void;
   onAgendaItemChange: (newIndex: number) => Promise<void>;
@@ -55,6 +58,7 @@ const MeetingViewPageDesktop = ({
   meeting,
   onShowInfo,
   onExitMeeting,
+  agendaItems,
   agendaStatus,
   onShowFullAgenda,
   onAgendaItemChange,
@@ -110,11 +114,11 @@ const MeetingViewPageDesktop = ({
 
       <div className="w-full h-full flex px-10 pb-10 space-x-5">
         <div className="w-2/3 space-y-5 flex flex-col justify-between">
-          {!!meeting.agenda.length && (
+          {!!agendaItems.length && (
             <PresentationView
               isDesktop
               agendaStatus={agendaStatus}
-              agendaItem={meeting.agenda[agendaStatus.currentItemIndex]}
+              agendaItem={agendaItems[agendaStatus.currentItemIndex]}
               meetingTimer={{
                 start: meeting.startDate,
                 end: meeting.endDate,
@@ -194,17 +198,25 @@ const MeetingViewPageDesktop = ({
             </div>
           </div>
           <div className="w-full">
-            {!!meeting.agenda.length ? (
+            {!!agendaItems.length ? (
               <AgendaController
                 agendaStatus={agendaStatus!}
-                agendaItems={meeting.agenda}
+                agendaItems={agendaItems}
                 onShowFullAgenda={onShowFullAgenda}
                 onAgendaItemChange={onAgendaItemChange}
               />
             ) : (
-              <NotificationLabel variant="yellow">
-                No agenda available for this meeting.
-              </NotificationLabel>
+              <div className="border border-mblue-500 bg-mblue-100 rounded-xl">
+                <div className="w-full bg-mblue-500 rounded-t-xl text-sm text-center text-white py-2">
+                  Agenda
+                </div>
+                <div className="p-5 space-y-2">
+                  <NotificationLabel variant="yellow">
+                    No agenda available for this meeting.
+                  </NotificationLabel>
+                  <Button onClick={onShowFullAgenda}>Manage agenda</Button>
+                </div>
+              </div>
             )}
           </div>
 

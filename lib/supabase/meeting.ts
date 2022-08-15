@@ -16,7 +16,7 @@ import { getParticipantInfoIfEmailIsRegistered } from "./users";
 export const useMeeting = (meeting: Meeting) => {
   const [meetingNote, setMeetingNote] = useState<MeetingNote>();
   const [sharedNotes, setSharedNotes] = useState<MeetingNote>();
-  const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>(meeting.agenda)
+  const [agendaItems, setAgendaItems] = useState<MeetingAgendaItem[]>(meeting.agenda)  
 
   const [databaseStatus, setDatabaseStatus] =
     useState<DatabaseSyncStatus>("NONE");
@@ -100,7 +100,7 @@ export const useMeeting = (meeting: Meeting) => {
     });
 
     fetchMeetingQuestions(meeting.id, setMeetingQuestions).catch((error) => {
-      console.log(error);
+      throw error;
     });
 
     checkParticipantsInfo(participants);

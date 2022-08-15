@@ -10,8 +10,9 @@ import {
   updateAgenda,
   uploadFileToAgendaItem,
 } from "../../lib/supabase/meetings";
+import { updateAgendaStatus } from "../../lib/supabase/status";
 import { getFileNameFromUrl } from "../../utils/functions";
-import { MeetingAgendaItem } from "../../utils/types";
+import { MeetingAgendaItem, MeetingAgendaStatus } from "../../utils/types";
 
 interface Params extends ParsedUrlQuery {
   meetingId: string;
@@ -30,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       meetingId: meeting.id,
       agendaItems: meeting.agenda,
+      agendaStatus: meeting.agendaStatus,
     },
   };
 };
@@ -37,12 +39,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 type Props = {
   meetingId: string;
   agendaItems: MeetingAgendaItem[];
+  agendaStatus?: MeetingAgendaStatus;
   onClose?: () => void;
 };
 
 const EditAgenda: NextPage<Props> = ({
   meetingId,
   agendaItems: initialAgendaItems,
+  agendaStatus,
   onClose,
 }) => {
   const router = useRouter();
@@ -50,6 +54,7 @@ const EditAgenda: NextPage<Props> = ({
     useState<MeetingAgendaItem[]>(initialAgendaItems);
 
   const [fileIsUploading, setFileIsUploading] = useState(false);
+  const [filesToDelete, setFilesToDelete] = useState<MeetingAgendaItem[]>([]);
 
   return (
     <ManageAgenda
@@ -57,19 +62,56 @@ const EditAgenda: NextPage<Props> = ({
       agendaItems={agendaItems}
       buttonText="Save"
       onNext={async (items) => {
-        const { data, error } = await updateAgenda(meetingId, items);
+        new Promise((resolve, reject) => {
+          // delete files
+          filesToDelete.forEach((f) => {
+            const fileName = getFileNameFromUrl(f.fileUrl!);
+            deleteFileFromAgendaItem(`${meetingId}/${f.id}/${fileName}`).catch(
+              (error) => {
+                throw error;
+              }
+            );
+          });
+          resolve(true);
+        }).then(() => {
+          new Promise((resolve, reject) => {
+            if (
+              agendaStatus &&
+              agendaStatus.currentItemIndex > items.length - 1
+            ) {
+              // reset agendaStatus if necessary
+              updateAgendaStatus(meetingId, {
+                currentItemIndex: 0,
+                startedAt: new Date(),
+              })
+                .then((data) => {
+                  if (data) {
+                    resolve(true);
+                  }
+                })
+                .catch((error) => {
+                  reject();
+                  throw error;
+                });
+            } else {
+              resolve(true);
+            }
+          }).then(async () => {
+            const { data, error } = await updateAgenda(meetingId, items);
 
-        if (error) {
-          throw error;
-        }
+            if (error) {
+              throw error;
+            }
 
-        if (data) {
-          if (onClose) {
-            onClose();
-          } else {
-            router.push("/");
-          }
-        }
+            if (data) {
+              if (onClose) {
+                onClose();
+              } else {
+                router.push("/");
+              }
+            }
+          });
+        });
       }}
       onClose={() => {
         if (onClose) {
@@ -156,6 +198,10 @@ const EditAgenda: NextPage<Props> = ({
         });
       }}
       onDeleteAgendaItem={(itemId) => {
+        const item = agendaItems.find((i) => i.id === itemId);
+        if (item?.fileUrl) {
+          setFilesToDelete([...filesToDelete, item]);
+        }
         setAgendaItems(agendaItems.filter((item) => item.id !== itemId));
       }}
       onRemoveFile={async (fileUrl, itemId) => {

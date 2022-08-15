@@ -148,6 +148,7 @@ const MeetingView: NextPage<Props> = ({
         meetingId={meeting.id}
         agendaItems={agendaItems}
         onClose={() => setView("MEETING")}
+        agendaStatus={agendaStatus}
       />
     );
   }
@@ -341,6 +342,7 @@ const MeetingView: NextPage<Props> = ({
           meeting={meeting}
           onShowInfo={() => setView("INFO")}
           onExitMeeting={() => setShowExitModal(true)}
+          agendaItems={agendaItems}
           agendaStatus={agendaStatus}
           onShowFullAgenda={() => setView("AGENDA")}
           onAgendaItemChange={async (newIndex) => {

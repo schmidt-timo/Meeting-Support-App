@@ -6,6 +6,7 @@ type Props = {
   startDate: Date;
   endDate: Date;
   onReachingEndTime: () => void;
+  showAlarmMessage?: () => void;
   className?: string;
 };
 
@@ -13,6 +14,7 @@ const MeetingCounter = ({
   startDate,
   endDate,
   onReachingEndTime,
+  showAlarmMessage,
   className,
 }: Props) => {
   const [passedTime, setPassedTime] = useState(calculatePassedTime(startDate));
@@ -25,6 +27,10 @@ const MeetingCounter = ({
     onReachingEndTime();
   }
 
+  if (showAlarmMessage && passedTime.total >= totalTime.total) {
+    showAlarmMessage();
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       setPassedTime(calculatePassedTime(startDate));
@@ -35,7 +41,13 @@ const MeetingCounter = ({
 
   return (
     <div className={`flex space-x-1 monospace text-sm ${className}`}>
-      <div className={endTimeReached ? "text-red-500 font-medium" : ""}>
+      <div
+        className={
+          endTimeReached
+            ? "text-white bg-red-500 px-2 rounded-xl font-medium"
+            : ""
+        }
+      >
         {startTimeReached ? (
           <>
             {passedTime.hours > 0 && (

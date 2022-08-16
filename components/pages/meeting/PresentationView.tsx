@@ -12,6 +12,7 @@ import {
 } from "react-icons/md";
 import { Document, Page, pdfjs } from "react-pdf";
 import { MeetingAgendaItem, MeetingAgendaStatus } from "../../../utils/types";
+import PDFLoadingAnimation from "../../LoadingScreen/PDFLoadingAnimation";
 import MeetingCounter from "../../meetingElements/MeetingCounter";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -35,6 +36,7 @@ const PresentationView = ({
 }: Props) => {
   const fullscreenHandler = useFullScreenHandle();
   const [numPages, setNumPages] = useState<number | null>(null);
+  const [aspectRatio, setAspectRatio] = useState<number>(0);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [scale, setScale] = useState(1.0);
@@ -48,24 +50,47 @@ const PresentationView = ({
   const ref = useRef<HTMLDivElement>(null);
   const pageNumber = agendaStatus.currentPresentationPage ?? 1;
 
-  useEffect(() => {
+  function setPDFSize() {
     if (ref.current) {
       setHeight(ref.current.clientHeight);
       setWidth(ref.current.clientWidth);
+      setAspectRatio(ref.current.clientWidth / ref.current.clientHeight);
     }
-  }, []);
+  }
 
   useEffect(() => {
-    const handleResizeWindow = () => {
-      if (ref.current) {
-        setHeight(ref.current.clientHeight);
-        setWidth(ref.current.clientWidth);
+    setPDFSize();
+  }, [fullscreenHandler]);
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (fullscreenHandler.active) {
+        switch (event.key) {
+          case "Left":
+          case "ArrowLeft":
+            if (pageNumber > 1) {
+              onPresentationPageChange(pageNumber - 1);
+            }
+            break;
+          case "Right":
+          case "ArrowRight":
+            if (pageNumber < numPages!) {
+              onPresentationPageChange(pageNumber + 1);
+            }
+            break;
+          default:
+            return;
+        }
       }
+    }
+
+    window.addEventListener("resize", setPDFSize);
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("resize", setPDFSize);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-
-    window.addEventListener("resize", handleResizeWindow);
-
-    return () => window.removeEventListener("resize", handleResizeWindow);
   });
 
   useEffect(() => {
@@ -80,7 +105,7 @@ const PresentationView = ({
     <div>
       <div
         ref={ref}
-        className={`w-full h-full border border-mblue-500 overflow-hidden aspect-video relative z-10 desktop:aspect-auto desktop:h-presentationDesktop ${
+        className={`w-full h-full border border-mblue-500 overflow-hidden aspect-video relative z-10 desktop:aspect-auto desktop:h-presentationDesktop desktop:min-h-presentationDesktop ${
           agendaItem?.fileUrl ? "rounded-t-xl" : "rounded-xl"
         }`}
       >
@@ -92,9 +117,7 @@ const PresentationView = ({
             <>
               {fullscreenHandler.active ? (
                 <Document
-                  loading={
-                    <p className="text-sm font-medium">PDF is loading ...</p>
-                  }
+                  loading={<PDFLoadingAnimation />}
                   file={agendaItem.fileUrl}
                   onLoadSuccess={onDocumentLoadSuccess}
                 >
@@ -104,11 +127,7 @@ const PresentationView = ({
                 <>
                   <div className="desktop:hidden">
                     <Document
-                      loading={
-                        <p className="text-sm font-medium">
-                          PDF is loading ...
-                        </p>
-                      }
+                      loading={<PDFLoadingAnimation />}
                       file={agendaItem.fileUrl}
                       onLoadSuccess={onDocumentLoadSuccess}
                     >
@@ -122,19 +141,23 @@ const PresentationView = ({
 
                   <div className="hidden desktop:block">
                     <Document
-                      loading={
-                        <p className="text-sm font-medium">
-                          PDF is loading ...
-                        </p>
-                      }
+                      loading={<PDFLoadingAnimation />}
                       file={agendaItem.fileUrl}
                       onLoadSuccess={onDocumentLoadSuccess}
                     >
-                      <Page
-                        pageNumber={pageNumber}
-                        width={width + 2}
-                        scale={scale}
-                      />
+                      {aspectRatio <= 1.77778 ? ( // 1.77778 = 16:9 Aspect Ratio
+                        <Page
+                          pageNumber={pageNumber}
+                          width={width + 2}
+                          scale={scale}
+                        />
+                      ) : (
+                        <Page
+                          pageNumber={pageNumber}
+                          height={height + 2}
+                          scale={scale}
+                        />
+                      )}
                     </Document>
                   </div>
                 </>
@@ -168,19 +191,24 @@ const PresentationView = ({
             </div>
           )}
           {fullscreenHandler.active && (
-            <div className="flex items-center absolute right-2 top-2 justify-center bg-mblue-500 p-1 px-3 rounded-xl space-x-2">
+            <div
+              className={`flex items-center absolute right-2 top-2 justify-center p-1 px-3 rounded-xl space-x-2 ${
+                showAlarm ? "bg-red-500 text-white" : "bg-mblue-500"
+              }`}
+            >
               {showAlarm && (
                 <span className="flex space-x-2 items-center">
-                  <MdNotificationsActive className="w-4 h-4 text-red-500 flex-shrink-0" />
-                  <h1 className="font-medium text-sm text-white truncate text-red-500">
-                    Alarm: Meeting End
+                  <MdNotificationsActive className="w-4 h-4 flex-shrink-0" />
+                  <h1 className="font-medium text-sm truncate">
+                    Meeting end reached
                   </h1>
                 </span>
               )}
               <MeetingCounter
                 startDate={meetingTimer.start}
                 endDate={meetingTimer.end}
-                onReachingEndTime={() => setShowAlarm(true)}
+                showAlarmMessage={() => setShowAlarm(true)}
+                onReachingEndTime={() => {}}
                 className="text-white"
               />
             </div>
@@ -212,9 +240,9 @@ const PresentationView = ({
           {fullscreenHandler.active && agendaItem.fileUrl && (
             <div className="flex items-center justify-center space-x-2 absolute left-2 bottom-2 flex-shrink-0 bg-mblue-500 rounded-xl px-1">
               <button
+                disabled={pageNumber <= 1}
                 onClick={() => onPresentationPageChange(pageNumber - 1)}
                 className="flex items-center justify-center w-7 h-7 text-white flex-shrink-0 disabled:text-transparent"
-                disabled={pageNumber <= 1}
               >
                 <MdKeyboardArrowLeft className="w-6 h-6" />
               </button>
@@ -242,13 +270,11 @@ const PresentationView = ({
                 : fullscreenHandler.exit
             }
             className={`flex items-center justify-center rounded-full bg-mblue-500 text-white flex-shrink-0 absolute bottom-2 right-2 disabled:hidden
-            ${!isDesktop && !fullscreenHandler.active && "w-8 h-8"}
-            ${isDesktop && fullscreenHandler.active && "w-10 h-10"}
-            ${isDesktop && !fullscreenHandler.active && "w-10 h-10"}
+            ${!fullscreenHandler.active ? "w-8 h-8" : "w-10 h-10"}
             `}
           >
             {!fullscreenHandler.active && isDesktop && (
-              <MdFullscreen className="w-7 h-7" />
+              <MdFullscreen className="w-6 h-6" />
             )}
             {!fullscreenHandler.active && !isDesktop && (
               <MdFullscreen className="w-5 h-5" />

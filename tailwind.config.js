@@ -24,7 +24,9 @@ module.exports = {
         desktopLG: "800px",
       },
       minHeight: {
+        button: "2.5rem",
         agenda: "6.5rem",
+        presentationDesktop: "12.5rem",
         150: "150px",
         300: "300px",
       },

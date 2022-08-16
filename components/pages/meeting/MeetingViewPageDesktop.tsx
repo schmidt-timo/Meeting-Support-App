@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { MdInfo, MdOutlineClose, MdPeople } from "react-icons/md";
+import { useEffect, useRef, useState } from "react";
+import {
+  MdInfo,
+  MdOpenInNew,
+  MdOutlineClose,
+  MdPeople,
+  MdQuestionAnswer,
+} from "react-icons/md";
 import QRCode from "react-qr-code";
 import { useAuth } from "../../../lib/auth";
 import {
@@ -49,6 +55,7 @@ type MeetingViewPageProps = {
   sharedNotesDatabaseStatus: DatabaseSyncStatus;
   setSharedNotesDatabaseStatus: (status: DatabaseSyncStatus) => void;
   onManageParticipants: () => void;
+  onManageQuestions: () => void;
   meetingQuestions: MeetingQuestion[];
   participants: MeetingParticipant[];
   onAlarm: () => void;
@@ -72,13 +79,40 @@ const MeetingViewPageDesktop = ({
   sharedNotesDatabaseStatus,
   setSharedNotesDatabaseStatus,
   onManageParticipants,
+  onManageQuestions,
   meetingQuestions,
   participants,
   onAlarm,
 }: MeetingViewPageProps) => {
   const [showSharedNotes, setShowSharedNotes] = useState(false);
+  const [showQuestionsButton, setShowQuestionsButton] = useState(false);
 
   const { user } = useAuth();
+
+  const questionRef = useRef<HTMLDivElement>(null);
+
+  const handleQuestionArea = () => {
+    if (questionRef.current) {
+      console.log(questionRef.current.clientHeight);
+      if (questionRef.current.clientHeight < 165) {
+        setShowQuestionsButton(true);
+      } else {
+        setShowQuestionsButton(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      handleQuestionArea();
+    }, 100);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleQuestionArea);
+
+    return () => window.removeEventListener("resize", handleQuestionArea);
+  });
 
   // filter questions
   const openQuestions = filterOpenQuestions(meetingQuestions);
@@ -112,7 +146,7 @@ const MeetingViewPageDesktop = ({
         </span>
       </div>
 
-      <div className="w-full h-full flex px-10 pb-10 space-x-5">
+      <div className="w-full h-full flex px-10 space-x-5">
         <div className="w-2/3 space-y-5 flex flex-col justify-between">
           {!!agendaItems.length && (
             <PresentationView
@@ -167,17 +201,18 @@ const MeetingViewPageDesktop = ({
                 setDatabaseStatus={setDatabaseStatus}
               />
             )}
+            <div className="h-8 flex-shrink-0" />
           </div>
         </div>
 
         <div className="w-1/3 space-y-5 h-full flex flex-col">
           <div className="w-full">
             <div className="bg-mblue-500 text-white rounded-xl p-4">
-              <div className="w-full truncate pr-2 flex justify-between">
+              <div className="w-full truncate flex justify-between">
                 <span className="flex flex-col justify-between">
                   <div>
                     <p className="text-xs">Meeting ID</p>
-                    <h1 className="font-bold text-base tracking-wider">
+                    <h1 className="font-bold text-base tracking-wider pr-2">
                       {meeting.id}
                     </h1>
                   </div>
@@ -220,85 +255,118 @@ const MeetingViewPageDesktop = ({
             )}
           </div>
 
-          <div className="w-full grow flex flex-col overflow-hidden border border-mblue-500 rounded-xl bg-mblue-100">
-            <div className="w-full bg-mblue-500 rounded-t-xl text-sm text-center text-white py-2">
-              {meetingQuestions.length > 0
-                ? `Questions (${meetingQuestions.length})`
-                : "Questions"}
-            </div>
-            <div className="grow overflow-auto p-3 space-y-3">
-              <QuestionItemInput
-                isDesktop
-                onAdd={(question) => {
-                  createMeetingQuestion(meeting.id, question);
-                }}
-              />
-              <div className="space-y-2">
-                {!!openQuestions.length && (
-                  <div className="pb-1.5 space-y-2">
-                    <Label>{`Open Questions (${openQuestions.length})`}</Label>
-                    {openQuestions.map((q) => (
-                      <QuestionItemDesktop
-                        key={q.id}
-                        meetingQuestion={q}
-                        onUpvote={async () => {
-                          const alreadyUpvoted = q.upvotes.includes(user!.id);
-                          if (alreadyUpvoted) {
-                            // remove upvote
-                            const removeUpvote = q.upvotes.filter(
-                              (u) => u !== user!.id
-                            );
-                            upvoteMeetingQuestion(q.id, removeUpvote);
-                          } else {
-                            const newUpvotes = [...q.upvotes, user!.id];
-                            upvoteMeetingQuestion(q.id, newUpvotes);
-                          }
-                        }}
-                        onMarkAsAnswered={async () => {
-                          changeMeetingQuestionAnsweredStatus(
-                            q.id,
-                            !q.answered
-                          );
-                        }}
-                        upvoted={q.upvotes.includes(user!.id)}
-                      />
-                    ))}
+          <div
+            ref={questionRef}
+            className={`w-full grow flex flex-col overflow-hidden min-h-button ${
+              !showQuestionsButton &&
+              "border border-mblue-500 rounded-xl bg-mblue-100"
+            }`}
+          >
+            {showQuestionsButton ? (
+              <Button onClick={onManageQuestions} variant="highlighted">
+                <div className="flex items-center justify-center space-x-2">
+                  <MdQuestionAnswer className="w-4 h-4 mt-0.5" />
+                  <p>
+                    {meetingQuestions.length > 0
+                      ? `Questions (${meetingQuestions.length})`
+                      : "Questions"}
+                  </p>
+                </div>
+              </Button>
+            ) : (
+              <>
+                <div className="w-full bg-mblue-500 rounded-t-xl text-sm text-center text-white py-2 flex items-center space-x-2 justify-center relative">
+                  {meetingQuestions.length > 0
+                    ? `Questions (${meetingQuestions.length})`
+                    : "Questions"}
+                  <button
+                    onClick={onManageQuestions}
+                    style={{ top: "0.35rem", right: "0.35rem" }}
+                    className="absolute bg-mblue-100 rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0"
+                  >
+                    <MdOpenInNew className="w-4 h-4 text-mblue-500" />
+                  </button>
+                </div>
+                <div className="grow overflow-auto p-3 space-y-3">
+                  <QuestionItemInput
+                    isDesktop
+                    onAdd={(question) => {
+                      createMeetingQuestion(meeting.id, question);
+                    }}
+                  />
+                  <div className="space-y-2">
+                    {!!openQuestions.length && (
+                      <div className="pb-1.5 space-y-2">
+                        <Label>{`Open Questions (${openQuestions.length})`}</Label>
+                        {openQuestions.map((q) => (
+                          <QuestionItemDesktop
+                            key={q.id}
+                            meetingQuestion={q}
+                            onUpvote={async () => {
+                              const alreadyUpvoted = q.upvotes.includes(
+                                user!.id
+                              );
+                              if (alreadyUpvoted) {
+                                // remove upvote
+                                const removeUpvote = q.upvotes.filter(
+                                  (u) => u !== user!.id
+                                );
+                                upvoteMeetingQuestion(q.id, removeUpvote);
+                              } else {
+                                const newUpvotes = [...q.upvotes, user!.id];
+                                upvoteMeetingQuestion(q.id, newUpvotes);
+                              }
+                            }}
+                            onMarkAsAnswered={async () => {
+                              changeMeetingQuestionAnsweredStatus(
+                                q.id,
+                                !q.answered
+                              );
+                            }}
+                            upvoted={q.upvotes.includes(user!.id)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    {!!answeredQuestions.length && (
+                      <>
+                        <Label>{`Answered Questions (${answeredQuestions.length})`}</Label>
+                        {answeredQuestions.map((q) => (
+                          <QuestionItemDesktop
+                            key={q.id}
+                            meetingQuestion={q}
+                            onUpvote={async () => {
+                              const alreadyUpvoted = q.upvotes.includes(
+                                user!.id
+                              );
+                              if (alreadyUpvoted) {
+                                // remove upvote
+                                const removeUpvote = q.upvotes.filter(
+                                  (u) => u !== user!.id
+                                );
+                                upvoteMeetingQuestion(q.id, removeUpvote);
+                              } else {
+                                const newUpvotes = [...q.upvotes, user!.id];
+                                upvoteMeetingQuestion(q.id, newUpvotes);
+                              }
+                            }}
+                            onMarkAsAnswered={async () => {
+                              changeMeetingQuestionAnsweredStatus(
+                                q.id,
+                                !q.answered
+                              );
+                            }}
+                            upvoted={q.upvotes.includes(user!.id)}
+                          />
+                        ))}
+                      </>
+                    )}
                   </div>
-                )}
-                {!!answeredQuestions.length && (
-                  <>
-                    <Label>{`Answered Questions (${answeredQuestions.length})`}</Label>
-                    {answeredQuestions.map((q) => (
-                      <QuestionItemDesktop
-                        key={q.id}
-                        meetingQuestion={q}
-                        onUpvote={async () => {
-                          const alreadyUpvoted = q.upvotes.includes(user!.id);
-                          if (alreadyUpvoted) {
-                            // remove upvote
-                            const removeUpvote = q.upvotes.filter(
-                              (u) => u !== user!.id
-                            );
-                            upvoteMeetingQuestion(q.id, removeUpvote);
-                          } else {
-                            const newUpvotes = [...q.upvotes, user!.id];
-                            upvoteMeetingQuestion(q.id, newUpvotes);
-                          }
-                        }}
-                        onMarkAsAnswered={async () => {
-                          changeMeetingQuestionAnsweredStatus(
-                            q.id,
-                            !q.answered
-                          );
-                        }}
-                        upvoted={q.upvotes.includes(user!.id)}
-                      />
-                    ))}
-                  </>
-                )}
-              </div>
-            </div>
+                </div>
+              </>
+            )}
           </div>
+          <div className="h-5 flex-shrink-0" />
         </div>
       </div>
     </div>

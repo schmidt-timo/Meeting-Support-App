@@ -370,6 +370,7 @@ const MeetingView: NextPage<Props> = ({
           sharedNotesDatabaseStatus={sharedNotesDatabaseStatus}
           setSharedNotesDatabaseStatus={setSharedNotesDatabaseStatus}
           onManageParticipants={() => setView("PARTICIPANTS")}
+          onManageQuestions={() => setView("QUESTIONS")}
           meetingQuestions={meetingQuestions}
           participants={participants}
         />

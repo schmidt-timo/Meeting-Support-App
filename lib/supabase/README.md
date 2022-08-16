@@ -29,7 +29,7 @@ NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=
 
 6. Copy the [SQL instructions](./tableSetup.sql) into the editor to create all databases by pressing **RUN**
 
-7. Go to **Database** > **Replication** and active the real-time feature for these 3 databases:
+7. Go to **Database** > **Replication** and activate the real-time feature for these 3 databases:
 
 - meetings
 - meeting_notes
@@ -39,8 +39,7 @@ NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=
 
 8. Go to Storage and create a public bucket called **files**
 
-> If the storage is not working properly, it may be because you are missing permissions.
-> [Try this to make it work](https://github.com/supabase/supabase/discussions/2466#discussioncomment-1307035)
+   _If the storage is not working properly, it may be because you are missing permissions. [Try this to make it work](https://github.com/supabase/supabase/discussions/2466#discussioncomment-1307035)._
 
 Everything is set up. You can use the app now.
 

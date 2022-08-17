@@ -32,7 +32,7 @@ const SharedNotes = ({
   return (
     <div className="flex flex-col relative">
       {showModal && (
-        <div className="absolute w-full h-full text-mblue-500 rounded-xl bg-opacity-80 flex justify-center items-center p-5">
+        <div className="absolute w-full h-full text-mblue-500 rounded-xl bg-black bg-opacity-80 flex justify-center items-center p-5">
           <div className="bg-white p-3 rounded-xl flex flex-col items-center justify-center space-y-3 max-w-2xl">
             <p className="text-xs text-mblue-500">
               The shared notes have been modified by another person in the

@@ -41,6 +41,8 @@ NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=
 
    _If the storage is not working properly, it may be because you are missing permissions. [Try this to make it work](https://github.com/supabase/supabase/discussions/2466#discussioncomment-1307035)._
 
-Everything is set up. You can use the app now.
+Everything is set up.
+
+You can run the app now by using `npm run dev`.
 
 [^1]: See also here: [https://supabase.com/docs/guides/with-nextjs#get-the-api-keys](https://supabase.com/docs/guides/with-nextjs#get-the-api-keys)

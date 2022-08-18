@@ -21,6 +21,7 @@ create table users (
   "name" text not null,
   "color" text not null,
 
+  primary key (id),
   foreign key (id) references auth.users(id)
 );
 
